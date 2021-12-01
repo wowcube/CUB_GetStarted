@@ -1,0 +1,3 @@
+[submodule "PawnLibs"]
+	path = PawnLibs
+	url = https://github.com/wowcube/PawnLibs.git
