@@ -3,3 +3,6 @@
 
 # Pawn
 source/*.amx
+
+# quality of life
+*.bat

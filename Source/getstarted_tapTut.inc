@@ -107,8 +107,8 @@ DrawTapTutorial(screen) {
             abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("let us continue", 0, 120, 142, 6, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("with the tap", 0, 120, 98, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("let us continue", 0, 120, 142, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("with the tap", 0, 120, 98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -136,16 +136,16 @@ DrawTapTutorial(screen) {
                 InitCrossAnimationVars(0xFF5C00, 0x513469);
                 DrawCrossAnimation();
             }
-            abi_CMD_TEXT("just lightly", 0, posX_1, posY_1, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("tap the cube", 0, 120, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("to continue",  0, posX_2, posY_2, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("just lightly", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("tap the cube", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("to continue",  0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case TEXT_BOX_2: {
             if (finishTapTutorial) {
-                abi_CMD_TEXT("excellent!", 0, 210, 120, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("excellent!", 0, 210, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else {
-                abi_CMD_TEXT("tap to fill", 0, 103, 120, 6, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("the cube", 0, 145, 120, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("tap to fill", 0, 103, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("the cube", 0, 145, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
             }
         }
         case TAP_CIRCLE: {
@@ -157,20 +157,20 @@ DrawTapTutorial(screen) {
                 abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, mascotTapReactAngle, MIRROR_BLANK);
             } else if (angle == 270) {
                 if (finishTapTutorial) {
-                    abi_CMD_TEXT("excellent!", 0, 210, 120, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                    abi_CMD_TEXT("excellent!", 0, 210, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
                 } else {
-                    abi_CMD_TEXT("tap to fill", 0, 168, 120, 6, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                    abi_CMD_TEXT("the cube", 0, 210, 120, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                    abi_CMD_TEXT("tap to fill", 0, 168, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                    abi_CMD_TEXT("the cube", 0, 210, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
                 }
             } else if ((finishTapTutorial) && (angle == 0)) {
-                abi_CMD_TEXT("double tap", 0, 120, 168, 6, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("to continue", 0, 120, 210, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("double tap", 0, 120, 168, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("to continue", 0, 120, 210, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
             }
         }
         case EMPTY: {
             if ((finishTapTutorial) && (angle == 0)) {
-                abi_CMD_TEXT("double tap", 0, 120, 168, 6, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("to continue", 0, 120, 210, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("double tap", 0, 120, 168, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("to continue", 0, 120, 210, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
             }
         }
     }

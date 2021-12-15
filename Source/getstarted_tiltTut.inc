@@ -137,7 +137,7 @@ FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
 
 SelectorLogic() {
     if (tiltTutSelector.module >= CUBES_MAX) {
-        for (new moduleI = 0; moduleI < CUBES_MAX; ++moduleI) {
+        /*for (new moduleI = 0; moduleI < CUBES_MAX; ++moduleI) {
             for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
                 if (TopologyGetPlaneProject(moduleI, screenI) == topology_location:location_top) {
                     if (TopologyGetAngle(moduleI, screenI, topology_projection:projection_splash) == tiltTutSelector.screenAngle) {
@@ -145,6 +145,15 @@ SelectorLogic() {
                         tiltTutSelector.screen = screenI;
                         break;
                     }
+                }
+            }
+        }*/
+        for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
+            if (getStarted_screenData[screenI].sideType == topology_location:location_top) {
+                if (getStarted_screenData[screenI].angle == tiltTutSelector.screenAngle) {
+                    tiltTutSelector.module = abi_cubeN;
+                    tiltTutSelector.screen = screenI;
+                    break;
                 }
             }
         }
@@ -194,7 +203,7 @@ SelectorLogic() {
 
 BallLogic() {
     if (tiltTutBall.module >= CUBES_MAX) {
-        for (new moduleI = 0; moduleI < CUBES_MAX; ++moduleI) {
+        /*for (new moduleI = 0; moduleI < CUBES_MAX; ++moduleI) {
             for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
                 if (TopologyGetPlaneProject(moduleI, screenI) == topology_location:location_top) {
                     if (TopologyGetAngle(moduleI, screenI, topology_projection:projection_splash) == tiltTutBall.screenAngle) {
@@ -202,6 +211,15 @@ BallLogic() {
                         tiltTutBall.screen = screenI;
                         break;
                     }
+                }
+            }
+        }*/
+        for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
+            if (getStarted_screenData[screenI].sideType == topology_location:location_top) {
+                if (getStarted_screenData[screenI].angle == tiltTutBall.screenAngle) {
+                    tiltTutBall.module = abi_cubeN;
+                    tiltTutBall.screen = screenI;
+                    break;
                 }
             }
         }
@@ -306,8 +324,8 @@ DrawTiltTutorial(screen) {
             abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("let us continue", 0, 120, 142, 6, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("with the tilt", 0, 120, 98, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("let us continue", 0, 120, 142, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("with the tilt", 0, 120, 98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -316,35 +334,35 @@ DrawTiltTutorial(screen) {
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
             if (beginTiltTutorial) {
-                abi_CMD_TEXT("tilt the cube", 0, posX_1, posY_1, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("and collect", 0, 120, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("all shapes",  0, posX_2, posY_2, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("tilt the cube", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("and collect", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("all shapes",  0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else if (selectorTutorial) {
-                abi_CMD_TEXT("point the", 0, posX_1, posY_1, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("selector and", 0, 120, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("double tap",  0, posX_2, posY_2, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("point the", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("selector and", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("double tap",  0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else {
                 if ((getStarted_screenData[screen].sideType == topology_location:location_bottom) ||
                     (getStarted_screenData[screen].sideType == topology_location:location_top)) {
                     InitCrossAnimationVars(0xFF5C00, 0x513469);
                     DrawCrossAnimation();
                 }
-                abi_CMD_TEXT("double tap", 0, posX_1, posY_1, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("to continue", 0, posX_2, posY_2, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("double tap", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("to continue", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             }
         }
         case ARROW_HINT: {
             abi_CMD_G2D_ADD_SPRITE(ARROW_TILT, false, 120, 120, 0xFF, 0, 0, MIRROR_BLANK);
         }
         case COLLECT_CIRCLE: {
-            //abi_CMD_ARC(-15, -15, 100, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
-            //abi_CMD_ARC(-15, -15, 155, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
-            abi_CMD_ARC(0, 0, 80, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
-            abi_CMD_ARC(0, 0, 135, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
+            //abi_CMD_ARC(0, 0, 80, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
+            //abi_CMD_ARC(0, 0, 135, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
+            abi_CMD_ARC(0, 0, 80, 4, 0, 90, 0xFF, 0xC2, 0x8A, true);
+            abi_CMD_ARC(10, 10, 120, 4, -90, 180, 0xFF, 0xC2, 0x8A, true);
             
             if (angle == 0) {
-                abi_CMD_TEXT("collect", 0, 120, 168, 6, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("all shapes", 0, 120, 210, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("collect", 0, 120, 168, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("all shapes", 0, 120, 210, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
                 abi_CMD_G2D_ADD_SPRITE((collectables{0}) ? (COLLECTABLE) : (COLLECTED), false, 75, 75, 0xFF, 0, 0, MIRROR_BLANK);
             } else if (angle == 90) {
                 abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, 75, MIRROR_BLANK);
@@ -357,7 +375,7 @@ DrawTiltTutorial(screen) {
                     }
                 }
             } else if (angle == 270) {
-                abi_CMD_TEXT("tilt the cube", 0, 210, 120, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("tilt the cube", 0, 210, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
                 abi_CMD_G2D_ADD_SPRITE((collectables{2}) ? (COLLECTABLE) : (COLLECTED), false, 75, 75, 0xFF, 0, 0, MIRROR_BLANK);
             }
 
@@ -366,15 +384,15 @@ DrawTiltTutorial(screen) {
             }
         }
         case FINISHED_TOP: {
-            abi_CMD_ARC(0, 0, 80, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
-            abi_CMD_ARC(0, 0, 135, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
+            abi_CMD_ARC(0, 0, 80, 4, 0, 90, 0xFF, 0xC2, 0x8A, true);
+            abi_CMD_ARC(10, 10, 120, 4, -90, 180, 0xFF, 0xC2, 0x8A, true);
             
             if (angle != 180) {
                 abi_CMD_G2D_ADD_SPRITE(COLLECTED, false, 75, 75, 0xFF, 0, 0, MIRROR_BLANK);
             }
             if (angle == 0) {
-                abi_CMD_TEXT("double tap", 0, 120, 168, 7, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("to continue", 0, 120, 210, 7, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("double tap", 0, 120, 168, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("to continue", 0, 120, 210, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else if (angle == 90) {
                 abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, 75, MIRROR_BLANK);
             } else if (angle == 180) {
@@ -383,7 +401,7 @@ DrawTiltTutorial(screen) {
                     abi_CMD_G2D_ADD_SPRITE(COLLECTED_CHECK, false, 200 - (24 * item), 208, 0xFF, 0, angle, MIRROR_BLANK);
                 }
             } else if (angle == 270) {
-                abi_CMD_TEXT("excellent!", 0, 210, 120, 6, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("excellent!", 0, 210, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
             }
 
             if ((tiltTutBall.module == abi_cubeN) && (tiltTutBall.screen == screen)) {
@@ -396,28 +414,28 @@ DrawTiltTutorial(screen) {
             new posX_2 = 120;
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
-            abi_CMD_TEXT("double tap", 0, posX_1, posY_1, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("to continue", 0, posX_2, posY_2, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("double tap", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("to continue", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case FINISHED_EXCELLENT: {
-            abi_CMD_TEXT("excellent!", 0, 120, 120, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("excellent!", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case SELECTOR_TOP: {
             if ((angle == 0) && (tiltTutSelector.module != abi_cubeN)) {
                 abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
                 InitCrossAnimationVars(0xFF5C00, 0xFFB576);
                 DrawCrossAnimation();
-                abi_CMD_TEXT("point the", 0, 120, 80, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("selector at me", 0, 120, 105, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("and tap the", 0, 120, 130, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("cube 2 times", 0, 120, 155, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("point the", 0, 120, 80, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("selector at me", 0, 120, 105, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("and tap the", 0, 120, 130, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("cube 2 times", 0, 120, 155, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
             } else if ((angle == 180) && (tiltTutSelector.module != abi_cubeN)) {
                 InitCrossAnimationVars(0xFF5C00, 0x513469);
                 DrawCrossAnimation();
-                abi_CMD_TEXT("you can use",    0, 120, 155, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("the cube taps",  0, 120, 130, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("for navigation", 0, 120, 105, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("or selection",   0, 120,  80, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("you can use",    0, 120, 155, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("the cube taps",  0, 120, 130, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("for navigation", 0, 120, 105, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("or selection",   0, 120,  80, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else if (angle == 270) {
                 abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, angle, MIRROR_Y);
                 if (tiltTutSelector.screenAngle % 270) {

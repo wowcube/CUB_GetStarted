@@ -57,20 +57,34 @@ SetScreenData(screen) {
 }
 
 GetNewSideType() {
-    for (new screen = 0; screen < FACES_MAX ; ++screen) {
-        if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_max) {
-            return;
-        }
-        if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_top) {
-            getStarted_screenData[screen].sideType = topology_location:location_top;
-            SetScreenData(screen);
-            break;
-        } else if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_bottom) {
-            getStarted_screenData[screen].sideType = topology_location:location_bottom;
-            SetScreenData(screen);
-            break;
+    for (new side = 0; side < PLANES_MAX; ++side) {
+        new mySideType = TopologyGetPlaneProject(topologyByPlane[side][0].module, topologyByPlane[side][0].screen);
+        for (new screen = 1; screen < FACES_ON_PLANE_MAX; ++screen) {
+            new neighbourSideType = TopologyGetPlaneProject(topologyByPlane[side][screen].module, topologyByPlane[side][screen].screen);
+            if ((mySideType != neighbourSideType)
+            || (mySideType == topology_location:location_max)
+            || (neighbourSideType == topology_location:location_max)) {
+                return;
+            }
         }
     }
+    //for (new module = 0; module < CUBES_MAX; ++module) {
+        for (new screen = 0; screen < FACES_MAX ; ++screen) {
+            //if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_max) {
+            //    return;
+            //}
+            if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_top) {
+                getStarted_screenData[screen].sideType = topology_location:location_top;
+                SetScreenData(screen);
+                break;
+            } else if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_bottom) {
+                getStarted_screenData[screen].sideType = topology_location:location_bottom;
+                SetScreenData(screen);
+                break;
+            }
+        }
+    //}
+    
     needNewSideType = 0;
 }
 
@@ -117,7 +131,7 @@ RENDER() {
                 DrawSuccessScreen(screenI);
             }
         }
-        //abi_CMD_TEXT_ITOA(shakeTutorialStage, 0, 120, 60, 25, 0, TEXT_ALIGN_CENTER, 0xFF, 0x00, 0x00, true);
+        //abi_CMD_TEXT_ITOA(checkTopology, 0, 120, 60, 25, 0, TEXT_ALIGN_CENTER, 0xFF, 0x00, 0x00, true);
         //abi_CMD_TEXT_ITOA(abi_MTD_GetShakesCount(), 0, 120, 180, 25, 0, TEXT_ALIGN_CENTER, 0xFF, 0x00, 0x00, true);
         abi_CMD_G2D_END();
     }
@@ -221,7 +235,7 @@ ON_CMD_NET_RX (const pkt[]) {
     switch (abi_ByteN(pkt, 4)) {
         case PKT_GENERAL_DATA: {
             new packetNumberReceived = pkt[4];
-            if ((generalDataPkt < packetNumberReceived) || ((packetNumberReceived - generalDataPkt) > (0x7FFFFFFF >> 1))) {
+            if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
                 generalDataPkt = packetNumberReceived;
                 SetApplicationState(abi_ByteN(pkt, 7));
                 //previousAppState = abi_ByteN(pkt, 6);
@@ -243,7 +257,7 @@ ON_CMD_NET_RX (const pkt[]) {
         }
         case PKT_BALL_TILT_TUT: {
             new packetNumberReceived = pkt[4];
-            if ((ballPkt < packetNumberReceived) || ((packetNumberReceived - ballPkt) > (0xFFFFF >> 1))) {
+            if ((ballPkt < packetNumberReceived) || ((ballPkt - packetNumberReceived) > (0xFFFFF >> 1))) {
                 ballPkt = packetNumberReceived;
                 tiltTutBall.module = abi_ByteN(pkt, 5);
                 tiltTutBall.screen = abi_ByteN(pkt, 6);
@@ -256,7 +270,7 @@ ON_CMD_NET_RX (const pkt[]) {
         }
         case PKT_SELECTOR_TILT_TUT: {
             new packetNumberReceived = pkt[3];
-            if ((selectorPkt < packetNumberReceived) || ((packetNumberReceived - selectorPkt) > (0xFFFFF >> 1))) {
+            if ((selectorPkt < packetNumberReceived) || ((selectorPkt - packetNumberReceived) > (0xFFFFF >> 1))) {
                 selectorPkt = packetNumberReceived;
                 tiltTutSelector.module = abi_ByteN(pkt, 5);
                 tiltTutSelector.screen = abi_ByteN(pkt, 6);

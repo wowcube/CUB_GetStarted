@@ -45,9 +45,9 @@ DrawStartCountdown(screen) {
             abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("now we will", 0, 120,  90, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("teach you how", 0, 120, 120, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("to use wowcube", 0, 120, 150, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("now we will", 0, 120,  90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("teach you how", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("to use wowcube", 0, 120, 150, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -70,8 +70,8 @@ DrawStartCountdown(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            abi_CMD_TEXT("we will", 0, posX_1, posY_1, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("start in", 0, posX_2, posY_2, 7, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("we will", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("start in", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case COUNTDOWN: {
             abi_CMD_TEXT_ITOA(tutorialStartTimer / 1000, 0, 120, 120, 25, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);

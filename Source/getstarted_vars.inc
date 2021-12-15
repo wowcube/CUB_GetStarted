@@ -19,6 +19,8 @@ const MASCOT_CHANGE_TIME = 30000;
 const MODULE_GAP = 30;
 const HALF_MODULE_GAP = MODULE_GAP >> 1;
 
+const SIMPLE_FONT_SIZE = 7;
+
 // Twist tutorial
 new ARROW_1 = 0;
 new ARROW_2 = 1;

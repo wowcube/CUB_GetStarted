@@ -109,9 +109,9 @@ DrawShakeTutorial(screen) {
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
             abi_CMD_TEXT("shake", 0, 120, 180, 18, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xA5, 0x52, true);
-            abi_CMD_TEXT("the cube up and", 0, 120, 120, 6, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("down to back to", 0, 120, 90, 6, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("the main menu", 0, 120, 60, 6, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("the cube up and", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("down to back to", 0, 120, 90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("the main menu", 0, 120, 60, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -139,9 +139,9 @@ DrawShakeTutorial(screen) {
             abi_CMD_TEXT("and down",  0, posX_2, posY_2, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case TEXT_BOX_2: {
-            abi_CMD_TEXT("shake the", 0, 100, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("cube to back", 0, 120, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("to main menu",  0, 140, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("shake the", 0, 100, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("cube to back", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("to main menu",  0, 140, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case MASCOT_2: {
             abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, 75, MIRROR_BLANK);
