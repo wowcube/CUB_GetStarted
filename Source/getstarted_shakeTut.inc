@@ -110,7 +110,7 @@ DrawShakeTutorial(screen) {
             DrawCrossAnimation();
             abi_CMD_TEXT("shake", 0, 120, 180, 18, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xA5, 0x52, true);
             abi_CMD_TEXT("the cube up and", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("down to back to", 0, 120, 90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("down to go back to", 0, 120, 90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
             abi_CMD_TEXT("the main menu", 0, 120, 60, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {

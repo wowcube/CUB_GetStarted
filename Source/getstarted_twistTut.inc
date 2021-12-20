@@ -87,9 +87,9 @@ DrawTwistTutorial(screen) {
                 abi_CMD_TEXT("twist", 0, 120,  70, 17, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xA5, 0x52, true);
             } else if (twistTutorialStage == 1) {
                 abi_CMD_TEXT("good!",            0, 120, 130, 17, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xA5, 0x52, true);
-                abi_CMD_TEXT("let us try again.", 0, 120,  98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("twist different",  0, 120,  78,  SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("sides",            0, 120,  58,  SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("one more time!", 0, 120,  98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("twist another",  0, 120,  78,  SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("side",           0, 120,  58,  SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
             } else {
                 abi_CMD_TEXT("twist", 0, 120, 140, 17, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
                 abi_CMD_TEXT("the cube once", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);

@@ -14,6 +14,7 @@ const FINISHED_TOP        = 7;
 const FINISHED_DOUBLE_TAP = 8;
 const FINISHED_EXCELLENT  = 9;
 const SELECTOR_TOP        = 10;
+const SELECTOR_TEXT_BOX   = 11;
 
 
 new getstarted_tiltTutorial{} = {
@@ -45,11 +46,11 @@ new getstarted_tiltTutFinished{} = {
 
 new getstarted_selectorTutorial{} = {
     SELECTOR_TOP, SELECTOR_TOP, SELECTOR_TOP, SELECTOR_TOP,
-    EMPTY, ICON, EMPTY, TEXT_BOX,
-    EMPTY, ICON, EMPTY, TEXT_BOX,
-    EMPTY, TEXT_BOX, EMPTY, ICON,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
-    EMPTY, ICON, EMPTY, TEXT_BOX,
+    EMPTY, ICON, EMPTY, SELECTOR_TEXT_BOX,
+    EMPTY, ICON, EMPTY, SELECTOR_TEXT_BOX,
+    EMPTY, SELECTOR_TEXT_BOX, EMPTY, ICON,
+    ICON, EMPTY, SELECTOR_TEXT_BOX, EMPTY,
+    EMPTY, ICON, EMPTY, SELECTOR_TEXT_BOX,
 };
 
 const BALL_SQUARE_RADIUS = 289;
@@ -324,8 +325,8 @@ DrawTiltTutorial(screen) {
             abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("let us continue", 0, 120, 142, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("with the tilt", 0, 120, 98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("going on", 0, 120, 142, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("with a tilt", 0, 120, 98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -337,10 +338,6 @@ DrawTiltTutorial(screen) {
                 abi_CMD_TEXT("tilt the cube", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
                 abi_CMD_TEXT("and collect", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
                 abi_CMD_TEXT("all shapes",  0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            } else if (selectorTutorial) {
-                abi_CMD_TEXT("point the", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("selector and", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("double tap",  0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else {
                 if ((getStarted_screenData[screen].sideType == topology_location:location_bottom) ||
                     (getStarted_screenData[screen].sideType == topology_location:location_top)) {
@@ -425,16 +422,15 @@ DrawTiltTutorial(screen) {
                 abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
                 InitCrossAnimationVars(0xFF5C00, 0xFFB576);
                 DrawCrossAnimation();
-                abi_CMD_TEXT("point the", 0, 120, 80, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("selector at me", 0, 120, 105, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("put the white", 0, 120, 80, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("hightlight on me", 0, 120, 105, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
                 abi_CMD_TEXT("and tap the", 0, 120, 130, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
                 abi_CMD_TEXT("cube 2 times", 0, 120, 155, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
             } else if ((angle == 180) && (tiltTutSelector.module != abi_cubeN)) {
                 InitCrossAnimationVars(0xFF5C00, 0x513469);
                 DrawCrossAnimation();
-                abi_CMD_TEXT("you can use",    0, 120, 155, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("the cube taps",  0, 120, 130, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("for navigation", 0, 120, 105, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("tilt the cube",  0, 120, 155, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("for navigation", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
                 abi_CMD_TEXT("or selection",   0, 120,  80, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else if (angle == 270) {
                 abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, angle, MIRROR_Y);
@@ -446,6 +442,29 @@ DrawTiltTutorial(screen) {
             if ((tiltTutSelector.module == abi_cubeN) && (tiltTutSelector.screen == screen)) {
                 abi_CMD_G2D_ADD_SPRITE(SELECTOR, false, 120 + tiltTutSelector.accelX, 120 + tiltTutSelector.accelY, 0xFF, 0, 0, MIRROR_BLANK);
             }
+        }
+        case SELECTOR_TEXT_BOX: {
+            new staticCenterPos = 120;
+            new changingPos = 80;
+            new posStep = 20;
+            new isStaticX = 1;
+            new isStaticY = 0;
+            if (angle == 90) {
+                changingPos = 140;
+                posStep = -posStep;
+                isStaticX = 0;
+                isStaticY = 1;
+            } else if (angle == 180) {
+                changingPos = 140;
+                posStep = -posStep;
+            } else if (angle == 270) {
+                isStaticX = 0;
+                isStaticY = 1;
+            }
+            abi_CMD_TEXT("put the ",        0, staticCenterPos * isStaticX + changingPos * isStaticY, staticCenterPos * isStaticY + changingPos * isStaticX, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("highlight on",    0, staticCenterPos * isStaticX + (changingPos + posStep * 1) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 1) * isStaticX, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("the little cube", 0, staticCenterPos * isStaticX + (changingPos + posStep * 2) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 2) * isStaticX, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("and double tap",  0, staticCenterPos * isStaticX + (changingPos + posStep * 3) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 3) * isStaticX, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
     }
 
