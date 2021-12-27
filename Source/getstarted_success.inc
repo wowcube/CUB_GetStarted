@@ -45,18 +45,24 @@ DrawSuccessScreen(screen) {
             InitCrossAnimationVars(0xFF9898, 0xFF5252);
             DrawCrossAnimation();
             if (previousAppState == FSM:twistTutorial) {
-                abi_CMD_TEXT("good", 0, 120, 140, 17, angle, TEXT_ALIGN_CENTER, 0xFF, 0x52, 0x52, true);
+                abi_CMD_TEXT("good!", 0, 110, 140, 17, angle, TEXT_ALIGN_CENTER, 0xFF, 0x52, 0x52, true);
+                abi_CMD_TEXT("go ahead", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
             } else if (previousAppState == FSM:tapTutorial) {
                 abi_CMD_TEXT("very good!", 0, 120, 140, 10, angle, TEXT_ALIGN_CENTER, 0xFF, 0x52, 0x52, true);
+                abi_CMD_TEXT("moving on", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
             } else if (previousAppState == FSM:tiltTutorial) {
                 abi_CMD_TEXT("awesome!!!", 0, 120, 140, 10, angle, TEXT_ALIGN_CENTER, 0xFF, 0x52, 0x52, true);
+                abi_CMD_TEXT("we are", 0, 120, 110, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
+                abi_CMD_TEXT("almost done", 0, 120, 70, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
             }
-            if (previousAppState != FSM:tiltTutorial) {
+            /*if (previousAppState == FSM:tapTutorial) {
+                abi_CMD_TEXT("moving on", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            } else if (previousAppState != FSM:tiltTutorial) {
                 abi_CMD_TEXT("go ahead", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
             } else {
                 abi_CMD_TEXT("we are", 0, 120, 110, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
                 abi_CMD_TEXT("almost done", 0, 120, 70, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
-            }
+            }*/
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -69,7 +75,7 @@ DrawSuccessScreen(screen) {
                 DrawCrossAnimation();
             }
             if (previousAppState == FSM:twistTutorial) {
-                abi_CMD_TEXT("twist one", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                abi_CMD_TEXT("twist it one", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
                 abi_CMD_TEXT("more time", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             } else if (previousAppState == FSM:tapTutorial) {
                 abi_CMD_TEXT("double tap", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);

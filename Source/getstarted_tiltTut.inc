@@ -325,8 +325,9 @@ DrawTiltTutorial(screen) {
             abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("going on", 0, 120, 142, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("with a tilt", 0, 120, 98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("next thing", 0, 120, 150, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("to learn", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            abi_CMD_TEXT("is tilt", 0, 120, 90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
         }
         case TEXT_BOX: {
             new posX_1 = 120;
