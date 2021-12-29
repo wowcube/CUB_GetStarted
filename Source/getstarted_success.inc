@@ -55,14 +55,6 @@ DrawSuccessScreen(screen) {
                 abi_CMD_TEXT("we are", 0, 120, 110, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
                 abi_CMD_TEXT("almost done", 0, 120, 70, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
             }
-            /*if (previousAppState == FSM:tapTutorial) {
-                abi_CMD_TEXT("moving on", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            } else if (previousAppState != FSM:tiltTutorial) {
-                abi_CMD_TEXT("go ahead", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            } else {
-                abi_CMD_TEXT("we are", 0, 120, 110, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("almost done", 0, 120, 70, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
-            }*/
         }
         case TEXT_BOX: {
             new posX_1 = 120;

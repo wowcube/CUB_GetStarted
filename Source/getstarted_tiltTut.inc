@@ -138,17 +138,6 @@ FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
 
 SelectorLogic() {
     if (tiltTutSelector.module >= CUBES_MAX) {
-        /*for (new moduleI = 0; moduleI < CUBES_MAX; ++moduleI) {
-            for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
-                if (TopologyGetPlaneProject(moduleI, screenI) == topology_location:location_top) {
-                    if (TopologyGetAngle(moduleI, screenI, topology_projection:projection_splash) == tiltTutSelector.screenAngle) {
-                        tiltTutSelector.module = moduleI;
-                        tiltTutSelector.screen = screenI;
-                        break;
-                    }
-                }
-            }
-        }*/
         for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
             if (getStarted_screenData[screenI].sideType == topology_location:location_top) {
                 if (getStarted_screenData[screenI].angle == tiltTutSelector.screenAngle) {
@@ -171,7 +160,6 @@ SelectorLogic() {
 
                 accelX *= (accelX <= 0);
                 accelY *= (accelY <= 0);
-                //printf("%d %d\n", accelX ,accelY);
                 tiltTutSelector.accelX = accelX >> 1;
                 tiltTutSelector.accelY = accelY >> 1;
                 
@@ -204,17 +192,6 @@ SelectorLogic() {
 
 BallLogic() {
     if (tiltTutBall.module >= CUBES_MAX) {
-        /*for (new moduleI = 0; moduleI < CUBES_MAX; ++moduleI) {
-            for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
-                if (TopologyGetPlaneProject(moduleI, screenI) == topology_location:location_top) {
-                    if (TopologyGetAngle(moduleI, screenI, topology_projection:projection_splash) == tiltTutBall.screenAngle) {
-                        tiltTutBall.module = moduleI;
-                        tiltTutBall.screen = screenI;
-                        break;
-                    }
-                }
-            }
-        }*/
         for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
             if (getStarted_screenData[screenI].sideType == topology_location:location_top) {
                 if (getStarted_screenData[screenI].angle == tiltTutBall.screenAngle) {
@@ -353,10 +330,8 @@ DrawTiltTutorial(screen) {
             abi_CMD_G2D_ADD_SPRITE(ARROW_TILT, false, 120, 120, 0xFF, 0, 0, MIRROR_BLANK);
         }
         case COLLECT_CIRCLE: {
-            //abi_CMD_ARC(0, 0, 80, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
-            //abi_CMD_ARC(0, 0, 135, 4, 0, 180, 0xFF, 0xC2, 0x8A, true);
             abi_CMD_ARC(0, 0, 80, 4, 0, 90, 0xFF, 0xC2, 0x8A, true);
-            abi_CMD_ARC(10, 10, 120, 4, -90, 180, 0xFF, 0xC2, 0x8A, true);
+            abi_CMD_ARC(0, 0, 135, 4, 0, 90, 0xFF, 0xC2, 0x8A, true);
             
             if (angle == 0) {
                 abi_CMD_TEXT("collect", 0, 120, 168, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
@@ -383,7 +358,7 @@ DrawTiltTutorial(screen) {
         }
         case FINISHED_TOP: {
             abi_CMD_ARC(0, 0, 80, 4, 0, 90, 0xFF, 0xC2, 0x8A, true);
-            abi_CMD_ARC(10, 10, 120, 4, -90, 180, 0xFF, 0xC2, 0x8A, true);
+            abi_CMD_ARC(0, 0, 135, 4, 0, 90, 0xFF, 0xC2, 0x8A, true);
             
             if (angle != 180) {
                 abi_CMD_G2D_ADD_SPRITE(COLLECTED, false, 75, 75, 0xFF, 0, 0, MIRROR_BLANK);

@@ -17,9 +17,6 @@ SetApplicationState(newState) {
             tangibleIcons[2] = TAP_ICON;
             tangibleIcons[3] = TWIST_ICON;
         } else if (newState == FSM:twistTutorial) {
-            //arrowIcons[0] = ARROW_3;
-            //arrowIcons[1] = ARROW_2;
-            //arrowIcons[2] = ARROW_1;
             arrowIcons[0] = 0x19;
             arrowIcons[1] = 0x4C;
             arrowIcons[2] = 0xFF;
@@ -68,22 +65,18 @@ GetNewSideType() {
             }
         }
     }
-    //for (new module = 0; module < CUBES_MAX; ++module) {
-        for (new screen = 0; screen < FACES_MAX ; ++screen) {
-            //if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_max) {
-            //    return;
-            //}
-            if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_top) {
-                getStarted_screenData[screen].sideType = topology_location:location_top;
-                SetScreenData(screen);
-                break;
-            } else if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_bottom) {
-                getStarted_screenData[screen].sideType = topology_location:location_bottom;
-                SetScreenData(screen);
-                break;
-            }
+    
+    for (new screen = 0; screen < FACES_MAX ; ++screen) {
+        if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_top) {
+            getStarted_screenData[screen].sideType = topology_location:location_top;
+            SetScreenData(screen);
+            break;
+        } else if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_bottom) {
+            getStarted_screenData[screen].sideType = topology_location:location_bottom;
+            SetScreenData(screen);
+            break;
         }
-    //}
+    }
     
     needNewSideType = 0;
 }
@@ -92,8 +85,6 @@ SendGeneralInfo(pktNumber) {
     new data[4];
 
     new flags = beginTapTutorial | (finishTapTutorial << 1) | (beginTiltTutorial << 2) | (finishTiltTutorial << 3) | (selectorTutorial << 4) | (beginShakeTutorial << 5);
-    //data[0] = PKT_GENERAL_DATA | (beginTapTutorial << 8) | (beginTiltTutorial << 16) | (applicationState << 24);
-    //data[1] = tapTutorialStage | (finishTapTutorial << 8) | (finishTiltTutorial << 16);
     data[0] = PKT_GENERAL_DATA | (flags << 8) | (previousAppState << 16) | (applicationState << 24);
     data[1] = tapTutorialStage | (shakeTutorialStage << 8) | (twistTutorialStage << 16);
     data[2] = tutorialStartTimer;
@@ -131,8 +122,6 @@ RENDER() {
                 DrawSuccessScreen(screenI);
             }
         }
-        //abi_CMD_TEXT_ITOA(checkTopology, 0, 120, 60, 25, 0, TEXT_ALIGN_CENTER, 0xFF, 0x00, 0x00, true);
-        //abi_CMD_TEXT_ITOA(abi_MTD_GetShakesCount(), 0, 120, 180, 25, 0, TEXT_ALIGN_CENTER, 0xFF, 0x00, 0x00, true);
         abi_CMD_G2D_END();
     }
 }
@@ -141,6 +130,10 @@ ONTICK() {
     currentTime = abi_GetTime();
     deltaTime = currentTime - previousTime;
     previousTime = currentTime;
+
+    if (abi_cubeN == 0) {
+        abi_checkShake();
+    }
 
     if (needNewSideType) {
         GetNewSideType();
@@ -238,7 +231,6 @@ ON_CMD_NET_RX (const pkt[]) {
             if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
                 generalDataPkt = packetNumberReceived;
                 SetApplicationState(abi_ByteN(pkt, 7));
-                //previousAppState = abi_ByteN(pkt, 6);
                 new flags = abi_ByteN(pkt, 5);
                 beginTapTutorial = flags & 0x1;
                 finishTapTutorial = (flags >> 1) & 0x1;

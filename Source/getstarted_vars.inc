@@ -21,7 +21,6 @@ const HALF_MODULE_GAP = MODULE_GAP >> 1;
 
 const SIMPLE_FONT_SIZE = 7;
 
-// Twist tutorial
 new ARROW_1 = 0;
 new ARROW_2 = 1;
 new ARROW_3 = 2;

@@ -191,13 +191,11 @@ UpdateTapTutorial(deltaTime) {
                     fulfillmentTimer += deltaTime;
                 }
                 if(abi_MTD_GetTapsCount() >= 1) {
-                    //tapTutorialStage = abi_MTD_GetTapsCount();
                     ++tapTutorialStage;
                     if (tapTutorialStage > TAPS_TO_FINISH_TUTORIAL) {
                         tapTutorialStage = TAPS_TO_FINISH_TUTORIAL;
                     }
                     fulfillmentTimer = 0;
-                    //SetDefaultMascot();
                     if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {
                         finishTapTutorial = 1;
                     }

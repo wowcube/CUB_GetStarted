@@ -145,16 +145,10 @@ DrawTwistTutorial(screen) {
                 }
             }
             if (!isMainAxisX) {
-                //abi_CMD_G2D_ADD_SPRITE(arrowIcons[0], false, posX, posY, 0xFF, 0, angle, MIRROR_BLANK);
-                //abi_CMD_G2D_ADD_SPRITE(arrowIcons[1], false, posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, 0xFF, 0, angle, MIRROR_BLANK);
-                //abi_CMD_G2D_ADD_SPRITE(arrowIcons[2], false, posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX, 0xFF, 0, angle, MIRROR_BLANK);
                 abi_CMD_G2D_ADD_SPRITE(ARROW_1, false, posX, posY, arrowIcons[0], 0, angle, MIRROR_BLANK);
                 abi_CMD_G2D_ADD_SPRITE(ARROW_1, false, posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, arrowIcons[1], 0, angle, MIRROR_BLANK);
                 abi_CMD_G2D_ADD_SPRITE(ARROW_1, false, posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX, arrowIcons[2], 0, angle, MIRROR_BLANK);
             } else {
-                //abi_CMD_G2D_ADD_SPRITE(arrowIcons[2], false, posX, posY, 0xFF, 0, angle, MIRROR_BLANK);
-                //abi_CMD_G2D_ADD_SPRITE(arrowIcons[1], false, posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, 0xFF, 0, angle, MIRROR_BLANK);
-                //abi_CMD_G2D_ADD_SPRITE(arrowIcons[0], false, posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX, 0xFF, 0, angle, MIRROR_BLANK);
                 abi_CMD_G2D_ADD_SPRITE(ARROW_1, false, posX, posY, arrowIcons[2], 0, angle, MIRROR_BLANK);
                 abi_CMD_G2D_ADD_SPRITE(ARROW_1, false, posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, arrowIcons[1], 0, angle, MIRROR_BLANK);
                 abi_CMD_G2D_ADD_SPRITE(ARROW_1, false, posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX, arrowIcons[0], 0, angle, MIRROR_BLANK);

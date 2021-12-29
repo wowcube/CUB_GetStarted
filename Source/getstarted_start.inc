@@ -8,7 +8,7 @@ const TEXT_BOX   = 4;
 const COUNTDOWN  = 5;
 
 const TUTORIAL_COUNTDOWN_TIME = 5000;
-const DISPLAY_ONE_ICON_TIME = 1250;//850;//555;
+const DISPLAY_ONE_ICON_TIME = 1250;
 
 new tutorialStartTimer = TUTORIAL_COUNTDOWN_TIME;
 
