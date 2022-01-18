@@ -21,28 +21,34 @@ const HALF_MODULE_GAP = MODULE_GAP >> 1;
 
 const SIMPLE_FONT_SIZE = 7;
 
-new ARROW_1 = 0;
-new ARROW_2 = 1;
-new ARROW_3 = 2;
 
-new ARROW_TILT      = 3;
-new BALL            = 4;
-new COLLECTED_CHECK = 5;
-new COLLECTABLE     = 6;
-new COLLECTED       = 7;
-new COMPLETE_ICON   = 8;
-new COUNT_BAR       = 9;
+new ARROW_TILT          = 0;
+new ARROW_TWIST         = 1;
+new BALL                = 2;
+new COLLECTED_CHECK     = 3;
+new COLLECTED_CHECK_RED = 4;
+new COLLECTABLE         = 5;
+new COLLECTED           = 6;
+new COMPLETE_ICON       = 7;
+new COUNT_BAR           = 8;
 
-new DIALOGUE              = 10;
-new MASCOT_MAIN_SPRITE    = 11;
-new MASCOT_SUCCESS_SPRITE = 12;
-new MASCOT_WAIT_SPRITE    = 13;
-new CIRCLE_QUARTER        = 14;
-new SELECTOR              = 15;
-new SHAKE_ICON            = 16;
+new DIALOGUE              = 9;
+new MASCOT_MAIN_SPRITE    = 10;
+new MASCOT_SUCCESS_SPRITE = 11;
+new MASCOT_WAIT_SPRITE    = 12;
+new CIRCLE_QUARTER        = 13;
+new SELECTOR              = 14;
+new SHAKE_ICON            = 15;
+new DIALOGUE_SMALL        = 16;
 new TAP_ICON              = 17;
 new TILT_ICON             = 18;
 new TWIST_ICON            = 19;
+
+new SMALL_STAR            = 20;
+new BIG_STAR              = 21;
+
+new CIRCLE_QUARTER_PUSH   = 22;
+
 
 const MASCOT_WAIT_TIME = 1000;
 new currentTime = 0;
@@ -71,7 +77,8 @@ new getStarted_screenData[FACES_MAX][.sideType, .angle] = [
 new needNewSideType = 1;
 new currentMascotSprite = 0;
 new generalDataPkt = 0;
-
+new alreadyLaunched = 0;
+new dataSaved = 0;
 
 
 const crossLineThickness = 6;

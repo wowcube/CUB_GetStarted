@@ -47,6 +47,13 @@ MascotShakeAnimation() {
     }
 }
 
+GetShakeFillColor(shakeInPercents) {
+    return (0xFF000000
+    | 0xFA + ((0xFF - 0xFA) * (100 - shakeInPercents)) / 100 << 16
+    | 0x46 + ((0xA5 - 0x46) * (100 - shakeInPercents)) / 100 << 8
+    | 0x46 + ((0x52 - 0x46) * (100 - shakeInPercents)) / 100);
+}
+
 ShakeFillBackground(angle) {
     new shakeInPercents = (shakeTutorialStage * 100) / SENSITIVITY_MENU_CHANGE_SCRIPT;
     new startX = 0;
@@ -79,7 +86,7 @@ ShakeFillBackground(angle) {
             }
         }
     }
-    abi_CMD_G2D_ADD_RECTANGLE(startX, startY, endX, endY, 0xFF68398D);
+    abi_CMD_G2D_ADD_RECTANGLE(startX, startY, endX, endY, GetShakeFillColor(shakeInPercents));
 }
 
 DrawShakeTutorial(screen) {
@@ -140,11 +147,15 @@ DrawShakeTutorial(screen) {
         }
         case TEXT_BOX_2: {
             abi_CMD_TEXT("shake the", 0, 100, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("cube to back", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            abi_CMD_TEXT("cube to go back", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
             abi_CMD_TEXT("to main menu",  0, 140, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
         }
         case MASCOT_2: {
-            abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, 75, MIRROR_BLANK);
+            if (!shakeTutorialStage) {
+                abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, 75, MIRROR_BLANK);
+                abi_CMD_G2D_ADD_SPRITE(DIALOGUE_SMALL, false, 91, 120, 0xFF, 0, 90, MIRROR_BLANK);
+                abi_CMD_TEXT("shake!", 0, 70, 130, 16, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
+            }
         }
     }
 }
@@ -161,16 +172,12 @@ UpdateShakeTutorial(deltaTime) {
 
     if (abi_cubeN == 0) {
         if (beginShakeTutorial) {
-            if (fulfillmentTimer >= FULFILLMENT_DROP_TIME) {
-                shakeTutorialStage = 0;
-                fulfillmentTimer = 0;
-            } else {
-                fulfillmentTimer += deltaTime;
+            shakeTutorialStage = abi_MTD_GetShakesCount();
+
+            if (!dataSaved) {
+                SaveData();
             }
-            if (abi_MTD_GetShakesCount() > 0) {
-                shakeTutorialStage = abi_MTD_GetShakesCount();
-                fulfillmentTimer = 0;
-            }
+
             abi_checkShake();
         }
         if (!beginShakeTutorial && (abi_MTD_GetShakesCount() > 0)) {

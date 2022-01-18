@@ -7,6 +7,13 @@ forward run(const pkt[], size, const src[]); // public Pawn function seen from C
 #include "getstarted_shakeTut.inc"
 #include "getstarted_success.inc"
 
+SaveData() {
+    new saveData [2] = [0,...];
+    saveData[0] = alreadyLaunched + 1;
+    abi_CMD_SAVE_STATE(saveData);
+    dataSaved = 1;
+}
+
 SetApplicationState(newState) {
     if (applicationState != newState) {
         if (newState == FSM:start) {
@@ -34,6 +41,15 @@ SetApplicationState(newState) {
             tiltTutSelector.screenT = tiltTutSelector.screen = FACES_MAX;
         } else if (newState == FSM:successScreen) {
             currentMascotSprite = MASCOT_SUCCESS_SPRITE;
+            
+            successAnimationEffectTimer = 0;
+            successAnimationEffectFlag = 0;
+            sucAnimEffectTimePercent = 0;
+
+            smallStarX = 120;
+            smallStarY = 120;
+            bigStarX = 120;
+            bigStarY = 120;
         }
         previousAppState = applicationState;
         applicationState = newState;
@@ -84,7 +100,11 @@ GetNewSideType() {
 SendGeneralInfo(pktNumber) {
     new data[4];
 
-    new flags = beginTapTutorial | (finishTapTutorial << 1) | (beginTiltTutorial << 2) | (finishTiltTutorial << 3) | (selectorTutorial << 4) | (beginShakeTutorial << 5);
+    new flags = beginTapTutorial
+    | (finishTiltTutorial << 3) 
+    | (selectorTutorial << 4) 
+    | (beginShakeTutorial << 5)
+    | (getstartedGreetingFlag << 6);
     data[0] = PKT_GENERAL_DATA | (flags << 8) | (previousAppState << 16) | (applicationState << 24);
     data[1] = tapTutorialStage | (shakeTutorialStage << 8) | (twistTutorialStage << 16);
     data[2] = tutorialStartTimer;
@@ -131,7 +151,7 @@ ONTICK() {
     deltaTime = currentTime - previousTime;
     previousTime = currentTime;
 
-    if (abi_cubeN == 0) {
+    if ((alreadyLaunched) && (abi_cubeN == 0)) {
         abi_checkShake();
     }
 
@@ -170,13 +190,11 @@ ONTICK() {
 }
 
 ON_INIT() {
+    abi_CMD_LOAD_STATE();
+
     previousTime = abi_GetTime();
 
-    #ifndef CUBIOS_EMULATOR
-
-    ARROW_1 = getSpriteIdByName("arrow_1.png");
-    ARROW_2 = getSpriteIdByName("arrow_2.png");
-    ARROW_3 = getSpriteIdByName("arrow_3.png");
+    ARROW_TWIST = getSpriteIdByName("arrow_twist.png");
     
     ARROW_TILT    = getSpriteIdByName("arrow_tilt.png");
     BALL          = getSpriteIdByName("ball.png");
@@ -185,6 +203,11 @@ ON_INIT() {
     COUNT_BAR     = getSpriteIdByName("count_bar.png");
 
     DIALOGUE              = getSpriteIdByName("dialogue.png");
+    DIALOGUE_SMALL        = getSpriteIdByName("speech_small.png");
+
+    COLLECTED_CHECK       = getSpriteIdByName("checked.png");
+    COLLECTED_CHECK_RED   = getSpriteIdByName("checked_red.png");
+
     MASCOT_MAIN_SPRITE    = getSpriteIdByName("mascot_main.png");
     MASCOT_SUCCESS_SPRITE = getSpriteIdByName("mascot_success.png");
     MASCOT_WAIT_SPRITE    = getSpriteIdByName("mascot_wait.png");
@@ -195,14 +218,20 @@ ON_INIT() {
     TILT_ICON             = getSpriteIdByName("tilt_icon.png");
     TWIST_ICON            = getSpriteIdByName("twist_icon.png");
 
-    #endif
+    SMALL_STAR            = getSpriteIdByName("star_small.png");
+    BIG_STAR              = getSpriteIdByName("star_big.png");
+
+    CIRCLE_QUARTER_PUSH         = getSpriteIdByName("quarter_push.png");
 
     SetApplicationState(FSM:start);
 }
 
 ON_CHECK_ROTATE() {
     needNewSideType = 1;
-    SetDefaultMascot();
+    
+    if (applicationState == FSM:twistTutorial) {
+        SetDefaultMascot();
+    }
     
     if (abi_cubeN == 0) {
         if (applicationState == FSM:twistTutorial) {
@@ -221,7 +250,11 @@ ON_CHECK_ROTATE() {
     }
 }
 
-ON_LOAD_GAME_DATA() {
+ON_LOAD_GAME_DATA(const pkt[]) {
+    if (abi_ByteN(pkt, 1) == 0) {
+        return;
+    }
+    alreadyLaunched = pkt[1];
 }
 
 ON_CMD_NET_RX (const pkt[]) {
@@ -233,11 +266,10 @@ ON_CMD_NET_RX (const pkt[]) {
                 SetApplicationState(abi_ByteN(pkt, 7));
                 new flags = abi_ByteN(pkt, 5);
                 beginTapTutorial = flags & 0x1;
-                finishTapTutorial = (flags >> 1) & 0x1;
-                beginTiltTutorial = (flags >> 2) & 0x1;
                 finishTiltTutorial = (flags >> 3) & 0x1;
                 selectorTutorial = (flags >> 4) & 0x1;
                 beginShakeTutorial = (flags >> 5) & 0x1;
+                getstartedGreetingFlag = (flags >> 6) & 0x1;
                 if (abi_ByteN(pkt, 8) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
                 }
@@ -265,6 +297,9 @@ ON_CMD_NET_RX (const pkt[]) {
             if ((selectorPkt < packetNumberReceived) || ((selectorPkt - packetNumberReceived) > (0xFFFFF >> 1))) {
                 selectorPkt = packetNumberReceived;
                 tiltTutSelector.module = abi_ByteN(pkt, 5);
+                if (tiltTutSelector.module == abi_cubeN) {
+                    selectorInAnimation = pkt[4];
+                }
                 tiltTutSelector.screen = abi_ByteN(pkt, 6);
                 tiltTutSelector.screenAngle = pkt[2];
             }
