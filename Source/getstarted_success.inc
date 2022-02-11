@@ -119,6 +119,7 @@ UpdateSuccessScreen(deltaTime) {
     if (abi_cubeN == 0) {
         if ((previousAppState == FSM:tapTutorial) && (abi_MTD_GetTapsCount() >= 2)) {
             SetApplicationState(FSM:tiltTutorial);
+            abi_CMD_PLAYSND(ACTION_SOUND, SOUND_VOLUME);
         }
     }
     if (!successAnimationEffectFlag) {

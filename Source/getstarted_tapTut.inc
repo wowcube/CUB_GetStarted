@@ -160,10 +160,18 @@ UpdateTapTutorial(deltaTime) {
 
             if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {
                 SetApplicationState(FSM:successScreen);
+                abi_CMD_PLAYSND(TAP_STAGE_SUCCESS_SOUND, SOUND_VOLUME);
             }
 
             if(abi_MTD_GetTapsCount() >= 1) {
                 ++tapTutorialStage;
+                if (tapTutorialStage >= 5) {
+                    abi_CMD_PLAYSND(TAPS_5_6_SOUND, SOUND_VOLUME);
+                } else if (tapTutorialStage >= 3) {
+                    abi_CMD_PLAYSND(TAPS_3_4_SOUND, SOUND_VOLUME);
+                } else if (tapTutorialStage >= 0) {
+                    abi_CMD_PLAYSND(TAPS_1_2_SOUND, SOUND_VOLUME);
+                }
                 mascotTapReactAnimFlag = 1;
                 fulfillmentTimer = 0;
             }

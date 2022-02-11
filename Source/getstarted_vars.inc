@@ -49,6 +49,21 @@ new BIG_STAR              = 21;
 
 new CIRCLE_QUARTER_PUSH   = 22;
 
+new ACTION_SOUND = 0;
+new GOOD_SOUND = 1;
+new EXCELLENT_1_SOUND = 2;
+new EXCELLENT_2_SOUND = 3;
+new TAPS_1_2_SOUND = 4;
+new TAPS_3_4_SOUND = 5;
+new TAPS_5_6_SOUND = 6;
+new TAP_STAGE_SUCCESS_SOUND = 7;
+new PLUS_1_SHAPE_COLLECT_1_SOUND = 8;
+new PLUS_1_SHAPE_COLLECT_2_SOUND = 9;
+new PLUS_1_SHAPE_COLLECT_3_SOUND = 10;
+new SELECTOR_MENU_SOUND = 11;
+const SOUND_VOLUME = 255;
+
+new tiltTutCollectableSounds{FACES_MAX};
 
 const MASCOT_WAIT_TIME = 1000;
 new currentTime = 0;

@@ -105,8 +105,13 @@ SendGeneralInfo(pktNumber) {
     | (selectorTutorial << 4) 
     | (beginShakeTutorial << 5)
     | (getstartedGreetingFlag << 6);
+
+    new randomSoundOrder = 0;
+    for (new soundI = 0; soundI < FACES_MAX; ++soundI) {
+        randomSoundOrder |= (tiltTutCollectableSounds{soundI} << (soundI * 2));
+    }
     data[0] = PKT_GENERAL_DATA | (flags << 8) | (previousAppState << 16) | (applicationState << 24);
-    data[1] = tapTutorialStage | (shakeTutorialStage << 8) | (twistTutorialStage << 16);
+    data[1] = tapTutorialStage | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
     data[3] = pktNumber;
 
@@ -223,6 +228,36 @@ ON_INIT() {
 
     CIRCLE_QUARTER_PUSH         = getSpriteIdByName("quarter_push.png");
 
+    // Sounds
+    ACTION_SOUND      = getSoundIdByName("action.wav");
+    GOOD_SOUND        = getSoundIdByName("good.wav");
+    EXCELLENT_1_SOUND = getSoundIdByName("excellent_1.wav");
+    EXCELLENT_2_SOUND = getSoundIdByName("excellent_2.wav");
+    
+    SELECTOR_MENU_SOUND = getSoundIdByName("selector_menu.wav");
+    
+    TAPS_1_2_SOUND = getSoundIdByName("taps_1-2.wav");
+    TAPS_3_4_SOUND = getSoundIdByName("taps_3-4.wav");
+    TAPS_5_6_SOUND = getSoundIdByName("taps_5-6.wav");
+    TAP_STAGE_SUCCESS_SOUND = getSoundIdByName("taps_success.wav");
+
+    PLUS_1_SHAPE_COLLECT_1_SOUND = getSoundIdByName("collect_1.wav");
+    PLUS_1_SHAPE_COLLECT_2_SOUND = getSoundIdByName("collect_2.wav");
+    PLUS_1_SHAPE_COLLECT_3_SOUND = getSoundIdByName("collect_3.wav");
+
+    tiltTutCollectableSounds{0} = PLUS_1_SHAPE_COLLECT_1_SOUND;
+    tiltTutCollectableSounds{1} = PLUS_1_SHAPE_COLLECT_2_SOUND;
+    tiltTutCollectableSounds{2} = PLUS_1_SHAPE_COLLECT_3_SOUND;
+
+    if (abi_cubeN == 0) {
+        for (new soundI = 0; soundI < FACES_MAX; ++soundI) {
+            new j = Random (0, FACES_MAX - 1);
+            new temp = tiltTutCollectableSounds{j};
+            tiltTutCollectableSounds{j} = tiltTutCollectableSounds{soundI};
+            tiltTutCollectableSounds{soundI} = temp;
+        }
+    }
+
     SetApplicationState(FSM:start);
 }
 
@@ -236,8 +271,12 @@ ON_CHECK_ROTATE() {
     if (abi_cubeN == 0) {
         if (applicationState == FSM:twistTutorial) {
             ++twistTutorialStage;
+            if (twistTutorialStage == 1) {
+                abi_CMD_PLAYSND(GOOD_SOUND, SOUND_VOLUME);
+            }
             if (twistTutorialStage >= MAX_TWIST_TUTORIAL_STAGES) {
                 SetApplicationState(FSM:successScreen);
+                abi_CMD_PLAYSND(EXCELLENT_1_SOUND, SOUND_VOLUME);
             }
         } else if ((applicationState == FSM:successScreen) && (previousAppState == FSM:twistTutorial)) {
             SetApplicationState(FSM:tapTutorial);
@@ -272,6 +311,9 @@ ON_CMD_NET_RX (const pkt[]) {
                 getstartedGreetingFlag = (flags >> 6) & 0x1;
                 if (abi_ByteN(pkt, 8) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
+                }
+                for (new soundI = 0; soundI < FACES_MAX; ++soundI) {
+                    tiltTutCollectableSounds{soundI} = (abi_ByteN(pkt, 11) >> (soundI * 2)) & 0x3;
                 }
                 tapTutorialStage = abi_ByteN(pkt, 8);
                 shakeTutorialStage = abi_ByteN(pkt, 9);

@@ -106,6 +106,7 @@ UpdateStartCountdown(deltaTime) {
             }
             if (tutorialStartTimer <= 0) {
                 SetApplicationState(FSM:twistTutorial);
+                abi_CMD_PLAYSND(ACTION_SOUND, SOUND_VOLUME);
             }
         }
         if (getstartedGreetingTimer <= 0) {

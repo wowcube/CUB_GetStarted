@@ -280,6 +280,7 @@ BallLogic() {
                         if (distance < BALL_SQUARE_RADIUS) {
                             collectables{item} = 0;
                             collectedPlusOneEffect = 1;
+                            abi_CMD_PLAYSND(tiltTutCollectableSounds{item}, SOUND_VOLUME);
                         }
                     }
                 }
@@ -472,6 +473,7 @@ DrawTiltTutorial(screen) {
                 abi_CMD_G2D_ADD_SPRITE(SELECTOR, false, -90 + selectorXOffset, -90 + selectorYOffset, 0xFF, 0, 0, MIRROR_BLANK);
                 if ((selectorXOffset > 210) || (selectorYOffset > 210)) {
                     selectorOutAnimation = selectorInAnimation = selectorYOffset = selectorXOffset = 0;
+                    abi_CMD_PLAYSND(SELECTOR_MENU_SOUND, SOUND_VOLUME);
                 }
             } else if ((tiltTutSelector.module == abi_cubeN) && (tiltTutSelector.screen == screen)) {
                 abi_CMD_G2D_ADD_SPRITE(SELECTOR, false, 120 + tiltTutSelector.accelX, 120 + tiltTutSelector.accelY, 0xFF, 0, 0, MIRROR_BLANK);
@@ -517,8 +519,10 @@ UpdateTiltTutorial(deltaTime) {
             if (selectorTutorial) {
                 if (tiltTutSelector.screenAngle == 270) {
                     SetApplicationState(FSM:shakeTutorial);
+                    abi_CMD_PLAYSND(EXCELLENT_2_SOUND, SOUND_VOLUME);
                 }
             } else if (finishTiltTutorial) {
+                abi_CMD_PLAYSND(ACTION_SOUND, SOUND_VOLUME);
                 finishTiltTutorial = 0;
                 selectorTutorial = 1;
             }
