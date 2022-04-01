@@ -208,14 +208,14 @@ ON_INIT() {
     COUNT_BAR     = getSpriteIdByName("count_bar.png");
 
     DIALOGUE              = getSpriteIdByName("dialogue.png");
-    DIALOGUE_SMALL        = getSpriteIdByName("speech_small.png");
+    DIALOGUE_SMALL        = getSpriteIdByName("speechSmall.png");
 
     COLLECTED_CHECK       = getSpriteIdByName("checked.png");
     COLLECTED_CHECK_RED   = getSpriteIdByName("checked_red.png");
 
-    MASCOT_MAIN_SPRITE    = getSpriteIdByName("mascot_main.png");
-    MASCOT_SUCCESS_SPRITE = getSpriteIdByName("mascot_success.png");
-    MASCOT_WAIT_SPRITE    = getSpriteIdByName("mascot_wait.png");
+    MASCOT_MAIN_SPRITE    = getSpriteIdByName("mas_main.png");
+    MASCOT_SUCCESS_SPRITE = getSpriteIdByName("mas_success.png");
+    MASCOT_WAIT_SPRITE    = getSpriteIdByName("mas_wait.png");
     CIRCLE_QUARTER        = getSpriteIdByName("quarter.png");
     SELECTOR              = getSpriteIdByName("selector.png");
     SHAKE_ICON            = getSpriteIdByName("shake_icon.png");
@@ -226,7 +226,7 @@ ON_INIT() {
     SMALL_STAR            = getSpriteIdByName("star_small.png");
     BIG_STAR              = getSpriteIdByName("star_big.png");
 
-    CIRCLE_QUARTER_PUSH         = getSpriteIdByName("quarter_push.png");
+    CIRCLE_QUARTER_PUSH         = getSpriteIdByName("quarterPush.png");
 
     // Sounds
     ACTION_SOUND      = getSoundIdByName("action.wav");
@@ -234,12 +234,12 @@ ON_INIT() {
     EXCELLENT_1_SOUND = getSoundIdByName("excellent_1.wav");
     EXCELLENT_2_SOUND = getSoundIdByName("excellent_2.wav");
     
-    SELECTOR_MENU_SOUND = getSoundIdByName("selector_menu.wav");
+    SELECTOR_MENU_SOUND = getSoundIdByName("selec_menu.wav");
     
     TAPS_1_2_SOUND = getSoundIdByName("taps_1-2.wav");
     TAPS_3_4_SOUND = getSoundIdByName("taps_3-4.wav");
     TAPS_5_6_SOUND = getSoundIdByName("taps_5-6.wav");
-    TAP_STAGE_SUCCESS_SOUND = getSoundIdByName("taps_success.wav");
+    TAP_STAGE_SUCCESS_SOUND = getSoundIdByName("tapsSuccess.wav");
 
     PLUS_1_SHAPE_COLLECT_1_SOUND = getSoundIdByName("collect_1.wav");
     PLUS_1_SHAPE_COLLECT_2_SOUND = getSoundIdByName("collect_2.wav");
