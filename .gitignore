@@ -1,8 +1,2 @@
-# Build artefacts
-/build/
-
 # Pawn
-source/*.amx
-
-# quality of life
-*.bat
+binary/*

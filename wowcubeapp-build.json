@@ -1,0 +1,10 @@
+{
+	"name": "Get_Started",
+	"version": "0.4.1",
+	"sdkVersion": "0.2",
+	"appIcon": "assets/icon.png",
+	"sourceFile": "src/getstarted.pwn",
+	"scriptFile": "binary/getstarted.amx",
+	"imageAssetsDir": "assets/images",
+	"soundAssetsDir": "assets/sounds"
+}
