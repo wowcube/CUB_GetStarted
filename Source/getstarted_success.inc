@@ -45,7 +45,7 @@ SuccessStarsPercents() {
 
 DrawSuccessScreen(screen) {
     new angle = getStarted_screenData[screen].angle;
-    new screenLayout = getstarted_successLayout{getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90};
+    new screenLayout = getstarted_successLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
     abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
@@ -97,8 +97,8 @@ DrawSuccessScreen(screen) {
             new posY_1 = 105;
             new posX_2 = 120;
             new posY_2 = 135;
-            if ((getStarted_screenData[screen].sideType == topology_location:location_bottom) ||
-                (getStarted_screenData[screen].sideType == topology_location:location_top)) {
+            if ((getStarted_screenData[screen].sideType == TOPOLOGY_location:LOCATION_DOWN) ||
+                (getStarted_screenData[screen].sideType == TOPOLOGY_location:LOCATION_UP)) {
                 InitCrossAnimationVars(0xFF9898, 0xFF5252);
                 DrawCrossAnimation();
             }

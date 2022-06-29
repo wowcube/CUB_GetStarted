@@ -31,7 +31,7 @@ new getstartedGreetingTimer = GREETING_TIME;
 
 DrawStartCountdown(screen) {
     new angle = getStarted_screenData[screen].angle;
-    new screenLayout = getstarted_startLayout{getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90};
+    new screenLayout = getstarted_startLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
     abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
@@ -99,9 +99,8 @@ UpdateStartCountdown(deltaTime) {
         if (getstartedGreetingFlag) {
             getstartedGreetingTimer -= deltaTime;
         } else {
-            if ((abi_leftCubeN(abi_cubeN, 0) < CUBES_MAX) 
-            && (abi_topCubeN(abi_cubeN, 0) < CUBES_MAX) 
-            && (abi_topCubeN(abi_cubeN, abi_rightFaceN(abi_cubeN, 0)) < CUBES_MAX)) {
+            neighbor = TOPOLOGY_getOppositeFacelet(SetFacelet(abi_cubeN, 0));
+            if (neighbor.connected) {
                 tutorialStartTimer -= deltaTime;
             }
             if (tutorialStartTimer <= 0) {

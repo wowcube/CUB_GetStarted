@@ -29,16 +29,17 @@ SetApplicationState(newState) {
             arrowIcons[2] = 0xFF;
         } else if (newState == FSM:tapTutorial) {
             tapTutorialStage = 0;
-            beginTapTutorial = 0;
+            beginTapTutorial = 1;
+            fillTapTutorial  = 0;
         } else if (newState == FSM:tiltTutorial) {
             tiltTutBall.angle = 45;
             tiltTutBall.screenAngle = 180;
-            tiltTutBall.moduleT = tiltTutBall.module = CUBES_MAX;
-            tiltTutBall.screenT = tiltTutBall.screen = FACES_MAX;
+            tiltTutBall.moduleT = tiltTutBall.module = MODULES_MAX;
+            tiltTutBall.screenT = tiltTutBall.screen = SCREENS_MAX;
 
             tiltTutSelector.screenAngle = 90;
-            tiltTutSelector.moduleT = tiltTutSelector.module = CUBES_MAX;
-            tiltTutSelector.screenT = tiltTutSelector.screen = FACES_MAX;
+            tiltTutSelector.moduleT = tiltTutSelector.module = MODULES_MAX;
+            tiltTutSelector.screenT = tiltTutSelector.screen = SCREENS_MAX;
         } else if (newState == FSM:successScreen) {
             currentMascotSprite = MASCOT_SUCCESS_SPRITE;
             
@@ -57,43 +58,59 @@ SetApplicationState(newState) {
     }
 }
 
+SetScreenPlaneAngle(screen, sideType, position) {
+    if (sideType >= TOPOLOGY_location:LOCATION_MAX) {
+        sideType = TOPOLOGY_location:LOCATION_UP;
+    }
+    getStarted_screenData[screen].sideType = sideType;
+    getStarted_screenData[screen].angle = position * 90;
+}
+
 SetScreenData(screen) {
-    getStarted_screenData[screen].angle = TopologyGetAngle(abi_cubeN, screen, topology_projection:projection_splash);
+    getStarted_screenData[screen].angle = TOPOLOGY_getAngle(SetFacelet(abi_cubeN, screen), TOPOLOGY_orientation:ORIENTATION_SPLASH);
             
-    new neighScreen = abi_rightFaceN(abi_cubeN, screen);
-    getStarted_screenData[neighScreen].sideType = TopologyGetPlaneProject(abi_cubeN, neighScreen);
-    getStarted_screenData[neighScreen].angle = TopologyGetAngle(abi_cubeN, neighScreen, topology_projection:projection_splash);
+    new neighScreen = GetRightScreen(screen);
+    getStarted_screenData[neighScreen].sideType = TOPOLOGY_getLocation(SetFacelet(abi_cubeN, neighScreen));
+    getStarted_screenData[neighScreen].angle = TOPOLOGY_getAngle(SetFacelet(abi_cubeN, neighScreen), TOPOLOGY_orientation:ORIENTATION_SPLASH);
     
-    neighScreen = abi_bottomFaceN(abi_cubeN, screen);
-    getStarted_screenData[neighScreen].sideType = TopologyGetPlaneProject(abi_cubeN, neighScreen);
-    getStarted_screenData[neighScreen].angle = TopologyGetAngle(abi_cubeN, neighScreen, topology_projection:projection_splash);
+    neighScreen = GetBottomScreen(screen);
+    getStarted_screenData[neighScreen].sideType = TOPOLOGY_getLocation(SetFacelet(abi_cubeN, neighScreen));
+    getStarted_screenData[neighScreen].angle = TOPOLOGY_getAngle(SetFacelet(abi_cubeN, neighScreen), TOPOLOGY_orientation:ORIENTATION_SPLASH);
 }
 
 GetNewSideType() {
-    for (new side = 0; side < PLANES_MAX; ++side) {
-        new mySideType = TopologyGetPlaneProject(topologyByPlane[side][0].module, topologyByPlane[side][0].screen);
-        for (new screen = 1; screen < FACES_ON_PLANE_MAX; ++screen) {
-            new neighbourSideType = TopologyGetPlaneProject(topologyByPlane[side][screen].module, topologyByPlane[side][screen].screen);
+    for (new side = 0; side < TOPOLOGY_FACES_MAX; ++side) {
+        neighbor = TOPOLOGY_getFacelet(SetPlace(side, 0));
+        if (!neighbor.connected) {
+            return;
+        }
+        new mySideType = TOPOLOGY_getLocation(SetFacelet(neighbor.module, neighbor.screen));
+        for (new screen = 1; screen < TOPOLOGY_POSITIONS_MAX; ++screen) {
+            neighbor = TOPOLOGY_getFacelet(SetPlace(side, screen));
+            if (!neighbor.connected) {
+                return;
+            }
+            new neighbourSideType = TOPOLOGY_getLocation(SetFacelet(neighbor.module, neighbor.screen));
             if ((mySideType != neighbourSideType)
-            || (mySideType == topology_location:location_max)
-            || (neighbourSideType == topology_location:location_max)) {
+            || (mySideType == TOPOLOGY_location:LOCATION_MAX)
+            || (neighbourSideType == TOPOLOGY_location:LOCATION_MAX)) {
                 return;
             }
         }
     }
     
-    for (new screen = 0; screen < FACES_MAX ; ++screen) {
-        if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_top) {
-            getStarted_screenData[screen].sideType = topology_location:location_top;
+    for (new screen = 0; screen < SCREENS_MAX ; ++screen) {
+        if (TOPOLOGY_getLocation(SetFacelet(abi_cubeN, screen)) == TOPOLOGY_location:LOCATION_UP) {
+            getStarted_screenData[screen].sideType = TOPOLOGY_location:LOCATION_UP;
             SetScreenData(screen);
             break;
-        } else if (TopologyGetPlaneProject(abi_cubeN, screen) == topology_location:location_bottom) {
-            getStarted_screenData[screen].sideType = topology_location:location_bottom;
+        } else if (TOPOLOGY_getLocation(SetFacelet(abi_cubeN, screen)) == TOPOLOGY_location:LOCATION_DOWN) {
+            getStarted_screenData[screen].sideType = TOPOLOGY_location:LOCATION_DOWN;
             SetScreenData(screen);
             break;
         }
     }
-    
+
     needNewSideType = 0;
 }
 
@@ -104,10 +121,11 @@ SendGeneralInfo(pktNumber) {
     | (finishTiltTutorial << 3) 
     | (selectorTutorial << 4) 
     | (beginShakeTutorial << 5)
-    | (getstartedGreetingFlag << 6);
+    | (getstartedGreetingFlag << 6)
+    | (fillTapTutorial << 7);
 
     new randomSoundOrder = 0;
-    for (new soundI = 0; soundI < FACES_MAX; ++soundI) {
+    for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
         randomSoundOrder |= (tiltTutCollectableSounds{soundI} << (soundI * 2));
     }
     data[0] = PKT_GENERAL_DATA | (flags << 8) | (previousAppState << 16) | (applicationState << 24);
@@ -124,7 +142,7 @@ ON_PHYSICS_TICK() {
 }
 
 RENDER() {
-    for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
+    for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
         abi_CMD_G2D_BEGIN_DISPLAY(screenI, true);
         
         switch (applicationState) {
@@ -226,7 +244,21 @@ ON_INIT() {
     SMALL_STAR            = getSpriteIdByName("star_small.png");
     BIG_STAR              = getSpriteIdByName("star_big.png");
 
-    CIRCLE_QUARTER_PUSH         = getSpriteIdByName("quarterPush.png");
+    CIRCLE_QUARTER_PUSH   = getSpriteIdByName("quarterPush.png");
+
+    FINGER_SPRITE         = getSpriteIdByName("finger.png");
+    WRONG_TAP_ICON        = getSpriteIdByName("wrongTap.png");
+    WRONG_TAP_RIM         = getSpriteIdByName("wrongRim.png");
+    RIGHT_TAP_ICON        = getSpriteIdByName("rightTap.png");
+    RIGHT_TAP_RIM_1       = getSpriteIdByName("rightRim1.png");
+    RIGHT_TAP_RIM_2       = getSpriteIdByName("rightRim2.png");
+    RIGHT_TAP_RIM_3       = getSpriteIdByName("rightRim3.png");
+    
+    SPEECH_BUBBLE_TAP_SPRITE = getSpriteIdByName("speechTap.png");
+
+    MASCOT_MAIN_EMPTY_SPRITE       = getSpriteIdByName("masMainE.png");
+    MASCOT_MAIN_EYES_NORMAL_SPRITE = getSpriteIdByName("masEyesN.png");
+    MASCOT_MAIN_MOUNTH_O_SPRITE    = getSpriteIdByName("masMouthO.png");
 
     // Sounds
     ACTION_SOUND      = getSoundIdByName("action.wav");
@@ -250,8 +282,8 @@ ON_INIT() {
     tiltTutCollectableSounds{2} = PLUS_1_SHAPE_COLLECT_3_SOUND;
 
     if (abi_cubeN == 0) {
-        for (new soundI = 0; soundI < FACES_MAX; ++soundI) {
-            new j = Random (0, FACES_MAX - 1);
+        for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
+            new j = Random (0, SCREENS_MAX - 1);
             new temp = tiltTutCollectableSounds{j};
             tiltTutCollectableSounds{j} = tiltTutCollectableSounds{soundI};
             tiltTutCollectableSounds{soundI} = temp;
@@ -261,7 +293,7 @@ ON_INIT() {
     SetApplicationState(FSM:start);
 }
 
-ON_CHECK_ROTATE() {
+public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
     needNewSideType = 1;
     
     if (applicationState == FSM:twistTutorial) {
@@ -284,8 +316,8 @@ ON_CHECK_ROTATE() {
     }
 
     if (applicationState == FSM:tiltTutorial) {
-        tiltTutBall.module = CUBES_MAX;
-        tiltTutSelector.module = CUBES_MAX;
+        tiltTutBall.module = MODULES_MAX;
+        tiltTutSelector.module = MODULES_MAX;
     }
 }
 
@@ -309,10 +341,11 @@ ON_CMD_NET_RX (const pkt[]) {
                 selectorTutorial = (flags >> 4) & 0x1;
                 beginShakeTutorial = (flags >> 5) & 0x1;
                 getstartedGreetingFlag = (flags >> 6) & 0x1;
+                fillTapTutorial = (flags >> 7) & 0x1;
                 if (abi_ByteN(pkt, 8) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
                 }
-                for (new soundI = 0; soundI < FACES_MAX; ++soundI) {
+                for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
                     tiltTutCollectableSounds{soundI} = (abi_ByteN(pkt, 11) >> (soundI * 2)) & 0x3;
                 }
                 tapTutorialStage = abi_ByteN(pkt, 8);
@@ -329,7 +362,7 @@ ON_CMD_NET_RX (const pkt[]) {
                 tiltTutBall.screen = abi_ByteN(pkt, 6);
                 tiltTutBall.angle = pkt[2];
                 tiltTutBall.screenAngle = pkt[3];
-                for (new item = 0; item < FACES_MAX; ++item) {
+                for (new item = 0; item < SCREENS_MAX; ++item) {
                     collectables{item} = (abi_ByteN(pkt, 7) >> item) & 0x1;
                 }
             }
@@ -347,4 +380,5 @@ ON_CMD_NET_RX (const pkt[]) {
             }
         }
     }
+
 }

@@ -37,6 +37,8 @@ new mascotTwistAnimTimer = 0;
 new mascotTwistAngle = 270;
 new mascotTwistAnimFlag = 1;
 
+new mascotBakedNormalSprite = 1;
+
 MascotTwistAnimUpdate(angle) {
     if (((mascotTwistAngle <= (angle + 90)) && (mascotTwistAngle >= angle))
      || ((mascotTwistAngle >= (angle - 90)) && (mascotTwistAngle <= angle))) {
@@ -54,8 +56,8 @@ DrawTwistTutorial(screen) {
     new angle = getStarted_screenData[screen].angle;
     new currentStage = twistTutorialStage % 2;
     new screenLayout = (currentStage) ? 
-                       (getstarted_twistTutLayout_Y{getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90}) : 
-                       (getstarted_twistTutLayout_X{getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90});
+                       (getstarted_twistTutLayout_Y{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90}) : 
+                       (getstarted_twistTutLayout_X{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
     abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {

@@ -49,8 +49,8 @@ new tiltTutSelector[GS_SELECTOR_DATA];
 
 new finishTiltTutorial = 0;
 new selectorTutorial = 0;
-new collectables{FACES_MAX} = {1, 1, 1};
-new collectablesAngles[FACES_MAX] = [0, 90, 270];
+new collectables{SCREENS_MAX} = {1, 1, 1};
+new collectablesAngles[SCREENS_MAX] = [0, 90, 270];
 
 new ballPkt = 0;
 new selectorPkt = 0;
@@ -116,7 +116,7 @@ MascotTiltAnimation() {
 
 CheckCollectables() {
     new alreadyCollected;
-    for (new item = 0; item < FACES_MAX; ++item) {
+    for (new item = 0; item < SCREENS_MAX; ++item) {
         alreadyCollected |= collectables{item} << item;
     }
     return alreadyCollected;
@@ -168,9 +168,9 @@ FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
 }
 
 SelectorLogic() {
-    if (tiltTutSelector.module >= CUBES_MAX) {
-        for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
-            if (getStarted_screenData[screenI].sideType == topology_location:location_top) {
+    if (tiltTutSelector.module >= MODULES_MAX) {
+        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
+            if (getStarted_screenData[screenI].sideType == TOPOLOGY_location:LOCATION_UP) {
                 if (getStarted_screenData[screenI].angle == tiltTutSelector.screenAngle) {
                     tiltTutSelector.module = abi_cubeN;
                     tiltTutSelector.screen = screenI;
@@ -181,7 +181,7 @@ SelectorLogic() {
     }
 
     if (tiltTutSelector.module == abi_cubeN) {
-        for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
+        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
             if (tiltTutSelector.screen == screenI) {
                 tiltTutSelector.moduleT = abi_cubeN;
                 tiltTutSelector.screenT = screenI;
@@ -201,17 +201,19 @@ SelectorLogic() {
                 
                 tiltTutSelector.screenAngle = getStarted_screenData[screenI].angle;
                 
-                if (accelX < -25) {
-                    if (abi_leftCubeN(abi_cubeN, screenI) < CUBES_MAX) {
-                        tiltTutSelector.module = abi_leftCubeN(abi_cubeN, screenI);
-                        tiltTutSelector.screen = abi_leftFaceN(abi_cubeN, screenI);
+                if (accelX < -35) {
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(abi_cubeN, screenI), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
+                    if (neighbor.connected) {
+                        tiltTutSelector.module = neighbor.module;
+                        tiltTutSelector.screen = neighbor.screen;
                         tiltTutSelector.screenAngle = (getStarted_screenData[screenI].angle - 90) % 360;
                         selectorOutAnimation = 1;
                     }
-                } else if (accelY < -25) {
-                    if (abi_topCubeN(abi_cubeN, screenI) < CUBES_MAX) {
-                        tiltTutSelector.module = abi_topCubeN(abi_cubeN, screenI);
-                        tiltTutSelector.screen = abi_topFaceN(abi_cubeN, screenI);
+                } else if (accelY < -35) {
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(abi_cubeN, screenI), TOPOLOGY_neighbor:NEIGHBOR_TOP);
+                    if (neighbor.connected) {
+                        tiltTutSelector.module = neighbor.module;
+                        tiltTutSelector.screen = neighbor.screen;
                         tiltTutSelector.screenAngle = (getStarted_screenData[screenI].angle + 90) % 360;
                         selectorOutAnimation = 2;
                     }
@@ -229,9 +231,9 @@ SelectorLogic() {
 }
 
 BallLogic() {
-    if (tiltTutBall.module >= CUBES_MAX) {
-        for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
-            if (getStarted_screenData[screenI].sideType == topology_location:location_top) {
+    if (tiltTutBall.module >= MODULES_MAX) {
+        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
+            if (getStarted_screenData[screenI].sideType == TOPOLOGY_location:LOCATION_UP) {
                 if (getStarted_screenData[screenI].angle == tiltTutBall.screenAngle) {
                     tiltTutBall.module = abi_cubeN;
                     tiltTutBall.screen = screenI;
@@ -241,20 +243,20 @@ BallLogic() {
         }
     }
 
-    if (tiltTutBall.module >= CUBES_MAX) {
+    if (tiltTutBall.module >= MODULES_MAX) {
         return;
     }
 
     new allCollected = 0;
-    for (new item = 0; item < FACES_MAX; ++item) {
+    for (new item = 0; item < SCREENS_MAX; ++item) {
         allCollected += (collectables{item} == 0);
     }
-    if (allCollected == FACES_MAX) {
+    if (allCollected == SCREENS_MAX) {
         finishTiltTutorial = 1;
     }
 
     if (tiltTutBall.module == abi_cubeN) {
-        for (new screenI = 0; screenI < FACES_MAX; ++screenI) {
+        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
             if (tiltTutBall.screen == screenI) {
                 tiltTutBall.moduleT = abi_cubeN;
                 tiltTutBall.screenT = screenI;
@@ -274,7 +276,7 @@ BallLogic() {
 
                 tiltTutBall.screenAngle = getStarted_screenData[tiltTutBall.screen].angle;
 
-                for (new item = 0; item < FACES_MAX; ++item) {
+                for (new item = 0; item < SCREENS_MAX; ++item) {
                     if (collectables{item} && (collectablesAngles[item] == tiltTutBall.screenAngle)) {
                         new distance = CheapDistance(75 - tiltTutBall.posX, 75 - tiltTutBall.posY);
                         if (distance < BALL_SQUARE_RADIUS) {
@@ -286,17 +288,19 @@ BallLogic() {
                 }
 
                 if (tiltTutBall.posX < -HALF_MODULE_GAP) {
-                    if (abi_leftCubeN(abi_cubeN, screenI) < CUBES_MAX) {
-                        tiltTutBall.module = abi_leftCubeN(abi_cubeN, screenI);
-                        tiltTutBall.screen = abi_leftFaceN(abi_cubeN, screenI);
-                        tiltTutBall.angle = 355;
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(abi_cubeN, screenI), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
+                    if (neighbor.connected) {
+                        tiltTutBall.module = neighbor.module;
+                        tiltTutBall.screen = neighbor.screen;
+                        tiltTutBall.angle = 352;
                         tiltTutBall.screenAngle = (getStarted_screenData[tiltTutBall.screen].angle - 90) % 360;
                     }
                 } else if (tiltTutBall.posY < -HALF_MODULE_GAP) {
-                    if (abi_topCubeN(abi_cubeN, screenI) < CUBES_MAX) {
-                        tiltTutBall.module = abi_topCubeN(abi_cubeN, screenI);
-                        tiltTutBall.screen = abi_topFaceN(abi_cubeN, screenI);
-                        tiltTutBall.angle = 95;
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(abi_cubeN, screenI), TOPOLOGY_neighbor:NEIGHBOR_TOP);
+                    if (neighbor.connected) {
+                        tiltTutBall.module = neighbor.module;
+                        tiltTutBall.screen = neighbor.screen;
+                        tiltTutBall.angle = 98;
                         tiltTutBall.screenAngle = (getStarted_screenData[tiltTutBall.screen].angle + 90) % 360;
                     }
                 }
@@ -314,7 +318,7 @@ BallLogic() {
 
 DrawTiltTutorial(screen) {
     new angle = getStarted_screenData[screen].angle;
-    new layoutElement = getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90;
+    new layoutElement = getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90;
     new screenLayout = getstarted_tiltTutCollect{layoutElement};
     if (finishTiltTutorial) {
         screenLayout = getstarted_tiltTutFinished{layoutElement};
@@ -361,7 +365,7 @@ DrawTiltTutorial(screen) {
                 abi_CMD_G2D_ADD_SPRITE((collectables{1}) ? (COLLECTABLE) : (COLLECTED), false, 75, 75, 0xFF, 0, 0, MIRROR_BLANK);
             } else if (angle == 180) {
                 abi_CMD_G2D_ADD_SPRITE(COUNT_BAR, false, 176, 208, 0xFF, 0, angle, MIRROR_BLANK);
-                for (new item = 0; item < FACES_MAX; ++item) {
+                for (new item = 0; item < SCREENS_MAX; ++item) {
                     if (!collectables{item}) {
                         abi_CMD_G2D_ADD_SPRITE(COLLECTED_CHECK, false, 200 - (24 * item), 208, 0xFF, 0, angle, MIRROR_BLANK);
                     }
@@ -396,7 +400,7 @@ DrawTiltTutorial(screen) {
                 abi_CMD_G2D_ADD_SPRITE(MASCOT_SUCCESS_SPRITE, false, -50, 205, 0xFF, 0, 80, MIRROR_BLANK);
             } else if (angle == 180) {
                 abi_CMD_G2D_ADD_SPRITE(COUNT_BAR, false, 176, 208, 0xFF, 0, angle, MIRROR_BLANK);
-                for (new item = 0; item < FACES_MAX; ++item) {
+                for (new item = 0; item < SCREENS_MAX; ++item) {
                     abi_CMD_G2D_ADD_SPRITE(COLLECTED_CHECK_RED, false, 200 - (24 * item), 208, 0xFF, 0, angle, MIRROR_BLANK);
                 }
             }

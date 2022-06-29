@@ -4,7 +4,7 @@
 
 #define CROSS_ANIM_DATA .posX_b_1, .posY_b_1, .posX_e_1, .posY_e_1, .posX_b_2, .posY_b_2, .posX_e_2, .posY_e_2
 
-#include "physics.inc"
+#include "math.inc"
 #include "run.inc"
 
 const SCREEN_WIDTH = 240;
@@ -49,6 +49,20 @@ new BIG_STAR              = 21;
 
 new CIRCLE_QUARTER_PUSH   = 22;
 
+new FINGER_SPRITE         = 23;
+new WRONG_TAP_ICON        = 24;
+new WRONG_TAP_RIM         = 26;
+new RIGHT_TAP_ICON        = 25;
+new RIGHT_TAP_RIM_1       = 26;
+new RIGHT_TAP_RIM_2       = 26;
+new RIGHT_TAP_RIM_3       = 26;
+
+new SPEECH_BUBBLE_TAP_SPRITE = 26;
+
+new MASCOT_MAIN_EMPTY_SPRITE       = 27;
+new MASCOT_MAIN_EYES_NORMAL_SPRITE = 27;
+new MASCOT_MAIN_MOUNTH_O_SPRITE    = 27;
+
 new ACTION_SOUND = 0;
 new GOOD_SOUND = 1;
 new EXCELLENT_1_SOUND = 2;
@@ -63,7 +77,7 @@ new PLUS_1_SHAPE_COLLECT_3_SOUND = 10;
 new SELECTOR_MENU_SOUND = 11;
 const SOUND_VOLUME = 255;
 
-new tiltTutCollectableSounds{FACES_MAX};
+new tiltTutCollectableSounds{SCREENS_MAX};
 
 const MASCOT_WAIT_TIME = 1000;
 new currentTime = 0;
@@ -83,10 +97,10 @@ const FSM: {
 new FSM:applicationState = 0;
 new FSM:previousAppState = 0;
 
-new getStarted_screenData[FACES_MAX][.sideType, .angle] = [
-    [topology_location:location_top, 180],
-    [topology_location:location_top, 180],
-    [topology_location:location_top, 180],
+new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
+    [TOPOLOGY_location:LOCATION_UP, 180],
+    [TOPOLOGY_location:LOCATION_UP, 180],
+    [TOPOLOGY_location:LOCATION_UP, 180],
 ]
 
 new needNewSideType = 1;
@@ -94,7 +108,7 @@ new currentMascotSprite = 0;
 new generalDataPkt = 0;
 new alreadyLaunched = 0;
 new dataSaved = 0;
-
+new neighbor[TOPOLOGY_FACELET_INFO];
 
 const crossLineThickness = 6;
 const MAX_CROSS_STAGES = 2;
@@ -139,6 +153,28 @@ InitCrossAnimationVars(crossColor, plusColor) {
 SetDefaultMascot() {
     changeMascotTimer = 0;
     currentMascotSprite = (applicationState != FSM:successScreen) ? (MASCOT_MAIN_SPRITE) : (MASCOT_SUCCESS_SPRITE);
+}
+
+SetFacelet(module, screen) {
+    new facelet[TOPOLOGY_FACELET];
+    facelet.module = module;
+    facelet.screen = screen;
+    return facelet;
+}
+
+SetPlace(face, position) {
+    new place[TOPOLOGY_PLACE];
+    place.face = face;
+    place.position = position;
+    return place;
+}
+
+GetRightScreen(screen) {
+    return ((screen - 1) % SCREENS_MAX);
+}
+
+GetBottomScreen(screen) {
+    return ((screen + 1) % SCREENS_MAX);
 }
 
 DrawCrossAnimation() {

@@ -92,8 +92,8 @@ ShakeFillBackground(angle) {
 DrawShakeTutorial(screen) {
     new angle = getStarted_screenData[screen].angle;
     new screenLayout = (beginShakeTutorial) ? 
-                       (getstarted_shakeTutorialFill{getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90}) : 
-                       (getstarted_shakeTutorial{getStarted_screenData[screen].sideType * FACES_ON_PLANE_MAX + angle / 90});
+                       (getstarted_shakeTutorialFill{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90}) : 
+                       (getstarted_shakeTutorial{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
     
     abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
 
