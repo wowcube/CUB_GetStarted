@@ -56,37 +56,39 @@ GetShakeFillColor(shakeInPercents) {
 
 ShakeFillBackground(angle) {
     new shakeInPercents = (shakeTutorialStage * 100) / SENSITIVITY_MENU_CHANGE_SCRIPT;
-    new startX = 0;
-    new startY = 0;
-    new endX = 240;
-    new endY = 240;
+    new rect[GFX_RECTANGLE];
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = 240;
+    rect.h = 240;
     switch (angle) {
         case 0: {
             if (shakeInPercents <= 50) {
-                startY = endY - (480 * shakeInPercents) / 100;
+                rect.y = rect.h - (480 * shakeInPercents) / 100;
             }
         }
         case 90: {
             if (shakeInPercents >= 50) {
-                endX = (480 * shakeInPercents) / 100 - endX;
+                rect.w = (480 * shakeInPercents) / 100 - rect.w;
             } else {
-                endX = endY = 0;
+                rect.w = rect.h = 0;
             }
         }
         case 180: {
             if (shakeInPercents >= 50) {
-                endY = (480 * shakeInPercents) / 100 - endY;
+                rect.h = (480 * shakeInPercents) / 100 - rect.h;
             } else {
-                endX = endY = 0;
+                rect.w = rect.h = 0;
             }
         }
         case 270: {
             if (shakeInPercents <= 50) {
-                startX = endX - (480 * shakeInPercents) / 100;
+                rect.x = rect.w - (480 * shakeInPercents) / 100;
             }
         }
     }
-    abi_CMD_G2D_ADD_RECTANGLE(startX, startY, endX, endY, GetShakeFillColor(shakeInPercents));
+    
+    GFX_drawRectangle(rect, GetShakeFillColor(shakeInPercents));
 }
 
 DrawShakeTutorial(screen) {
@@ -95,7 +97,7 @@ DrawShakeTutorial(screen) {
                        (getstarted_shakeTutorialFill{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90}) : 
                        (getstarted_shakeTutorial{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
     
-    abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
+    GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
     if (beginShakeTutorial) {
         ShakeFillBackground(angle);
@@ -105,20 +107,20 @@ DrawShakeTutorial(screen) {
             if (mascotShakeAnimFlag) {
                 MascotShakeAnimation();
             }
-            abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, mascotShakePosX, 120, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(DIALOGUE, false, 31, 120, 0xFF, 0, 90, MIRROR_BLANK);
+            GFX_drawImage(GetGFXPoint(mascotShakePosX, 120), 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawImage([31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
         }
         case ICON: {
-            abi_CMD_G2D_ADD_SPRITE(SHAKE_ICON, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SHAKE_ICON);
         }
         case SPEECH_BOX: {
-            abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
+            GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("shake", 0, 120, 180, 18, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xA5, 0x52, true);
-            abi_CMD_TEXT("the cube up and", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("down to go back to", 0, 120, 90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("the main menu", 0, 120, 60, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+            GFX_drawLabel([120, 180], 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
+            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
+            GFX_drawLabel([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
+            GFX_drawLabel([120,  60], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -141,20 +143,20 @@ DrawShakeTutorial(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            abi_CMD_TEXT("shake", 0, posX_1, posY_1, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("the cube up", 0, 120, 120, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("and down",  0, posX_2, posY_2, 6, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            GFX_drawLabel(GetGFXPoint(posX_1, posY_1), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
+            GFX_drawLabel([120, 120], 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube up");
+            GFX_drawLabel(GetGFXPoint(posX_2, posY_2), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
         }
         case TEXT_BOX_2: {
-            abi_CMD_TEXT("shake the", 0, 100, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("cube to go back", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("to main menu",  0, 140, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            GFX_drawLabel([100, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
+            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
+            GFX_drawLabel([140, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
         }
         case MASCOT_2: {
             if (!shakeTutorialStage) {
-                abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, 75, MIRROR_BLANK);
-                abi_CMD_G2D_ADD_SPRITE(DIALOGUE_SMALL, false, 91, 120, 0xFF, 0, 90, MIRROR_BLANK);
-                abi_CMD_TEXT("shake!", 0, 70, 130, 16, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
+                GFX_drawImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, currentMascotSprite);
+                GFX_drawImage([ 91, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE_SMALL);
+                GFX_drawLabel([70, 130], 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
             }
         }
     }
@@ -167,21 +169,6 @@ UpdateShakeTutorial(deltaTime) {
             mascotShakeAnimFlag = 1;
         } else {
             mascotShakeAnimTimer += deltaTime;
-        }
-    }
-
-    if (abi_cubeN == 0) {
-        if (beginShakeTutorial) {
-            shakeTutorialStage = abi_MTD_GetShakesCount();
-
-            if (!dataSaved) {
-                SaveData();
-            }
-
-            abi_checkShake();
-        }
-        if (!beginShakeTutorial && (abi_MTD_GetShakesCount() > 0)) {
-            beginShakeTutorial = 1;
         }
     }
 }

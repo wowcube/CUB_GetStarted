@@ -81,38 +81,39 @@ GetTapFillColor(tapsInPercents) {
 
 TapFillBackground(angle) {
     new tapsInPercents = (tapTutorialStage * 100) / TAPS_TO_FINISH_TUTORIAL;
-    new startX = 0;
-    new startY = 0;
-    new endX = 240;
-    new endY = 240;
+    new rect[GFX_RECTANGLE];
+    rect.x = 0;
+    rect.y = 0;
+    rect.w = 240;
+    rect.h = 240;
     switch (angle) {
         case 0: {
             if (tapsInPercents <= 50) {
-                startY = endY - (480 * tapsInPercents) / 100;
+                rect.y = rect.h - (480 * tapsInPercents) / 100;
             }
         }
         case 90: {
             if (tapsInPercents >= 50) {
-                endX = (480 * tapsInPercents) / 100 - endX;
+                rect.w = (480 * tapsInPercents) / 100 - rect.w;
             } else {
-                endX = endY = 0;
+                rect.w = rect.h = 0;
             }
         }
         case 180: {
             if (tapsInPercents >= 50) {
-                endY = (480 * tapsInPercents) / 100 - endY;
+                rect.h = (480 * tapsInPercents) / 100 - rect.h;
             } else {
-                endX = endY = 0;
+                rect.w = rect.h = 0;
             }
         }
         case 270: {
             if (tapsInPercents <= 50) {
-                startX = endX - (480 * tapsInPercents) / 100;
+                rect.x = rect.w - (480 * tapsInPercents) / 100;
             }
         }
     }
 
-    abi_CMD_G2D_ADD_RECTANGLE(startX, startY, endX, endY, GetTapFillColor(tapsInPercents));
+    GFX_drawRectangle(rect, GetTapFillColor(tapsInPercents));
 }
 
 FingerTapAnimation() {
@@ -150,67 +151,67 @@ DrawTapTutorial(screen) {
         screenLayout = (getstarted_tapTutorial{layoutElement});
     }
 
-    abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
+    GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
     if (fillTapTutorial) {
-        TapFillBackground(TOPOLOGY_getAngle(SetFacelet(abi_cubeN, screen), TOPOLOGY_orientation:ORIENTATION_GRAVITY));
+        TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation:ORIENTATION_GRAVITY));
     }
     switch (screenLayout) {
         case MASCOT: {
-            abi_CMD_G2D_ADD_SPRITE(CIRCLE_QUARTER, false, 60, 60, 0xFF, 0, 0, MIRROR_BLANK);
+            GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
 
             if (mascotTapReactAnimFlag) {
                 MascotTapReaction();
-                abi_CMD_G2D_ADD_SPRITE(CIRCLE_QUARTER_PUSH, false, 60, 60, 0xFF, 0, 0, MIRROR_BLANK);
+                GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
             }
-            abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 210, 210, 0xFF, 0, mascotTapReactAngle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(DIALOGUE_SMALL, false, 91, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([210, 210], 0xFF, 0, mascotTapReactAngle, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawImage([ 91, 120], 0xFF, 0, angle, MIRROR_BLANK, DIALOGUE_SMALL);
             if (beginTapTutorial) {
-                abi_CMD_TEXT("tap!", 0, 55, 130, 17, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xA5, 0x52, true);
+                GFX_drawLabel([55, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "tap!");
             } else {
-                abi_CMD_TEXT("moving on", 0, 90, 120, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("to the tap", 0, 45, 120, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+                GFX_drawLabel([90, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "moving on");
+                GFX_drawLabel([45, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the tap");
             }
         }
         case TEXT_BOX: {
             if (fillTapTutorial) {
-                abi_CMD_G2D_ADD_SPRITE(CIRCLE_QUARTER, false, 60, 60, 0xFF, 0, 0, MIRROR_BLANK);
+                GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
                 
                 if (mascotTapReactAnimFlag) {
                     MascotTapReaction();
-                    abi_CMD_G2D_ADD_SPRITE(CIRCLE_QUARTER_PUSH, false, 60, 60, 0xFF, 0, 0, MIRROR_BLANK);
+                    GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
                 }
 
-                abi_CMD_TEXT("tap to fill", 0, 170, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("the cube",    0, 210, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel([170, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "tap to fill");
+                GFX_drawLabel([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "the cube");
             } else {
-                abi_CMD_TEXT("double tap", 0, 120, 140, 9, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
-                abi_CMD_TEXT("the cube!",  0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel([120, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
+                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube!");
             }
         }
         case EMPTY: {
             if (fillTapTutorial) {
-                abi_CMD_G2D_ADD_SPRITE(CIRCLE_QUARTER, false, 60, 60, 0xFF, 0, 0, MIRROR_BLANK);
+                GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
 
                 if (mascotTapReactAnimFlag) {
                     MascotTapReaction();
                     if ((angle % 180) == 0) {
-                        abi_CMD_LINE(165,  86, 177,  86, 0xFF, 0xFF, 0xFF, 6, true)
-                        abi_CMD_LINE( 86, 165,  86, 177, 0xFF, 0xFF, 0xFF, 6, true)
-                        abi_CMD_LINE(146, 146, 156, 156, 0xFF, 0xFF, 0xFF, 6, true)
+                        GFX_drawLine([165,  86], [177,  86], 6, 0xFFFFFFFF);
+                        GFX_drawLine([ 86, 165], [ 86, 177], 6, 0xFFFFFFFF);
+                        GFX_drawLine([146, 146], [156, 156], 6, 0xFFFFFFFF);
                     }
-                    abi_CMD_G2D_ADD_SPRITE(CIRCLE_QUARTER_PUSH, false, 60, 60, 0xFF, 0, 0, MIRROR_BLANK);
+                    GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
                 }
             }
         }
         case ICON: {
-            abi_CMD_G2D_ADD_SPRITE(TAP_ICON, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TAP_ICON);
         }
         case WRONG_WAY: {
-            abi_CMD_G2D_ADD_SPRITE(WRONG_TAP_ICON, false, 90, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([90, 120], 0xFF, 0, angle, MIRROR_BLANK, WRONG_TAP_ICON);
             if (wrongTapRimFlag) {
                 new step = (FixedCos(((wrongTapRimTimer += 10)) % 359) + 256) >> 1;
-                abi_CMD_G2D_ADD_SPRITE(WRONG_TAP_RIM,  false, 90, 120, step, 0, angle, MIRROR_BLANK);
+                GFX_drawImage([90, 120], step, 0, angle, MIRROR_BLANK, WRONG_TAP_RIM);
             } else {
                 wrongTapRimResetTimer += deltaTime;
             }
@@ -221,8 +222,8 @@ DrawTapTutorial(screen) {
                 wrongTapRimResetTimer = 0;
                 wrongTapRimFlag = 1;
             }
-            abi_CMD_TEXT("not a soft", 0, 170, 120, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("touch",      0, 210, 120, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            GFX_drawLabel([170, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "not a soft");
+            GFX_drawLabel([210, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "touch");
         }
         case RIGHT_WAY: {
             if (rightTapRimFlag == 1) {
@@ -254,27 +255,27 @@ DrawTapTutorial(screen) {
                 rightTapRimResetTimer = 0;
                 rightTapRimFlag = 1;
             }
-            abi_CMD_G2D_ADD_SPRITE(RIGHT_TAP_RIM_1,  false, 120, 90, rightTapRimAlpha_1, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(RIGHT_TAP_RIM_2,  false, 120, 90, rightTapRimAlpha_2, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(RIGHT_TAP_RIM_3,  false, 120, 90, rightTapRimAlpha_3, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(RIGHT_TAP_ICON, false, 120, 90, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_TEXT("but a light", 0, 120, 170, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("knock",       0, 120, 210, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+            GFX_drawImage([120, 90], rightTapRimAlpha_1, 0, angle, MIRROR_BLANK, RIGHT_TAP_RIM_1);
+            GFX_drawImage([120, 90], rightTapRimAlpha_2, 0, angle, MIRROR_BLANK, RIGHT_TAP_RIM_2);
+            GFX_drawImage([120, 90], rightTapRimAlpha_3, 0, angle, MIRROR_BLANK, RIGHT_TAP_RIM_3);
+            GFX_drawImage([120, 90], 0xFF, 0, angle, MIRROR_BLANK, RIGHT_TAP_ICON);
+            GFX_drawLabel([120, 170], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "but a light");
+            GFX_drawLabel([120, 210], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "knock");
         }
         case FINGER_ANIM: {
             FingerTapAnimation();
-            abi_CMD_G2D_ADD_SPRITE(FINGER_SPRITE, false, 180, 200, 0xFF, 0, angle - 10 + fingerAngle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 60 - mascotPosY, 0xFF, 0, angle - 10, MIRROR_BLANK);
+            GFX_drawImage([180, 200], 0xFF, 0, angle - 10 + fingerAngle, MIRROR_BLANK, FINGER_SPRITE);
+            GFX_drawImage(GetGFXPoint(120, 60 - mascotPosY), 0xFF, 0, angle - 10, MIRROR_BLANK, currentMascotSprite);
             if ((tapAnimationFrame >= 5) && tapAnimationFrame <= 7) {
-                abi_CMD_LINE(188, 163, 170, 155, 0xFF, 0xFF, 0xFF, 6, true);
-                abi_CMD_LINE( 95, 180,  92, 195, 0xFF, 0xFF, 0xFF, 6, true);
-                abi_CMD_LINE( 90, 160,  72, 168, 0xFF, 0xFF, 0xFF, 6, true);
+                GFX_drawLine([188, 163], [170, 155], 6, 0xFFFFFFFF);
+                GFX_drawLine([ 95, 180], [ 92, 195], 6, 0xFFFFFFFF);
+                GFX_drawLine([ 90, 160], [ 72, 168], 6, 0xFFFFFFFF);
             }
         }
         case BUBBLE_TEXT: {
-            abi_CMD_G2D_ADD_SPRITE(SPEECH_BUBBLE_TAP_SPRITE, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_TEXT("double tap", 0, 140, 140, 9, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
-            abi_CMD_TEXT("the cube!",  0, 100, 140, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SPEECH_BUBBLE_TAP_SPRITE);
+            GFX_drawLabel([140, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
+            GFX_drawLabel([100, 140], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
         }
     }
 
@@ -284,7 +285,7 @@ DrawTapTutorial(screen) {
 }
 
 UpdateTapTutorial(deltaTime) {
-    if (abi_cubeN == 0) {
+    if (SELF_ID == 0) {
         if (fillTapTutorial) {
             if (fulfillmentTimer >= FULFILLMENT_DROP_TIME) {
                 --tapTutorialStage;
@@ -298,24 +299,8 @@ UpdateTapTutorial(deltaTime) {
 
             if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {
                 SetApplicationState(FSM:successScreen);
-                abi_CMD_PLAYSND(TAP_STAGE_SUCCESS_SOUND, SOUND_VOLUME);
+                SND_play(TAP_STAGE_SUCCESS_SOUND, SOUND_VOLUME);
             }
-
-            if(abi_MTD_GetTapsCount() >= 1) {
-                ++tapTutorialStage;
-                if (tapTutorialStage >= 5) {
-                    abi_CMD_PLAYSND(TAPS_5_6_SOUND, SOUND_VOLUME);
-                } else if (tapTutorialStage >= 3) {
-                    abi_CMD_PLAYSND(TAPS_3_4_SOUND, SOUND_VOLUME);
-                } else if (tapTutorialStage >= 0) {
-                    abi_CMD_PLAYSND(TAPS_1_2_SOUND, SOUND_VOLUME);
-                }
-                mascotTapReactAnimFlag = 1;
-                fulfillmentTimer = 0;
-            }
-        }
-        if (!fillTapTutorial && beginTapTutorial && (abi_MTD_GetTapsCount() == 2)) {
-            fillTapTutorial = 1;
         }
     }
 }

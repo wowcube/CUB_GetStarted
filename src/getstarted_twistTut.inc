@@ -58,43 +58,43 @@ DrawTwistTutorial(screen) {
     new screenLayout = (currentStage) ? 
                        (getstarted_twistTutLayout_Y{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90}) : 
                        (getstarted_twistTutLayout_X{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
-    abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
+    GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
             if (twistTutorialStage) {
                 if (currentStage) {
-                    abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
-                    abi_CMD_G2D_ADD_SPRITE(DIALOGUE, false, 120, 31, 0xFF, 0, 180, MIRROR_BLANK);
+                    GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+                    GFX_drawImage([120,  31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
                 } else {
-                    abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, angle, MIRROR_Y);
-                    abi_CMD_G2D_ADD_SPRITE(DIALOGUE, false, 31, 120, 0xFF, 0, 90, MIRROR_BLANK);
+                    GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_Y, currentMascotSprite);
+                    GFX_drawImage([ 31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
                 }
             } else {
                 if (mascotTwistAnimFlag) {
                     MascotTwistAnimUpdate(angle);
                 }
-                abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, mascotTwistAngle, MIRROR_Y);
-                abi_CMD_G2D_ADD_SPRITE(DIALOGUE, false, 31, 120, 0xFF, 0, 90, MIRROR_BLANK);
+                GFX_drawImage([120, 120], 0xFF, 0, mascotTwistAngle, MIRROR_Y, currentMascotSprite);
+                GFX_drawImage([ 31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
             }
         }
         case ICON: {
-            abi_CMD_G2D_ADD_SPRITE(TWIST_ICON, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TWIST_ICON);
         }
         case SPEECH_BOX: {
-            abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
+            GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
             if (twistTutorialStage > 1) {
-                abi_CMD_TEXT("twist", 0, 120, 160, 17, angle, TEXT_ALIGN_TOP_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("twist", 0, 120,  70, 17, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xA5, 0x52, true);
+                GFX_drawLabel([120, 160], 17, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "twist");
+                GFX_drawLabel([120,  70], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "twist");
             } else if (twistTutorialStage == 1) {
-                abi_CMD_TEXT("good!",            0, 110, 130, 17, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xA5, 0x52, true);
-                abi_CMD_TEXT("one more time!", 0, 120,  98, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("twist another",  0, 120,  78,  SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("side",           0, 120,  58,  SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0x54, 0x26, 0x82, true);
+                GFX_drawLabel([110, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "good!");
+                GFX_drawLabel([120,  98], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
+                GFX_drawLabel([120,  78], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
+                GFX_drawLabel([120,  58], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
             } else {
-                abi_CMD_TEXT("twist", 0, 120, 140, 17, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
-                abi_CMD_TEXT("the cube once", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                GFX_drawLabel([120, 140], 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "twist");
+                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
             }
         }
         case TEXT_BOX: {
@@ -118,8 +118,8 @@ DrawTwistTutorial(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            abi_CMD_TEXT("twist the", 0, posX_1, posY_1, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-            abi_CMD_TEXT("cube once", 0, posX_2, posY_2, SIMPLE_FONT_SIZE + 1, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+            GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "twist the");
+            GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "cube once");
         }
         case ARROW: {
             new posX = 0;
@@ -147,13 +147,13 @@ DrawTwistTutorial(screen) {
                 }
             }
             if (!isMainAxisX) {
-                abi_CMD_G2D_ADD_SPRITE(ARROW_TWIST, false, posX, posY, arrowIcons[0], 0, angle, MIRROR_BLANK);
-                abi_CMD_G2D_ADD_SPRITE(ARROW_TWIST, false, posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, arrowIcons[1], 0, angle, MIRROR_BLANK);
-                abi_CMD_G2D_ADD_SPRITE(ARROW_TWIST, false, posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX, arrowIcons[2], 0, angle, MIRROR_BLANK);
+                GFX_drawImage(GetGFXPoint(posX, posY), arrowIcons[0], 0, angle, MIRROR_BLANK, ARROW_TWIST);
+                GFX_drawImage(GetGFXPoint(posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX), arrowIcons[1], 0, angle, MIRROR_BLANK, ARROW_TWIST);
+                GFX_drawImage(GetGFXPoint(posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX), arrowIcons[2], 0, angle, MIRROR_BLANK, ARROW_TWIST);
             } else {
-                abi_CMD_G2D_ADD_SPRITE(ARROW_TWIST, false, posX, posY, arrowIcons[2], 0, angle, MIRROR_BLANK);
-                abi_CMD_G2D_ADD_SPRITE(ARROW_TWIST, false, posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, arrowIcons[1], 0, angle, MIRROR_BLANK);
-                abi_CMD_G2D_ADD_SPRITE(ARROW_TWIST, false, posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX, arrowIcons[0], 0, angle, MIRROR_BLANK);
+                GFX_drawImage(GetGFXPoint(posX, posY), arrowIcons[2], 0, angle, MIRROR_BLANK, ARROW_TWIST);
+                GFX_drawImage(GetGFXPoint(posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX), arrowIcons[1], 0, angle, MIRROR_BLANK, ARROW_TWIST);
+                GFX_drawImage(GetGFXPoint(posX + 80 * !isMainAxisX, posY + 80 * isMainAxisX), arrowIcons[0], 0, angle, MIRROR_BLANK, ARROW_TWIST);
             }
         }
     }
@@ -179,7 +179,7 @@ UpdateTwistTutorial(deltaTime) {
         }
     }
 
-    if (abi_cubeN == 0) {
+    if (SELF_ID == 0) {
         if (twistTutorialStage >= 5) {
             SetApplicationState(FSM:successScreen);
         }

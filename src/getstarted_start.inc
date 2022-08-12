@@ -32,33 +32,33 @@ new getstartedGreetingTimer = GREETING_TIME;
 DrawStartCountdown(screen) {
     new angle = getStarted_screenData[screen].angle;
     new screenLayout = getstarted_startLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
-    abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
+    GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
-            abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(DIALOGUE, false, 31, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawImage([ 31, 120], 0xFF, 0, angle, MIRROR_BLANK, DIALOGUE);
         }
         case GREETING: {
             InitCrossAnimationVars(0xFF5C00, 0x513469);
             DrawCrossAnimation();
             if (getstartedGreetingFlag) {
-                abi_CMD_TEXT("hello", 0, 120, 120, 15, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
+                GFX_drawLabel([120, 120], 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
             } else {
-                abi_CMD_TEXT("we will", 0, 120, 170, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("start in", 0, 120, 130, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT_ITOA(tutorialStartTimer / 1000, 0, 120, 70, 20, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xA5, 0x52, true);
+                GFX_drawLabel([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
+                GFX_drawLabel([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
+                GFX_drawLabel([120,  70], 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
             }
         }
         case ICONS: {
-            abi_CMD_G2D_ADD_SPRITE(tangibleIcons[currentTangibleIcon], false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, tangibleIcons[currentTangibleIcon]);
         }
         case SPEECH_BOX: {
-            abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
+            GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            abi_CMD_TEXT("here you can", 0, 120,  90, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("learn how to", 0, 120, 120, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-            abi_CMD_TEXT("use wowcube", 0, 120, 150, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+            GFX_drawLabel([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
+            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
+            GFX_drawLabel([120, 150], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "use wowcube");
         }
         case TEXT_BOX: {
             if (!getstartedGreetingFlag) {
@@ -82,30 +82,30 @@ DrawStartCountdown(screen) {
                     posX_2 = 140;
                     posY_2 = 120;
                 }
-                abi_CMD_TEXT("we will", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_TOP_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("start in", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
+                GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
             }
         }
         case COUNTDOWN: {
             if (!getstartedGreetingFlag) {
-                abi_CMD_TEXT_ITOA(tutorialStartTimer / 1000, 0, 120, 120, 25, angle, TEXT_ALIGN_CENTER, 0xFF, 0xA5, 0x52, true);
+                GFX_drawLabel([120, 120], 25, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
             }
         }
     }
 }
 
 UpdateStartCountdown(deltaTime) {    
-    if (abi_cubeN == 0) {
+    if (SELF_ID == 0) {
         if (getstartedGreetingFlag) {
             getstartedGreetingTimer -= deltaTime;
         } else {
-            neighbor = TOPOLOGY_getOppositeFacelet(SetFacelet(abi_cubeN, 0));
+            neighbor = TOPOLOGY_getOppositeFacelet(SetFacelet(SELF_ID, 0));
             if (neighbor.connected) {
                 tutorialStartTimer -= deltaTime;
             }
             if (tutorialStartTimer <= 0) {
                 SetApplicationState(FSM:twistTutorial);
-                abi_CMD_PLAYSND(ACTION_SOUND, SOUND_VOLUME);
+                SND_play(ACTION_SOUND, SOUND_VOLUME);
             }
         }
         if (getstartedGreetingTimer <= 0) {

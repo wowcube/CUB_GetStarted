@@ -1,10 +1,198 @@
 {
-	"name": "Get_Started",
-	"version": "0.4.1",
-	"sdkVersion": "0.2",
-	"appIcon": "assets/icon.png",
-	"sourceFile": "src/getstarted.pwn",
-	"scriptFile": "binary/getstarted.amx",
-	"imageAssetsDir": "assets/images",
-	"soundAssetsDir": "assets/sounds"
+  "name": "Get_Started",
+  "version": "0.5.0",
+  "sdkVersion": "4.1",
+  "appIcon": "assets/icon.png",
+  "sourceFile": "src/getstarted.pwn",
+  "scriptFile": "binary/getstarted.amx",
+  "imageAssetsDir": "assets/images",
+  "soundAssetsDir": "assets/sounds",
+  "imageAssets": [
+    {
+      "path": "assets/images/arrow_tilt.png",
+      "alias": "arrow_tilt.png"
+    },
+    {
+      "path": "assets/images/arrow_twist.png",
+      "alias": "arrow_twist.png"
+    },
+    {
+      "path": "assets/images/ball.png",
+      "alias": "ball.png"
+    },
+    {
+      "path": "assets/images/checked.png",
+      "alias": "checked.png"
+    },
+    {
+      "path": "assets/images/checked_red.png",
+      "alias": "checked_red.png"
+    },
+    {
+      "path": "assets/images/collectable.png",
+      "alias": "collectable.png"
+    },
+    {
+      "path": "assets/images/collected.png",
+      "alias": "collected.png"
+    },
+    {
+      "path": "assets/images/complete.png",
+      "alias": "complete.png"
+    },
+    {
+      "path": "assets/images/count_bar.png",
+      "alias": "count_bar.png"
+    },
+    {
+      "path": "assets/images/dialogue.png",
+      "alias": "dialogue.png"
+    },
+    {
+      "path": "assets/images/finger.png",
+      "alias": "finger.png"
+    },
+    {
+      "path": "assets/images/masEyesN.png",
+      "alias": "masEyesN.png"
+    },
+    {
+      "path": "assets/images/masMainE.png",
+      "alias": "masMainE.png"
+    },
+    {
+      "path": "assets/images/masMouthO.png",
+      "alias": "masMouthO.png"
+    },
+    {
+      "path": "assets/images/mas_main.png",
+      "alias": "mas_main.png"
+    },
+    {
+      "path": "assets/images/mas_success.png",
+      "alias": "mas_success.png"
+    },
+    {
+      "path": "assets/images/mas_wait.png",
+      "alias": "mas_wait.png"
+    },
+    {
+      "path": "assets/images/quarter.png",
+      "alias": "quarter.png"
+    },
+    {
+      "path": "assets/images/quarterPush.png",
+      "alias": "quarterPush.png"
+    },
+    {
+      "path": "assets/images/rightRim1.png",
+      "alias": "rightRim1.png"
+    },
+    {
+      "path": "assets/images/rightRim2.png",
+      "alias": "rightRim2.png"
+    },
+    {
+      "path": "assets/images/rightRim3.png",
+      "alias": "rightRim3.png"
+    },
+    {
+      "path": "assets/images/rightTap.png",
+      "alias": "rightTap.png"
+    },
+    {
+      "path": "assets/images/selector.png",
+      "alias": "selector.png"
+    },
+    {
+      "path": "assets/images/shake_icon.png",
+      "alias": "shake_icon.png"
+    },
+    {
+      "path": "assets/images/speechSmall.png",
+      "alias": "speechSmall.png"
+    },
+    {
+      "path": "assets/images/speechTap.png",
+      "alias": "speechTap.png"
+    },
+    {
+      "path": "assets/images/star_big.png",
+      "alias": "star_big.png"
+    },
+    {
+      "path": "assets/images/star_small.png",
+      "alias": "star_small.png"
+    },
+    {
+      "path": "assets/images/tap_icon.png",
+      "alias": "tap_icon.png"
+    },
+    {
+      "path": "assets/images/tilt_icon.png",
+      "alias": "tilt_icon.png"
+    },
+    {
+      "path": "assets/images/twist_icon.png",
+      "alias": "twist_icon.png"
+    },
+    {
+      "path": "assets/images/wrongRim.png",
+      "alias": "wrongRim.png"
+    },
+    {
+      "path": "assets/images/wrongTap.png",
+      "alias": "wrongTap.png"
+    }
+  ],
+  "soundAssets": [
+    {
+      "path": "assets/sounds/action.wav",
+      "alias": "action.wav"
+    },
+    {
+      "path": "assets/sounds/collect_1.wav",
+      "alias": "collect_1.wav"
+    },
+    {
+      "path": "assets/sounds/collect_2.wav",
+      "alias": "collect_2.wav"
+    },
+    {
+      "path": "assets/sounds/collect_3.wav",
+      "alias": "collect_3.wav"
+    },
+    {
+      "path": "assets/sounds/excellent_1.wav",
+      "alias": "excellent_1.wav"
+    },
+    {
+      "path": "assets/sounds/excellent_2.wav",
+      "alias": "excellent_2.wav"
+    },
+    {
+      "path": "assets/sounds/good.wav",
+      "alias": "good.wav"
+    },
+    {
+      "path": "assets/sounds/selec_menu.wav",
+      "alias": "selec_menu.wav"
+    },
+    {
+      "path": "assets/sounds/tapsSuccess.wav",
+      "alias": "tapsSuccess.wav"
+    },
+    {
+      "path": "assets/sounds/taps_1-2.wav",
+      "alias": "taps_1-2.wav"
+    },
+    {
+      "path": "assets/sounds/taps_3-4.wav",
+      "alias": "taps_3-4.wav"
+    },
+    {
+      "path": "assets/sounds/taps_5-6.wav",
+      "alias": "taps_5-6.wav"
+    }
+  ]
 }

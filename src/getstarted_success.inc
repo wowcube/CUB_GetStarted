@@ -46,14 +46,14 @@ SuccessStarsPercents() {
 DrawSuccessScreen(screen) {
     new angle = getStarted_screenData[screen].angle;
     new screenLayout = getstarted_successLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
-    abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_COLOR);
+    GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
-            abi_CMD_G2D_ADD_SPRITE(currentMascotSprite, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(DIALOGUE, false, 120, 31, 0xFF, 0, 180, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawImage([120, 31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
         }
         case ICON: {
-            abi_CMD_G2D_ADD_SPRITE(COMPLETE_ICON, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, COMPLETE_ICON);
             new posX = 212;
             new posY = 120;
             if (angle != 270) {
@@ -61,35 +61,34 @@ DrawSuccessScreen(screen) {
                 posY = 28;
             }
             if (previousAppState == FSM:twistTutorial) {
-                abi_CMD_TEXT("nice job!", 0, posX, posY, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
             } else if (previousAppState == FSM:tapTutorial) {
-                abi_CMD_TEXT("you are awesome!", 0, posX, posY, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
         }
         case ICON_2: {
             SuccessStarsPercents();
-            abi_CMD_G2D_ADD_SPRITE(SMALL_STAR, false, smallStarX, smallStarY, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(BIG_STAR, false, bigStarX, bigStarY, 0xFF, 0, angle, MIRROR_BLANK);
-            abi_CMD_G2D_ADD_SPRITE(COMPLETE_ICON, false, 120, 120, 0xFF, 0, angle, MIRROR_BLANK);
+            GFX_drawImage(GetGFXPoint(smallStarX, smallStarY), 0xFF, 0, angle, MIRROR_BLANK, SMALL_STAR);
+            GFX_drawImage(GetGFXPoint(bigStarX, bigStarY), 0xFF, 0, angle, MIRROR_BLANK, BIG_STAR);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, COMPLETE_ICON);
             if (previousAppState == FSM:twistTutorial) {
-                abi_CMD_TEXT("nice job!", 0, 212, 120, SuccessFontPercents(), angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel([212, 120], SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
             } else if (previousAppState == FSM:tapTutorial) {
-                abi_CMD_TEXT("you are awesome!", 0, 212, 120, SuccessFontPercents(), angle, TEXT_ALIGN_BOTTOM_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel([212, 120], SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
 
         }
         case SPEECH_BOX: {
-            abi_CMD_G2D_ADD_RECTANGLE(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xFFFFFFFF);
+            GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF9898, 0xFF5252);
             DrawCrossAnimation();
             if (previousAppState == FSM:twistTutorial) {
-                abi_CMD_TEXT("good!", 0, 110, 140, 17, angle, TEXT_ALIGN_CENTER, 0xFF, 0x52, 0x52, true);
-                abi_CMD_TEXT("go ahead", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                GFX_drawLabel([110, 140], 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "good!");
+                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "go ahead");
             } else if (previousAppState == FSM:tapTutorial) {
-                abi_CMD_TEXT("very good!", 0, 110, 140, 10, angle, TEXT_ALIGN_CENTER, 0xFF, 0x52, 0x52, true);
-                //abi_CMD_TEXT("moving on", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("next thing to", 0, 120, 100, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
-                abi_CMD_TEXT("learn is tilt", 0, 120, 80, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0x54, 0x26, 0x82, true);
+                GFX_drawLabel([110, 140], 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
+                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "next thing to");
+                GFX_drawLabel([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
             }
         }
         case TEXT_BOX: {
@@ -103,25 +102,17 @@ DrawSuccessScreen(screen) {
                 DrawCrossAnimation();
             }
             if (previousAppState == FSM:twistTutorial) {
-                abi_CMD_TEXT("twist it one", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("more time",    0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                //abi_CMD_TEXT("twist to", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                //abi_CMD_TEXT("continue", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "twist it one");
+                GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "more time");
             } else if (previousAppState == FSM:tapTutorial) {
-                abi_CMD_TEXT("double tap", 0, posX_1, posY_1, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
-                abi_CMD_TEXT("to continue", 0, posX_2, posY_2, SIMPLE_FONT_SIZE, angle, TEXT_ALIGN_CENTER, 0xFF, 0xFF, 0xFF, true);
+                GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
+                GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to continue");
             }
         }
     }
 }
 
 UpdateSuccessScreen(deltaTime) {
-    if (abi_cubeN == 0) {
-        if ((previousAppState == FSM:tapTutorial) && (abi_MTD_GetTapsCount() >= 2)) {
-            SetApplicationState(FSM:tiltTutorial);
-            abi_CMD_PLAYSND(ACTION_SOUND, SOUND_VOLUME);
-        }
-    }
     if (!successAnimationEffectFlag) {
         if (successAnimationEffectTimer < SUCCESS_EFFECT_TIME) {
             successAnimationEffectTimer += deltaTime;

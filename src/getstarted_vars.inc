@@ -1,11 +1,17 @@
-#define PKT_GENERAL_DATA       P2P_CMD_BASE_SCRIPT_1 + 1
-#define PKT_BALL_TILT_TUT      P2P_CMD_BASE_SCRIPT_1 + 2
-#define PKT_SELECTOR_TILT_TUT  P2P_CMD_BASE_SCRIPT_1 + 3
+#define PKT_GENERAL_DATA       1
+#define PKT_BALL_TILT_TUT      2
+#define PKT_SELECTOR_TILT_TUT  3
 
 #define CROSS_ANIM_DATA .posX_b_1, .posY_b_1, .posX_e_1, .posY_e_1, .posX_b_2, .posY_b_2, .posX_e_2, .posY_e_2
 
 #include "math.inc"
-#include "run.inc"
+#include "wowcore.inc"
+#include "topology.inc"
+#include "graphics.inc"
+#include "string.inc"
+#include "console.inc"
+#include "sound.inc"
+#include "motion_sensor.inc"
 
 const SCREEN_WIDTH = 240;
 const SCREEN_HEIGHT = 240;
@@ -103,7 +109,6 @@ new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
     [TOPOLOGY_location:LOCATION_UP, 180],
 ]
 
-new needNewSideType = 1;
 new currentMascotSprite = 0;
 new generalDataPkt = 0;
 new alreadyLaunched = 0;
@@ -134,20 +139,12 @@ new crossAnimationTimer = 0;
 new firstCrossAnimPairStage = 1;
 new secondCrossAnimPairStage = 0;
 
-new crossR;
-new crossG;
-new crossB;
-new plusR;
-new plusG;
-new plusB;
+new crossColor = 0xFFFFFFFF;
+new plusColor  = 0xFFFFFFFF;
 
-InitCrossAnimationVars(crossColor, plusColor) {
-    crossR = crossColor >> 16 & 0xFF;
-    crossG = crossColor >>  8 & 0xFF;
-    crossB = crossColor       & 0xFF;
-    plusR = plusColor >> 16 & 0xFF;
-    plusG = plusColor >>  8 & 0xFF;
-    plusB = plusColor       & 0xFF;
+InitCrossAnimationVars(m_crossColor, m_plusColor) {
+    crossColor = m_crossColor;
+    plusColor  = m_plusColor;
 }
 
 SetDefaultMascot() {
@@ -169,6 +166,13 @@ SetPlace(face, position) {
     return place;
 }
 
+GetGFXPoint(x, y) {
+    new pointGFX[GFX_POINT];
+    pointGFX.x = x;
+    pointGFX.y = y;
+    return pointGFX;
+}
+
 GetRightScreen(screen) {
     return ((screen - 1) % SCREENS_MAX);
 }
@@ -181,20 +185,20 @@ DrawCrossAnimation() {
     new pos[CROSS_ANIM_DATA];
 
     pos = leftBottom[firstCrossAnimPairStage];
-    abi_CMD_LINE(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, crossR, crossG, crossB, crossLineThickness, true);
-    abi_CMD_LINE(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, crossR, crossG, crossB, crossLineThickness, true);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, crossColor);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, crossColor);
     
     pos = rightBottom[secondCrossAnimPairStage];
-    abi_CMD_LINE(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, plusR, plusG, plusB, crossLineThickness, true);
-    abi_CMD_LINE(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, plusR, plusG, plusB, crossLineThickness, true);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, plusColor);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, plusColor);
 
     pos = rightTop[firstCrossAnimPairStage];
-    abi_CMD_LINE(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, crossR, crossG, crossB, crossLineThickness, true);
-    abi_CMD_LINE(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, crossR, crossG, crossB, crossLineThickness, true);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, crossColor);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, crossColor);
     
     pos = leftTop[secondCrossAnimPairStage];
-    abi_CMD_LINE(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, plusR, plusG, plusB, crossLineThickness, true);
-    abi_CMD_LINE(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, plusR, plusG, plusB, crossLineThickness, true);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, plusColor);
+    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, plusColor);
 }
 
 UpdateCrossAnimation(deltaTime) {
@@ -212,8 +216,5 @@ UpdateMascotAnimation(deltaTime) {
         currentMascotSprite = MASCOT_WAIT_SPRITE;
     } else {
         changeMascotTimer += deltaTime;
-    }
-    if ((abi_MTD_GetTapsCount() > 0) || (abi_MTD_GetShakesCount() > 0)) {
-        SetDefaultMascot();
     }
 }
