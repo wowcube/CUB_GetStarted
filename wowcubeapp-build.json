@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "sdkVersion": "4.1",
   "appIcon": "assets/icon.png",
   "sourceFile": "src/getstarted.pwn",
