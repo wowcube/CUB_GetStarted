@@ -14,6 +14,8 @@ const FINISHED_EXCELLENT  = 7;
 const SELECTOR_TOP        = 8;
 const SELECTOR_TEXT_BOX   = 9;
 
+const SELECTOR_SENSITIVITY = -38;
+
 new getstarted_tiltTutCollect{} = {
     COLLECT_CIRCLE, COLLECT_CIRCLE, COLLECT_CIRCLE, COLLECT_CIRCLE,
     EMPTY, ICON, EMPTY, TEXT_BOX,
@@ -94,8 +96,8 @@ MovePlusOneEffect(angle) {
         offsetY =  backPlusOneOffset;
     }
 
-    GFX_drawLabel(GetGFXPoint(mainOneX + offsetX, mainOneY + offsetY), 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFF8008, "+1");
-    GFX_drawLabel(GetGFXPoint(mainOneX, mainOneY), 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "+1");
+    GFX_drawText(GetGFXPoint(mainOneX + offsetX, mainOneY + offsetY), 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFF8008, "+1");
+    GFX_drawText(GetGFXPoint(mainOneX, mainOneY), 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "+1");
 
     ++currentPlusOneTick;
 
@@ -123,29 +125,25 @@ CheckCollectables() {
 }
 
 SendBall(pktNumber) {
-    new data[4];
+    new data[MESSAGE_SIZE];
 
     data[0] = PKT_BALL_TILT_TUT | (tiltTutBall.module << 8) | (tiltTutBall.screen << 16) | (CheckCollectables() << 24);
     data[1] = tiltTutBall.angle;
     data[2] = tiltTutBall.screenAngle;
     data[3] = pktNumber;
 
-    sendMessage(0, NET_BROADCAST_TTL_MAX, data);
-    sendMessage(1, NET_BROADCAST_TTL_MAX, data);
-    sendMessage(2, NET_BROADCAST_TTL_MAX, data);
+    broadcastMessage(data);
 }
 
 SendSelector(pktNumber) {
-    new data[4];
+    new data[MESSAGE_SIZE];
 
     data[0] = PKT_SELECTOR_TILT_TUT | (tiltTutSelector.module << 8) | (tiltTutSelector.screen << 16);
     data[1] = tiltTutSelector.screenAngle;
     data[2] = pktNumber;
     data[3] = (selectorOutAnimation == 1) ? (2) : (1);
 
-    sendMessage(0, NET_BROADCAST_TTL_MAX, data);
-    sendMessage(1, NET_BROADCAST_TTL_MAX, data);
-    sendMessage(2, NET_BROADCAST_TTL_MAX, data);
+    broadcastMessage(data);
 }
 
 FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
@@ -170,7 +168,7 @@ FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
 SelectorLogic() {
     if (tiltTutSelector.module >= MODULES_MAX) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            if (getStarted_screenData[screenI].sideType == TOPOLOGY_location:LOCATION_UP) {
+            if (getStarted_screenData[screenI].sideType == TOPOLOGY_orientation:ORIENTATION_UP) {
                 if (getStarted_screenData[screenI].angle == tiltTutSelector.screenAngle) {
                     tiltTutSelector.module = SELF_ID;
                     tiltTutSelector.screen = screenI;
@@ -201,7 +199,7 @@ SelectorLogic() {
                 
                 tiltTutSelector.screenAngle = getStarted_screenData[screenI].angle;
                 
-                if (accelX < -35) {
+                if (accelX < SELECTOR_SENSITIVITY) {
                     neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
                     if (neighbor.connected) {
                         tiltTutSelector.module = neighbor.module;
@@ -209,7 +207,7 @@ SelectorLogic() {
                         tiltTutSelector.screenAngle = (getStarted_screenData[screenI].angle - 90) % 360;
                         selectorOutAnimation = 1;
                     }
-                } else if (accelY < -35) {
+                } else if (accelY < SELECTOR_SENSITIVITY) {
                     neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_TOP);
                     if (neighbor.connected) {
                         tiltTutSelector.module = neighbor.module;
@@ -233,7 +231,7 @@ SelectorLogic() {
 BallLogic() {
     if (tiltTutBall.module >= MODULES_MAX) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            if (getStarted_screenData[screenI].sideType == TOPOLOGY_location:LOCATION_UP) {
+            if (getStarted_screenData[screenI].sideType == TOPOLOGY_orientation:ORIENTATION_UP) {
                 if (getStarted_screenData[screenI].angle == tiltTutBall.screenAngle) {
                     tiltTutBall.module = SELF_ID;
                     tiltTutBall.screen = screenI;
@@ -343,9 +341,9 @@ DrawTiltTutorial(screen) {
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
             
-            GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
-            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and collect");
-            GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "all shapes");
+            GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
+            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and collect");
+            GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "all shapes");
         }
         case ARROW_HINT: {
             GFX_drawImage([120, 120], 0xFF, 0, 0, MIRROR_BLANK, ARROW_TILT);
@@ -358,8 +356,8 @@ DrawTiltTutorial(screen) {
                 GFX_drawImage([ 75,  75], 0xFF, 0, angle, MIRROR_BLANK, (collectables{0}) ? (COLLECTABLE) : (COLLECTED));
                 GFX_drawImage([205,  20], 0xFF, 0, 350, MIRROR_BLANK, currentMascotSprite);
                 GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-                GFX_drawLabel([120, 145], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
-                GFX_drawLabel([120, 185], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
+                GFX_drawText([120, 145], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
+                GFX_drawText([120, 185], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
             } else if (angle == 90) {
                 GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, currentMascotSprite);
                 GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, (collectables{1}) ? (COLLECTABLE) : (COLLECTED));
@@ -371,7 +369,7 @@ DrawTiltTutorial(screen) {
                     }
                 }
             } else if (angle == 270) {
-                GFX_drawLabel([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "tilt the cube");
+                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "tilt the cube");
                 GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, (collectables{2}) ? (COLLECTABLE) : (COLLECTED));
             }
 
@@ -393,9 +391,9 @@ DrawTiltTutorial(screen) {
             if (angle == 0) {
                 GFX_drawImage([205,  20], 0xFF, 0, 350, MIRROR_BLANK, MASCOT_SUCCESS_SPRITE);
                 GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-                GFX_drawLabel([120, 135], 10, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
-                GFX_drawLabel([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
-                GFX_drawLabel([120, 200], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
+                GFX_drawText([120, 135], 10, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
+                GFX_drawText([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
+                GFX_drawText([120, 200], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
             } else if (angle == 90) {
                 GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, MASCOT_SUCCESS_SPRITE);
             } else if (angle == 180) {
@@ -419,11 +417,11 @@ DrawTiltTutorial(screen) {
             new posX_2 = 120;
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
-            GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double tap");
-            GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "to continue");
+            GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double tap");
+            GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "to continue");
         }
         case FINISHED_EXCELLENT: {
-            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "excellent!");
+            GFX_drawText([120, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "excellent!");
         }
         case SELECTOR_TOP: {
             if ((angle == 0) && (tiltTutSelector.module != SELF_ID)) {
@@ -431,21 +429,21 @@ DrawTiltTutorial(screen) {
                     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
                     InitCrossAnimationVars(0xFF5C00, 0xFFB576);
                     DrawCrossAnimation();
-                    GFX_drawLabel([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "put the white");
-                    GFX_drawLabel([120, 105], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "hightlight on me");
-                    GFX_drawLabel([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and tap the");
-                    GFX_drawLabel([120, 155], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "cube 2 times");
+                    GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "put the white");
+                    GFX_drawText([120, 105], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "hightlight on me");
+                    GFX_drawText([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and tap the");
+                    GFX_drawText([120, 155], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "cube 2 times");
                 }
             } else if ((angle == 180) && (tiltTutSelector.module != SELF_ID)) {
                 InitCrossAnimationVars(0xFF5C00, 0x513469);
                 DrawCrossAnimation();
                 if (tiltTutSelector.screenAngle == 270) {
-                    GFX_drawLabel([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tap the cube");
-                    GFX_drawLabel([120, 110], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times now");
+                    GFX_drawText([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tap the cube");
+                    GFX_drawText([120, 110], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times now");
                 } else {
-                    GFX_drawLabel([120, 155], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
-                    GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "for navigation");
-                    GFX_drawLabel([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "or selection");
+                    GFX_drawText([120, 155], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
+                    GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "for navigation");
+                    GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "or selection");
                 }
             } else if (angle == 270) {
                 GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_Y, currentMascotSprite);
@@ -501,11 +499,11 @@ DrawTiltTutorial(screen) {
                 isStaticX = 0;
                 isStaticY = 1;
             }
-            GFX_drawLabel(GetGFXPoint(staticCenterPos * isStaticX + changingPos * isStaticY, staticCenterPos * isStaticY + changingPos * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "put the");
-            GFX_drawLabel(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 1) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 1) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "highlight on");
-            GFX_drawLabel(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 2) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 2) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the little");
-            GFX_drawLabel(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 3) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 3) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube and");
-            GFX_drawLabel(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 4) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 4) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
+            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + changingPos * isStaticY, staticCenterPos * isStaticY + changingPos * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "put the");
+            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 1) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 1) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "highlight on");
+            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 2) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 2) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the little");
+            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 3) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 3) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube and");
+            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 4) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 4) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
         }
     }
 

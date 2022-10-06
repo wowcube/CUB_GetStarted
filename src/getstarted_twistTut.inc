@@ -85,16 +85,16 @@ DrawTwistTutorial(screen) {
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
             if (twistTutorialStage > 1) {
-                GFX_drawLabel([120, 160], 17, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "twist");
-                GFX_drawLabel([120,  70], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "twist");
+                GFX_drawText([120, 160], 17, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "twist");
+                GFX_drawText([120,  70], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "twist");
             } else if (twistTutorialStage == 1) {
-                GFX_drawLabel([110, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "good!");
-                GFX_drawLabel([120,  98], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
-                GFX_drawLabel([120,  78], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
-                GFX_drawLabel([120,  58], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
+                GFX_drawText([110, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "good!");
+                GFX_drawText([120,  98], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
+                GFX_drawText([120,  78], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
+                GFX_drawText([120,  58], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
             } else {
-                GFX_drawLabel([120, 140], 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "twist");
-                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
+                GFX_drawText([120, 140], 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "twist");
+                GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
             }
         }
         case TEXT_BOX: {
@@ -118,8 +118,8 @@ DrawTwistTutorial(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "twist the");
-            GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "cube once");
+            GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "twist the");
+            GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "cube once");
         }
         case ARROW: {
             new posX = 0;

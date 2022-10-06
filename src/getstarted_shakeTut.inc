@@ -117,10 +117,10 @@ DrawShakeTutorial(screen) {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            GFX_drawLabel([120, 180], 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
-            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
-            GFX_drawLabel([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
-            GFX_drawLabel([120,  60], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
+            GFX_drawText([120, 180], 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
+            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
+            GFX_drawText([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
+            GFX_drawText([120,  60], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -143,20 +143,20 @@ DrawShakeTutorial(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            GFX_drawLabel(GetGFXPoint(posX_1, posY_1), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
-            GFX_drawLabel([120, 120], 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube up");
-            GFX_drawLabel(GetGFXPoint(posX_2, posY_2), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
+            GFX_drawText(GetGFXPoint(posX_1, posY_1), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
+            GFX_drawText([120, 120], 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube up");
+            GFX_drawText(GetGFXPoint(posX_2, posY_2), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
         }
         case TEXT_BOX_2: {
-            GFX_drawLabel([100, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
-            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
-            GFX_drawLabel([140, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
+            GFX_drawText([100, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
+            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
+            GFX_drawText([140, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
         }
         case MASCOT_2: {
             if (!shakeTutorialStage) {
                 GFX_drawImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, currentMascotSprite);
                 GFX_drawImage([ 91, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE_SMALL);
-                GFX_drawLabel([70, 130], 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
+                GFX_drawText([70, 130], 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
             }
         }
     }

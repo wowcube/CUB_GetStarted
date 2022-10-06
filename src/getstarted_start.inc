@@ -42,11 +42,11 @@ DrawStartCountdown(screen) {
             InitCrossAnimationVars(0xFF5C00, 0x513469);
             DrawCrossAnimation();
             if (getstartedGreetingFlag) {
-                GFX_drawLabel([120, 120], 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
+                GFX_drawText([120, 120], 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
             } else {
-                GFX_drawLabel([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
-                GFX_drawLabel([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
-                GFX_drawLabel([120,  70], 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
+                GFX_drawText([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
+                GFX_drawText([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
+                GFX_drawText([120,  70], 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
             }
         }
         case ICONS: {
@@ -56,9 +56,9 @@ DrawStartCountdown(screen) {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            GFX_drawLabel([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
-            GFX_drawLabel([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
-            GFX_drawLabel([120, 150], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "use wowcube");
+            GFX_drawText([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
+            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
+            GFX_drawText([120, 150], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "use wowcube");
         }
         case TEXT_BOX: {
             if (!getstartedGreetingFlag) {
@@ -82,13 +82,13 @@ DrawStartCountdown(screen) {
                     posX_2 = 140;
                     posY_2 = 120;
                 }
-                GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
-                GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
+                GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
+                GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
             }
         }
         case COUNTDOWN: {
             if (!getstartedGreetingFlag) {
-                GFX_drawLabel([120, 120], 25, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
+                GFX_drawText([120, 120], 25, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
             }
         }
     }

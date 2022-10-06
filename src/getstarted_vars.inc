@@ -104,9 +104,9 @@ new FSM:applicationState = 0;
 new FSM:previousAppState = 0;
 
 new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
-    [TOPOLOGY_location:LOCATION_UP, 180],
-    [TOPOLOGY_location:LOCATION_UP, 180],
-    [TOPOLOGY_location:LOCATION_UP, 180],
+    [TOPOLOGY_orientation:ORIENTATION_UP, 180],
+    [TOPOLOGY_orientation:ORIENTATION_UP, 180],
+    [TOPOLOGY_orientation:ORIENTATION_UP, 180],
 ]
 
 new currentMascotSprite = 0;

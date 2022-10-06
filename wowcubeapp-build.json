@@ -1,8 +1,11 @@
 {
   "name": "Get_Started",
-  "version": "0.5.1",
-  "sdkVersion": "4.1",
-  "appIcon": "assets/icon.png",
+  "version": "0.6.0",
+  "sdkVersion": "5.0",
+  "appIcon": {
+    "path": "assets/icon.png",
+    "encoding": "ARGB6666"
+  },
   "sourceFile": "src/getstarted.pwn",
   "scriptFile": "binary/getstarted.amx",
   "imageAssetsDir": "assets/images",
@@ -194,5 +197,6 @@
       "path": "assets/sounds/taps_5-6.wav",
       "alias": "taps_5-6.wav"
     }
-  ]
+  ],
+  "appFlags": "0"
 }

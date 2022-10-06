@@ -61,9 +61,9 @@ DrawSuccessScreen(screen) {
                 posY = 28;
             }
             if (previousAppState == FSM:twistTutorial) {
-                GFX_drawLabel(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
+                GFX_drawText(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawLabel(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
+                GFX_drawText(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
         }
         case ICON_2: {
@@ -72,9 +72,9 @@ DrawSuccessScreen(screen) {
             GFX_drawImage(GetGFXPoint(bigStarX, bigStarY), 0xFF, 0, angle, MIRROR_BLANK, BIG_STAR);
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, COMPLETE_ICON);
             if (previousAppState == FSM:twistTutorial) {
-                GFX_drawLabel([212, 120], SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
+                GFX_drawText([212, 120], SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawLabel([212, 120], SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
+                GFX_drawText([212, 120], SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
 
         }
@@ -83,12 +83,12 @@ DrawSuccessScreen(screen) {
             InitCrossAnimationVars(0xFF9898, 0xFF5252);
             DrawCrossAnimation();
             if (previousAppState == FSM:twistTutorial) {
-                GFX_drawLabel([110, 140], 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "good!");
-                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "go ahead");
+                GFX_drawText([110, 140], 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "good!");
+                GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "go ahead");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawLabel([110, 140], 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
-                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "next thing to");
-                GFX_drawLabel([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
+                GFX_drawText([110, 140], 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
+                GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "next thing to");
+                GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
             }
         }
         case TEXT_BOX: {
@@ -96,17 +96,17 @@ DrawSuccessScreen(screen) {
             new posY_1 = 105;
             new posX_2 = 120;
             new posY_2 = 135;
-            if ((getStarted_screenData[screen].sideType == TOPOLOGY_location:LOCATION_DOWN) ||
-                (getStarted_screenData[screen].sideType == TOPOLOGY_location:LOCATION_UP)) {
+            if ((getStarted_screenData[screen].sideType == TOPOLOGY_orientation:ORIENTATION_DOWN) ||
+                (getStarted_screenData[screen].sideType == TOPOLOGY_orientation:ORIENTATION_UP)) {
                 InitCrossAnimationVars(0xFF9898, 0xFF5252);
                 DrawCrossAnimation();
             }
             if (previousAppState == FSM:twistTutorial) {
-                GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "twist it one");
-                GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "more time");
+                GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "twist it one");
+                GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "more time");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawLabel(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
-                GFX_drawLabel(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to continue");
+                GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
+                GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to continue");
             }
         }
     }

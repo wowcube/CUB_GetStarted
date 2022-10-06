@@ -154,7 +154,7 @@ DrawTapTutorial(screen) {
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
     if (fillTapTutorial) {
-        TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation:ORIENTATION_GRAVITY));
+        TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation_mode:ORIENTATION_MODE_GRAVITY));
     }
     switch (screenLayout) {
         case MASCOT: {
@@ -167,10 +167,10 @@ DrawTapTutorial(screen) {
             GFX_drawImage([210, 210], 0xFF, 0, mascotTapReactAngle, MIRROR_BLANK, currentMascotSprite);
             GFX_drawImage([ 91, 120], 0xFF, 0, angle, MIRROR_BLANK, DIALOGUE_SMALL);
             if (beginTapTutorial) {
-                GFX_drawLabel([55, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "tap!");
+                GFX_drawText([55, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "tap!");
             } else {
-                GFX_drawLabel([90, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "moving on");
-                GFX_drawLabel([45, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the tap");
+                GFX_drawText([90, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "moving on");
+                GFX_drawText([45, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the tap");
             }
         }
         case TEXT_BOX: {
@@ -182,11 +182,11 @@ DrawTapTutorial(screen) {
                     GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
                 }
 
-                GFX_drawLabel([170, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "tap to fill");
-                GFX_drawLabel([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "the cube");
+                GFX_drawText([170, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "tap to fill");
+                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "the cube");
             } else {
-                GFX_drawLabel([120, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
-                GFX_drawLabel([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube!");
+                GFX_drawText([120, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
+                GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube!");
             }
         }
         case EMPTY: {
@@ -222,8 +222,8 @@ DrawTapTutorial(screen) {
                 wrongTapRimResetTimer = 0;
                 wrongTapRimFlag = 1;
             }
-            GFX_drawLabel([170, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "not a soft");
-            GFX_drawLabel([210, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "touch");
+            GFX_drawText([170, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "not a soft");
+            GFX_drawText([210, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "touch");
         }
         case RIGHT_WAY: {
             if (rightTapRimFlag == 1) {
@@ -259,8 +259,8 @@ DrawTapTutorial(screen) {
             GFX_drawImage([120, 90], rightTapRimAlpha_2, 0, angle, MIRROR_BLANK, RIGHT_TAP_RIM_2);
             GFX_drawImage([120, 90], rightTapRimAlpha_3, 0, angle, MIRROR_BLANK, RIGHT_TAP_RIM_3);
             GFX_drawImage([120, 90], 0xFF, 0, angle, MIRROR_BLANK, RIGHT_TAP_ICON);
-            GFX_drawLabel([120, 170], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "but a light");
-            GFX_drawLabel([120, 210], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "knock");
+            GFX_drawText([120, 170], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "but a light");
+            GFX_drawText([120, 210], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "knock");
         }
         case FINGER_ANIM: {
             FingerTapAnimation();
@@ -274,8 +274,8 @@ DrawTapTutorial(screen) {
         }
         case BUBBLE_TEXT: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SPEECH_BUBBLE_TAP_SPRITE);
-            GFX_drawLabel([140, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
-            GFX_drawLabel([100, 140], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
+            GFX_drawText([140, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
+            GFX_drawText([100, 140], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
         }
     }
 

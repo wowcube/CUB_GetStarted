@@ -59,7 +59,7 @@ SetApplicationState(newState) {
 }
 
 SendGeneralInfo(pktNumber) {
-    new data[4];
+    new data[MESSAGE_SIZE];
 
     new flags = beginTapTutorial
     | (finishTiltTutorial << 3) 
@@ -77,9 +77,7 @@ SendGeneralInfo(pktNumber) {
     data[2] = tutorialStartTimer;
     data[3] = pktNumber;
 
-    sendMessage(0, NET_BROADCAST_TTL_MAX, data);
-    sendMessage(1, NET_BROADCAST_TTL_MAX, data);
-    sendMessage(2, NET_BROADCAST_TTL_MAX, data);
+    broadcastMessage(data);
 }
 
 public ON_PhysicsTick() {
@@ -87,7 +85,7 @@ public ON_PhysicsTick() {
 
 public ON_Render() {
     for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-        GFX_updateDisplay(screenI);
+        GFX_setRenderTarget(screenI);
         
         switch (applicationState) {
             case start: {
@@ -148,70 +146,70 @@ public ON_Tick() {
     }
 }
 
-public ON_Init() {
+public ON_Init(id, size, const pkt[]) {
     loadState();
 
     previousTime = getTime();
 
-    ARROW_TWIST = GFX_getId("arrow_twist.png");
+    ARROW_TWIST = GFX_getAssetId("arrow_twist.png");
     
-    ARROW_TILT    = GFX_getId("arrow_tilt.png");
-    BALL          = GFX_getId("ball.png");
-    COLLECTABLE   = GFX_getId("collectable.png");
-    COMPLETE_ICON = GFX_getId("complete.png");
-    COUNT_BAR     = GFX_getId("count_bar.png");
+    ARROW_TILT    = GFX_getAssetId("arrow_tilt.png");
+    BALL          = GFX_getAssetId("ball.png");
+    COLLECTABLE   = GFX_getAssetId("collectable.png");
+    COMPLETE_ICON = GFX_getAssetId("complete.png");
+    COUNT_BAR     = GFX_getAssetId("count_bar.png");
 
-    DIALOGUE              = GFX_getId("dialogue.png");
-    DIALOGUE_SMALL        = GFX_getId("speechSmall.png");
+    DIALOGUE              = GFX_getAssetId("dialogue.png");
+    DIALOGUE_SMALL        = GFX_getAssetId("speechSmall.png");
 
-    COLLECTED_CHECK       = GFX_getId("checked.png");
-    COLLECTED_CHECK_RED   = GFX_getId("checked_red.png");
+    COLLECTED_CHECK       = GFX_getAssetId("checked.png");
+    COLLECTED_CHECK_RED   = GFX_getAssetId("checked_red.png");
 
-    MASCOT_MAIN_SPRITE    = GFX_getId("mas_main.png");
-    MASCOT_SUCCESS_SPRITE = GFX_getId("mas_success.png");
-    MASCOT_WAIT_SPRITE    = GFX_getId("mas_wait.png");
-    CIRCLE_QUARTER        = GFX_getId("quarter.png");
-    SELECTOR              = GFX_getId("selector.png");
-    SHAKE_ICON            = GFX_getId("shake_icon.png");
-    TAP_ICON              = GFX_getId("tap_icon.png");
-    TILT_ICON             = GFX_getId("tilt_icon.png");
-    TWIST_ICON            = GFX_getId("twist_icon.png");
+    MASCOT_MAIN_SPRITE    = GFX_getAssetId("mas_main.png");
+    MASCOT_SUCCESS_SPRITE = GFX_getAssetId("mas_success.png");
+    MASCOT_WAIT_SPRITE    = GFX_getAssetId("mas_wait.png");
+    CIRCLE_QUARTER        = GFX_getAssetId("quarter.png");
+    SELECTOR              = GFX_getAssetId("selector.png");
+    SHAKE_ICON            = GFX_getAssetId("shake_icon.png");
+    TAP_ICON              = GFX_getAssetId("tap_icon.png");
+    TILT_ICON             = GFX_getAssetId("tilt_icon.png");
+    TWIST_ICON            = GFX_getAssetId("twist_icon.png");
 
-    SMALL_STAR            = GFX_getId("star_small.png");
-    BIG_STAR              = GFX_getId("star_big.png");
+    SMALL_STAR            = GFX_getAssetId("star_small.png");
+    BIG_STAR              = GFX_getAssetId("star_big.png");
 
-    CIRCLE_QUARTER_PUSH   = GFX_getId("quarterPush.png");
+    CIRCLE_QUARTER_PUSH   = GFX_getAssetId("quarterPush.png");
 
-    FINGER_SPRITE         = GFX_getId("finger.png");
-    WRONG_TAP_ICON        = GFX_getId("wrongTap.png");
-    WRONG_TAP_RIM         = GFX_getId("wrongRim.png");
-    RIGHT_TAP_ICON        = GFX_getId("rightTap.png");
-    RIGHT_TAP_RIM_1       = GFX_getId("rightRim1.png");
-    RIGHT_TAP_RIM_2       = GFX_getId("rightRim2.png");
-    RIGHT_TAP_RIM_3       = GFX_getId("rightRim3.png");
+    FINGER_SPRITE         = GFX_getAssetId("finger.png");
+    WRONG_TAP_ICON        = GFX_getAssetId("wrongTap.png");
+    WRONG_TAP_RIM         = GFX_getAssetId("wrongRim.png");
+    RIGHT_TAP_ICON        = GFX_getAssetId("rightTap.png");
+    RIGHT_TAP_RIM_1       = GFX_getAssetId("rightRim1.png");
+    RIGHT_TAP_RIM_2       = GFX_getAssetId("rightRim2.png");
+    RIGHT_TAP_RIM_3       = GFX_getAssetId("rightRim3.png");
     
-    SPEECH_BUBBLE_TAP_SPRITE = GFX_getId("speechTap.png");
+    SPEECH_BUBBLE_TAP_SPRITE = GFX_getAssetId("speechTap.png");
 
-    MASCOT_MAIN_EMPTY_SPRITE       = GFX_getId("masMainE.png");
-    MASCOT_MAIN_EYES_NORMAL_SPRITE = GFX_getId("masEyesN.png");
-    MASCOT_MAIN_MOUNTH_O_SPRITE    = GFX_getId("masMouthO.png");
+    MASCOT_MAIN_EMPTY_SPRITE       = GFX_getAssetId("masMainE.png");
+    MASCOT_MAIN_EYES_NORMAL_SPRITE = GFX_getAssetId("masEyesN.png");
+    MASCOT_MAIN_MOUNTH_O_SPRITE    = GFX_getAssetId("masMouthO.png");
 
     // Sounds
-    ACTION_SOUND      = SND_getId("action.wav");
-    GOOD_SOUND        = SND_getId("good.wav");
-    EXCELLENT_1_SOUND = SND_getId("excellent_1.wav");
-    EXCELLENT_2_SOUND = SND_getId("excellent_2.wav");
+    ACTION_SOUND      = SND_getAssetId("action.wav");
+    GOOD_SOUND        = SND_getAssetId("good.wav");
+    EXCELLENT_1_SOUND = SND_getAssetId("excellent_1.wav");
+    EXCELLENT_2_SOUND = SND_getAssetId("excellent_2.wav");
     
-    SELECTOR_MENU_SOUND = SND_getId("selec_menu.wav");
+    SELECTOR_MENU_SOUND = SND_getAssetId("selec_menu.wav");
     
-    TAPS_1_2_SOUND = SND_getId("taps_1-2.wav");
-    TAPS_3_4_SOUND = SND_getId("taps_3-4.wav");
-    TAPS_5_6_SOUND = SND_getId("taps_5-6.wav");
-    TAP_STAGE_SUCCESS_SOUND = SND_getId("tapsSuccess.wav");
+    TAPS_1_2_SOUND = SND_getAssetId("taps_1-2.wav");
+    TAPS_3_4_SOUND = SND_getAssetId("taps_3-4.wav");
+    TAPS_5_6_SOUND = SND_getAssetId("taps_5-6.wav");
+    TAP_STAGE_SUCCESS_SOUND = SND_getAssetId("tapsSuccess.wav");
 
-    PLUS_1_SHAPE_COLLECT_1_SOUND = SND_getId("collect_1.wav");
-    PLUS_1_SHAPE_COLLECT_2_SOUND = SND_getId("collect_2.wav");
-    PLUS_1_SHAPE_COLLECT_3_SOUND = SND_getId("collect_3.wav");
+    PLUS_1_SHAPE_COLLECT_1_SOUND = SND_getAssetId("collect_1.wav");
+    PLUS_1_SHAPE_COLLECT_2_SOUND = SND_getAssetId("collect_2.wav");
+    PLUS_1_SHAPE_COLLECT_3_SOUND = SND_getAssetId("collect_3.wav");
 
     tiltTutCollectableSounds{0} = PLUS_1_SHAPE_COLLECT_1_SOUND;
     tiltTutCollectableSounds{1} = PLUS_1_SHAPE_COLLECT_2_SOUND;
@@ -227,11 +225,14 @@ public ON_Init() {
     }
 
     for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-        getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletLocation(SetFacelet(SELF_ID, screenI));
-        getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation:ORIENTATION_SPLASH);
+        getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletOrientation(SetFacelet(SELF_ID, screenI));
+        getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
     }
 
     SetApplicationState(FSM:start);
+}
+
+public ON_Quit() {
 }
 
 public ON_Shake(const count) {
@@ -310,8 +311,8 @@ public ON_Tap(const count, const display, const bool:opposite) {
 
 public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
     for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-        getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletLocation(SetFacelet(SELF_ID, screenI));
-        getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation:ORIENTATION_SPLASH);
+        getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletOrientation(SetFacelet(SELF_ID, screenI));
+        getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
     }
 
     if (applicationState == FSM:twistTutorial) {
@@ -339,62 +340,62 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
     }
 }
 
-public ON_Load(const pkt[]) {
-    if (parseByte(pkt, 1) == 0) {
+public ON_Load(id, size, const pkt[]) {
+    if (size == 0) {
         return;
     }
-    alreadyLaunched = pkt[1];
+    alreadyLaunched = pkt[0];
 }
 
-public ON_Message(const pkt[]) {
-    switch (parseByte(pkt, 4)) {
+public ON_Message(const pkt[MESSAGE_SIZE]) {
+    switch (parseByte(pkt, 0)) {
         case PKT_GENERAL_DATA: {
-            new packetNumberReceived = pkt[4];
+            new packetNumberReceived = pkt[3];
             if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
                 generalDataPkt = packetNumberReceived;
-                SetApplicationState(parseByte(pkt, 7));
-                new flags = parseByte(pkt, 5);
+                SetApplicationState(parseByte(pkt, 3));
+                new flags = parseByte(pkt, 1);
                 beginTapTutorial = flags & 0x1;
                 finishTiltTutorial = (flags >> 3) & 0x1;
                 selectorTutorial = (flags >> 4) & 0x1;
                 beginShakeTutorial = (flags >> 5) & 0x1;
                 getstartedGreetingFlag = (flags >> 6) & 0x1;
                 fillTapTutorial = (flags >> 7) & 0x1;
-                if (parseByte(pkt, 8) > tapTutorialStage) {
+                if (parseByte(pkt, 4) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
                 }
                 for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
-                    tiltTutCollectableSounds{soundI} = (parseByte(pkt, 11) >> (soundI * 2)) & 0x3;
+                    tiltTutCollectableSounds{soundI} = (parseByte(pkt, 7) >> (soundI * 2)) & 0x3;
                 }
-                tapTutorialStage = parseByte(pkt, 8);
-                shakeTutorialStage = parseByte(pkt, 9);
-                twistTutorialStage = parseByte(pkt, 10);
-                tutorialStartTimer = pkt[3];
+                tapTutorialStage = parseByte(pkt, 4);
+                shakeTutorialStage = parseByte(pkt, 5);
+                twistTutorialStage = parseByte(pkt, 6);
+                tutorialStartTimer = pkt[2];
             }
         }
         case PKT_BALL_TILT_TUT: {
-            new packetNumberReceived = pkt[4];
+            new packetNumberReceived = pkt[3];
             if ((ballPkt < packetNumberReceived) || ((ballPkt - packetNumberReceived) > (0xFFFFF >> 1))) {
                 ballPkt = packetNumberReceived;
-                tiltTutBall.module = parseByte(pkt, 5);
-                tiltTutBall.screen = parseByte(pkt, 6);
-                tiltTutBall.angle = pkt[2];
-                tiltTutBall.screenAngle = pkt[3];
+                tiltTutBall.module = parseByte(pkt, 1);
+                tiltTutBall.screen = parseByte(pkt, 2);
+                tiltTutBall.angle = pkt[1];
+                tiltTutBall.screenAngle = pkt[2];
                 for (new item = 0; item < SCREENS_MAX; ++item) {
-                    collectables{item} = (parseByte(pkt, 7) >> item) & 0x1;
+                    collectables{item} = (parseByte(pkt, 3) >> item) & 0x1;
                 }
             }
         }
         case PKT_SELECTOR_TILT_TUT: {
-            new packetNumberReceived = pkt[3];
+            new packetNumberReceived = pkt[2];
             if ((selectorPkt < packetNumberReceived) || ((selectorPkt - packetNumberReceived) > (0xFFFFF >> 1))) {
                 selectorPkt = packetNumberReceived;
-                tiltTutSelector.module = parseByte(pkt, 5);
+                tiltTutSelector.module = parseByte(pkt, 1);
                 if (tiltTutSelector.module == SELF_ID) {
-                    selectorInAnimation = pkt[4];
+                    selectorInAnimation = pkt[3];
                 }
-                tiltTutSelector.screen = parseByte(pkt, 6);
-                tiltTutSelector.screenAngle = pkt[2];
+                tiltTutSelector.screen = parseByte(pkt, 2);
+                tiltTutSelector.screenAngle = pkt[1];
             }
         }
     }
