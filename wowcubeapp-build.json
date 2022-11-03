@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "sdkVersion": "5.0",
   "appIcon": {
     "path": "assets/icon.png",
@@ -146,6 +146,106 @@
     {
       "path": "assets/images/wrongTap.png",
       "alias": "wrongTap.png"
+    },
+    {
+      "path": "assets/images/hi.png",
+      "alias": "hi.png"
+    },
+    {
+      "path": "assets/images/off_hand.png",
+      "alias": "off_hand.png"
+    },
+    {
+      "path": "assets/images/hand_main1.png",
+      "alias": "hand_main1.png"
+    },
+    {
+      "path": "assets/images/hand_main2.png",
+      "alias": "hand_main2.png"
+    },
+    {
+      "path": "assets/images/hand_main3.png",
+      "alias": "hand_main3.png"
+    },
+    {
+      "path": "assets/images/twistIG.png",
+      "alias": "twistIG.png"
+    },
+    {
+      "path": "assets/images/twistRim1.png",
+      "alias": "twistRim1.png"
+    },
+    {
+      "path": "assets/images/twistRim2.png",
+      "alias": "twistRim2.png"
+    },
+    {
+      "path": "assets/images/flTapRim.png",
+      "alias": "flTapRim.png"
+    },
+    {
+      "path": "assets/images/shakeIO.png",
+      "alias": "shakeIO.png"
+    },
+    {
+      "path": "assets/images/heGreen.png",
+      "alias": "heGreen.png"
+    },
+    {
+      "path": "assets/images/heOrange.png",
+      "alias": "heOrange.png"
+    },
+    {
+      "path": "assets/images/hePink.png",
+      "alias": "hePink.png"
+    },
+    {
+      "path": "assets/images/hePurple.png",
+      "alias": "hePurple.png"
+    },
+    {
+      "path": "assets/images/heWhite.png",
+      "alias": "heWhite.png"
+    },
+    {
+      "path": "assets/images/lloGreen.png",
+      "alias": "lloGreen.png"
+    },
+    {
+      "path": "assets/images/lloOrange.png",
+      "alias": "lloOrange.png"
+    },
+    {
+      "path": "assets/images/lloPink.png",
+      "alias": "lloPink.png"
+    },
+    {
+      "path": "assets/images/lloPurple.png",
+      "alias": "lloPurple.png"
+    },
+    {
+      "path": "assets/images/lloWhite.png",
+      "alias": "lloWhite.png"
+    },
+    {
+      "path": "assets/images/arc1.png",
+      "alias": "arc1.png"
+    },
+    {
+      "path": "assets/images/arc2.png",
+      "alias": "arc2.png"
+    },
+    {
+      "path": "assets/images/arc3.png",
+      "alias": "arc3.png"
+    },
+    {
+      "path": "assets/images/arc4.png",
+      "alias": "arc4.png"
+    },
+    {
+      "path": "assets/images/arc5.png",
+      "alias": "arc5.png"
     }
   ],
   "soundAssets": [
@@ -198,5 +298,5 @@
       "alias": "taps_5-6.wav"
     }
   ],
-  "appFlags": "0"
+  "appFlags": 0
 }

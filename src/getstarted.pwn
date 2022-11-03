@@ -6,13 +6,7 @@ forward run(const pkt[], size, const src[]); // public Pawn function seen from C
 #include "getstarted_tiltTut.inc"
 #include "getstarted_shakeTut.inc"
 #include "getstarted_success.inc"
-
-SaveData() {
-    new saveData [2] = [0,...];
-    saveData[0] = alreadyLaunched + 1;
-    saveState(saveData);
-    dataSaved = 1;
-}
+#include "getstarted_firstLaunch.inc"
 
 SetApplicationState(newState) {
     if (applicationState != newState) {
@@ -66,16 +60,18 @@ SendGeneralInfo(pktNumber) {
     | (selectorTutorial << 4) 
     | (beginShakeTutorial << 5)
     | (getstartedGreetingFlag << 6)
-    | (fillTapTutorial << 7);
+    | (fillTapTutorial << 7)
+    | (flStartFlag << 8);
 
     new randomSoundOrder = 0;
     for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
         randomSoundOrder |= (tiltTutCollectableSounds{soundI} << (soundI * 2));
     }
-    data[0] = PKT_GENERAL_DATA | (flags << 8) | (previousAppState << 16) | (applicationState << 24);
+    data[0] = PKT_GENERAL_DATA | (previousAppState << 16) | (applicationState << 24);
     data[1] = tapTutorialStage | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
     data[3] = pktNumber;
+    data[4] = flags;
 
     broadcastMessage(data);
 }
@@ -105,6 +101,9 @@ public ON_Render() {
             }
             case successScreen: {
                 DrawSuccessScreen(screenI);
+            }
+            case firstLaunch: {
+                DrawFirstLaunch(screenI);
             }
         }
         GFX_render();
@@ -138,6 +137,9 @@ public ON_Tick() {
         case successScreen: {
             UpdateSuccessScreen(deltaTime);
         }
+        case firstLaunch: {
+            UpdateFirstLaunch(deltaTime);
+        }
     }
 
     if (SELF_ID == 0) {
@@ -147,14 +149,13 @@ public ON_Tick() {
 }
 
 public ON_Init(id, size, const pkt[]) {
-    loadState();
-
     previousTime = getTime();
 
     ARROW_TWIST = GFX_getAssetId("arrow_twist.png");
     
     ARROW_TILT    = GFX_getAssetId("arrow_tilt.png");
     BALL          = GFX_getAssetId("ball.png");
+    COLLECTED     = GFX_getAssetId("collected.png");
     COLLECTABLE   = GFX_getAssetId("collectable.png");
     COMPLETE_ICON = GFX_getAssetId("complete.png");
     COUNT_BAR     = GFX_getAssetId("count_bar.png");
@@ -194,6 +195,47 @@ public ON_Init(id, size, const pkt[]) {
     MASCOT_MAIN_EYES_NORMAL_SPRITE = GFX_getAssetId("masEyesN.png");
     MASCOT_MAIN_MOUNTH_O_SPRITE    = GFX_getAssetId("masMouthO.png");
 
+    HI_SPRITE          = GFX_getAssetId("hi.png");
+    OFF_HAND_SPRITE    = GFX_getAssetId("off_hand.png");
+    MAIN_HAND_1_SPRITE = GFX_getAssetId("hand_main1.png");
+    MAIN_HAND_2_SPRITE = GFX_getAssetId("hand_main2.png");
+    MAIN_HAND_3_SPRITE = GFX_getAssetId("hand_main3.png");
+    
+    mascotHandWaveAnimFrames{0} = MAIN_HAND_1_SPRITE;
+    mascotHandWaveAnimFrames{1} = MAIN_HAND_2_SPRITE;
+    mascotHandWaveAnimFrames{2} = MAIN_HAND_3_SPRITE;
+    mascotHandWaveAnimFrames{3} = MAIN_HAND_2_SPRITE;
+
+    SHAKE_ORANGE_ICON_SPRITE = GFX_getAssetId("shakeIO.png");
+    TWIST_GREEN_ICON_SPRITE  = GFX_getAssetId("twistIG.png");
+
+    FL_TWIST_RIM_1 = GFX_getAssetId("twistRim1.png");
+    FL_TWIST_RIM_2 = GFX_getAssetId("twistRim2.png");
+    FL_TAP_RIM_2 = GFX_getAssetId("flTapRim.png");
+
+    HE_GREEN_SPRITE  = GFX_getAssetId("heGreen.png");
+    HE_ORANGE_SPRITE = GFX_getAssetId("heOrange.png");
+    HE_PINK_SPRITE   = GFX_getAssetId("hePink.png");
+    HE_PURPLE_SPRITE = GFX_getAssetId("hePurple.png");
+    HE_WHITE_SPRITE  = GFX_getAssetId("heWhite.png");
+    LLO_GREEN_SPRITE  = GFX_getAssetId("lloGreen.png");
+    LLO_ORANGE_SPRITE = GFX_getAssetId("lloOrange.png");
+    LLO_PINK_SPRITE   = GFX_getAssetId("lloPink.png");
+    LLO_PURPLE_SPRITE = GFX_getAssetId("lloPurple.png");
+    LLO_WHITE_SPRITE  = GFX_getAssetId("lloWhite.png");
+
+    ARC_1_SPRITE = GFX_getAssetId("arc1.png");
+    ARC_2_SPRITE = GFX_getAssetId("arc2.png");
+    ARC_3_SPRITE = GFX_getAssetId("arc3.png");
+    ARC_4_SPRITE = GFX_getAssetId("arc4.png");
+    ARC_5_SPRITE = GFX_getAssetId("arc5.png");
+
+    arcsInCurtain[0].sprite = ARC_1_SPRITE;
+    arcsInCurtain[1].sprite = ARC_2_SPRITE;
+    arcsInCurtain[2].sprite = ARC_3_SPRITE;
+    arcsInCurtain[3].sprite = ARC_4_SPRITE;
+    arcsInCurtain[4].sprite = ARC_5_SPRITE;
+
     // Sounds
     ACTION_SOUND      = SND_getAssetId("action.wav");
     GOOD_SOUND        = SND_getAssetId("good.wav");
@@ -229,30 +271,19 @@ public ON_Init(id, size, const pkt[]) {
         getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
     }
 
-    SetApplicationState(FSM:start);
+    SetApplicationState(FSM:firstLaunch);
 }
 
 public ON_Quit() {
 }
 
 public ON_Shake(const count) {
-    if ((SELF_ID == 0) && (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) && alreadyLaunched) {
-        quit();
-    }
     if (count > 0) {
         SetDefaultMascot();
     }
     if ((SELF_ID == 0) && (applicationState == FSM:shakeTutorial)) {
         if (beginShakeTutorial) {
             shakeTutorialStage = count;
-
-            if (!dataSaved) {
-                SaveData();
-            }
-
-            if (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
-                quit();
-            }
         }
         if (!beginShakeTutorial && (count > 0)) {
             beginShakeTutorial = 1;
@@ -331,6 +362,8 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
             }
         } else if ((applicationState == FSM:successScreen) && (previousAppState == FSM:twistTutorial)) {
             SetApplicationState(FSM:tapTutorial);
+        } else if (applicationState == FSM:firstLaunch) {
+            SetApplicationState(FSM:start);
         }
     }
 
@@ -341,10 +374,6 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
 }
 
 public ON_Load(id, size, const pkt[]) {
-    if (size == 0) {
-        return;
-    }
-    alreadyLaunched = pkt[0];
 }
 
 public ON_Message(const pkt[MESSAGE_SIZE]) {
@@ -354,13 +383,14 @@ public ON_Message(const pkt[MESSAGE_SIZE]) {
             if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
                 generalDataPkt = packetNumberReceived;
                 SetApplicationState(parseByte(pkt, 3));
-                new flags = parseByte(pkt, 1);
+                new flags = pkt[4];
                 beginTapTutorial = flags & 0x1;
                 finishTiltTutorial = (flags >> 3) & 0x1;
                 selectorTutorial = (flags >> 4) & 0x1;
                 beginShakeTutorial = (flags >> 5) & 0x1;
                 getstartedGreetingFlag = (flags >> 6) & 0x1;
                 fillTapTutorial = (flags >> 7) & 0x1;
+                flStartFlag = (flags >> 8) & 0x1;
                 if (parseByte(pkt, 4) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
                 }

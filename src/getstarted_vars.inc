@@ -15,7 +15,7 @@
 
 const SCREEN_WIDTH = 240;
 const SCREEN_HEIGHT = 240;
-const BACKGROUND_COLOR = 0xFF18193F;
+const BACKGROUND_COLOR = 0xFF1D1027;//0xFF18193F;
 
 const MAX_TANGIBLE_ICONS = 4;
 const MAX_ARROW_ICONS = 3;
@@ -69,6 +69,32 @@ new MASCOT_MAIN_EMPTY_SPRITE       = 27;
 new MASCOT_MAIN_EYES_NORMAL_SPRITE = 27;
 new MASCOT_MAIN_MOUNTH_O_SPRITE    = 27;
 
+new HI_SPRITE = 28;
+new OFF_HAND_SPRITE = 28;
+new MAIN_HAND_1_SPRITE = 28;
+new MAIN_HAND_2_SPRITE = 28;
+new MAIN_HAND_3_SPRITE = 28;
+new SHAKE_ORANGE_ICON_SPRITE = 28;
+new TWIST_GREEN_ICON_SPRITE = 28;
+new FL_TWIST_RIM_1 = 28;
+new FL_TWIST_RIM_2 = 28;
+new FL_TAP_RIM_2 = 28;
+new HE_GREEN_SPRITE  = 28;
+new HE_ORANGE_SPRITE = 28;
+new HE_PINK_SPRITE   = 28;
+new HE_PURPLE_SPRITE = 28;
+new HE_WHITE_SPRITE  = 28;
+new LLO_GREEN_SPRITE  = 28;
+new LLO_ORANGE_SPRITE = 28;
+new LLO_PINK_SPRITE   = 28;
+new LLO_PURPLE_SPRITE = 28;
+new LLO_WHITE_SPRITE  = 28;
+new ARC_1_SPRITE = 28;
+new ARC_2_SPRITE = 28;
+new ARC_3_SPRITE = 28;
+new ARC_4_SPRITE = 28;
+new ARC_5_SPRITE = 28;
+
 new ACTION_SOUND = 0;
 new GOOD_SOUND = 1;
 new EXCELLENT_1_SOUND = 2;
@@ -98,6 +124,7 @@ const FSM: {
     tiltTutorial,
     shakeTutorial,
     successScreen,
+    firstLaunch,
 }
 
 new FSM:applicationState = 0;
@@ -111,8 +138,6 @@ new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
 
 new currentMascotSprite = 0;
 new generalDataPkt = 0;
-new alreadyLaunched = 0;
-new dataSaved = 0;
 new neighbor[TOPOLOGY_FACELET_INFO];
 
 const crossLineThickness = 6;
