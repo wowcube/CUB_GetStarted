@@ -9,6 +9,8 @@ const HI           = 5;
 const FL_TWIST     = 6;
 const FL_TAP       = 7;
 const FL_QUESTION  = 8;
+const FL_TWIST_FIRST_TEXT = 9;
+const FL_TWIST_FIRST_ICON = 10;
 
 new getstarted_firstLaunch_hello{} = {
     LLO, WELCOME_TEXT, MASCOT, HE,
@@ -19,13 +21,22 @@ new getstarted_firstLaunch_hello{} = {
     WELCOME_TEXT, EMPTY, HI, EMPTY,
 };
 
-new getstarted_firstLaunch_choice{} = {
+new getstarted_firstLaunch_second{} = {
     FL_TAP, WELCOME_TEXT, MASCOT, FL_TWIST,
     FL_TAP, WELCOME_TEXT, MASCOT, FL_TWIST,
     FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
     FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
     FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
     FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
+};
+
+new getstarted_firstLaunch_first{} = {
+    FL_TWIST_FIRST_TEXT, WELCOME_TEXT, MASCOT, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, WELCOME_TEXT, MASCOT, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
 };
 
 const MAX_HAND_WAVE_ANIM_FRAMES = 4;
@@ -44,6 +55,7 @@ new helloVanishFlag = 0;
 
 const CHANGE_LAYOUT_TIME = 1000;
 new fl_ChoiceAppearAnimTimer = 0;
+new fl_purpleTwistIconTimer = 0;
 
 const FL_RIM_ANIM_REPEAT = 2000;
 new twistRimFlag = 1;
@@ -84,7 +96,7 @@ DrawFirstLaunch(screen) {
     new angle = getStarted_screenData[screen].angle;
     
     new layoutElement = getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90;
-    new screenLayout = (changeLayoutFlag) ? (getstarted_firstLaunch_choice{layoutElement}) : (getstarted_firstLaunch_hello{layoutElement});
+    new screenLayout = (changeLayoutFlag) ? (getstarted_firstLaunch_first{layoutElement}) : (getstarted_firstLaunch_hello{layoutElement});
     
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
@@ -175,15 +187,15 @@ DrawFirstLaunch(screen) {
             if (angle == 180) {
                 GFX_drawImageXY(120, 160 - offset, alpha, 0, angle, MIRROR_BLANK, TWIST_GREEN_ICON_SPRITE);
                 GFX_drawText([120, 60], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x07C995), "twist");
-                GFX_drawText([120, 30], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFFFF), "to continue");
+                GFX_drawText([120, 30], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
                 if (fl_ChoiceAppearAnimTimer > CHANGE_LAYOUT_TIME) {
                     GFX_drawImage([120, 160], twistRimAlpha_1, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_1);
                     GFX_drawImage([120, 160], twistRimAlpha_2, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_2);
                 }
             } else {
                 GFX_drawImageXY(80 + offset, 120, alpha, 0, angle, MIRROR_BLANK, TWIST_GREEN_ICON_SPRITE);
-                GFX_drawText([180, 120], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFF07C995), "twist");
-                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFFFF), "to continue");
+                GFX_drawText([180, 120], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x07C995), "twist");
+                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
                 if (fl_ChoiceAppearAnimTimer > CHANGE_LAYOUT_TIME) {
                     GFX_drawImage([80, 120], twistRimAlpha_1, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_1);
                     GFX_drawImage([80, 120], twistRimAlpha_2, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_2);
@@ -197,6 +209,22 @@ DrawFirstLaunch(screen) {
             GFX_drawText([140, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "want to learn");
             GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "how to use the");
             GFX_drawText([100, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube?");
+        }
+        case FL_TWIST_FIRST_TEXT: {
+            new alpha = 0xFF;
+            if (fl_ChoiceAppearAnimTimer < CHANGE_LAYOUT_TIME) {
+                alpha = FirstLaunchFontPercents();
+            }
+            GFX_drawText([120, 100], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x8E36FF), "twist");
+            GFX_drawText([120, 140], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
+        }
+        case FL_TWIST_FIRST_ICON: {
+            new alpha = 0xFF;
+            if (fl_ChoiceAppearAnimTimer < CHANGE_LAYOUT_TIME) {
+                alpha = FirstLaunchFontPercents();
+            }
+            GFX_drawImageXY(120, 120, alpha, 0, angle, MIRROR_BLANK,
+                           (fl_purpleTwistIconTimer > 500) ? (TWIST_PURPLE_ICON_1_SPRITE) : (TWIST_PURPLE_ICON_2_SPRITE));
         }
     }
     for (new arcI = radianCurtainFlag; arcI < MAX_ARCS; ++arcI) {
@@ -212,6 +240,10 @@ UpdateFirstLaunch(deltaTime) {
         } else {
             if (changeLayoutFlag) {
                 fl_ChoiceAppearAnimTimer += deltaTime;
+                fl_purpleTwistIconTimer += deltaTime;
+                if (fl_purpleTwistIconTimer > 1000) {
+                    fl_purpleTwistIconTimer = 0;
+                }
 
                 // Twist
                 if (twistRimFlag == 1) {

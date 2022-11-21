@@ -95,6 +95,9 @@ new ARC_3_SPRITE = 28;
 new ARC_4_SPRITE = 28;
 new ARC_5_SPRITE = 28;
 
+new TWIST_PURPLE_ICON_1_SPRITE = 28;
+new TWIST_PURPLE_ICON_2_SPRITE = 28;
+
 new ACTION_SOUND = 0;
 new GOOD_SOUND = 1;
 new EXCELLENT_1_SOUND = 2;
@@ -138,6 +141,8 @@ new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
 
 new currentMascotSprite = 0;
 new generalDataPkt = 0;
+new alreadyLaunched = 0;
+new dataSaved = 0;
 new neighbor[TOPOLOGY_FACELET_INFO];
 
 const crossLineThickness = 6;

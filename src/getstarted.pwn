@@ -8,6 +8,13 @@ forward run(const pkt[], size, const src[]); // public Pawn function seen from C
 #include "getstarted_success.inc"
 #include "getstarted_firstLaunch.inc"
 
+SaveData() {
+    new saveData [2] = [0,...];
+    saveData[0] = alreadyLaunched + 1;
+    saveState(saveData);
+    dataSaved = 1;
+}
+
 SetApplicationState(newState) {
     if (applicationState != newState) {
         if (newState == FSM:start) {
@@ -149,6 +156,8 @@ public ON_Tick() {
 }
 
 public ON_Init(id, size, const pkt[]) {
+    loadState();
+
     previousTime = getTime();
 
     ARROW_TWIST = GFX_getAssetId("arrow_twist.png");
@@ -236,6 +245,9 @@ public ON_Init(id, size, const pkt[]) {
     arcsInCurtain[3].sprite = ARC_4_SPRITE;
     arcsInCurtain[4].sprite = ARC_5_SPRITE;
 
+    TWIST_PURPLE_ICON_1_SPRITE = GFX_getAssetId("twistP1.png");
+    TWIST_PURPLE_ICON_2_SPRITE = GFX_getAssetId("twistP2.png");
+
     // Sounds
     ACTION_SOUND      = SND_getAssetId("action.wav");
     GOOD_SOUND        = SND_getAssetId("good.wav");
@@ -278,12 +290,22 @@ public ON_Quit() {
 }
 
 public ON_Shake(const count) {
+    //if ((SELF_ID == 0) && (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) && alreadyLaunched) {
+    //    quit();
+    //}
     if (count > 0) {
         SetDefaultMascot();
     }
     if ((SELF_ID == 0) && (applicationState == FSM:shakeTutorial)) {
         if (beginShakeTutorial) {
             shakeTutorialStage = count;
+            if (!dataSaved) {
+                SaveData();
+            }
+
+            if (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
+                quit();
+            }
         }
         if (!beginShakeTutorial && (count > 0)) {
             beginShakeTutorial = 1;
@@ -374,6 +396,10 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
 }
 
 public ON_Load(id, size, const pkt[]) {
+    if (size == 0) {
+        return;
+    }
+    alreadyLaunched = pkt[0];
 }
 
 public ON_Message(const pkt[MESSAGE_SIZE]) {

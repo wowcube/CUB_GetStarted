@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "sdkVersion": "5.0",
   "appIcon": {
     "path": "assets/icon.png",
@@ -246,6 +246,14 @@
     {
       "path": "assets/images/arc5.png",
       "alias": "arc5.png"
+    },
+    {
+      "path": "assets/images/twistP1.png",
+      "alias": "twistP1.png"
+    },
+    {
+      "path": "assets/images/twistP2.png",
+      "alias": "twistP2.png"
     }
   ],
   "soundAssets": [
