@@ -1,11 +1,11 @@
 #include "getstarted_vars.inc"
 
-const MASCOT     = 0;
-const EMPTY      = 1;
-const ICON       = 2;
-const SPEECH_BOX = 3;
-const TEXT_BOX   = 4;
-const ARROW      = 5;
+const TWISTTUT_MASCOT     = 0;
+const TWISTTUT_EMPTY      = 1;
+const TWISTTUT_ICON       = 2;
+const TWISTTUT_SPEECH_BOX = 3;
+const TWISTTUT_TEXT_BOX   = 4;
+const TWISTTUT_ARROW      = 5;
 
 new arrowIcons[MAX_ARROW_ICONS];
 
@@ -17,20 +17,20 @@ new arrowAnimationTime = 0;
 new twistTutorialStage = 0;
 
 new getstarted_twistTutLayout_X{} = {
-    ARROW, ARROW, SPEECH_BOX, MASCOT,
-    ARROW, ARROW, SPEECH_BOX, MASCOT,
-    ARROW, ARROW, ARROW, ARROW,
-    ARROW, ARROW, ARROW, ARROW,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
-    EMPTY, ICON, EMPTY, TEXT_BOX,
+    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_SPEECH_BOX, TWISTTUT_MASCOT,
+    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_SPEECH_BOX, TWISTTUT_MASCOT,
+    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW,      TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW,      TWISTTUT_ARROW,
+    TWISTTUT_ICON,  TWISTTUT_EMPTY, TWISTTUT_TEXT_BOX,   TWISTTUT_EMPTY,
+    TWISTTUT_EMPTY, TWISTTUT_ICON,  TWISTTUT_EMPTY,      TWISTTUT_TEXT_BOX,
 };
 new getstarted_twistTutLayout_Y{} = {
-    ARROW, MASCOT, SPEECH_BOX, ARROW,
-    ARROW, MASCOT, SPEECH_BOX, ARROW,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
-    EMPTY, ICON, EMPTY, TEXT_BOX,
-    ARROW, ARROW, ARROW, ARROW,
-    ARROW, ARROW, ARROW, ARROW,
+    TWISTTUT_ARROW, TWISTTUT_MASCOT, TWISTTUT_SPEECH_BOX, TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_MASCOT, TWISTTUT_SPEECH_BOX, TWISTTUT_ARROW,
+    TWISTTUT_ICON,  TWISTTUT_EMPTY,  TWISTTUT_TEXT_BOX,   TWISTTUT_EMPTY,
+    TWISTTUT_EMPTY, TWISTTUT_ICON,   TWISTTUT_EMPTY,      TWISTTUT_TEXT_BOX,
+    TWISTTUT_ARROW, TWISTTUT_ARROW,  TWISTTUT_ARROW,      TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_ARROW,  TWISTTUT_ARROW,      TWISTTUT_ARROW,
 };
 
 new mascotTwistAnimTimer = 0;
@@ -60,7 +60,7 @@ DrawTwistTutorial(screen) {
                        (getstarted_twistTutLayout_X{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
-        case MASCOT: {
+        case TWISTTUT_MASCOT: {
             if (twistTutorialStage) {
                 if (currentStage) {
                     GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
@@ -77,10 +77,10 @@ DrawTwistTutorial(screen) {
                 GFX_drawImage([ 31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
             }
         }
-        case ICON: {
+        case TWISTTUT_ICON: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TWIST_ICON);
         }
-        case SPEECH_BOX: {
+        case TWISTTUT_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
@@ -97,7 +97,7 @@ DrawTwistTutorial(screen) {
                 GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
             }
         }
-        case TEXT_BOX: {
+        case TWISTTUT_TEXT_BOX: {
             new posX_1 = 120;
             new posY_1 = 100;
             new posX_2 = 120;
@@ -121,7 +121,7 @@ DrawTwistTutorial(screen) {
             GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "twist the");
             GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "cube once");
         }
-        case ARROW: {
+        case TWISTTUT_ARROW: {
             new posX = 0;
             new posY = 0;
             new isMainAxisX = ((angle % 180) == 0);
@@ -159,8 +159,8 @@ DrawTwistTutorial(screen) {
     }
 }
 
-UpdateTwistTutorial(deltaTime) {
-    arrowAnimationTime += deltaTime;
+UpdateTwistTutorial(m_deltaTime) {
+    arrowAnimationTime += m_deltaTime;
     if (arrowAnimationTime >= ARROW_ARRAY_SHIFT_TIME) {
         arrowAnimationTime = 0;
         new lastArrowElement = arrowIcons[MAX_ARROW_ICONS - 1];
@@ -175,7 +175,7 @@ UpdateTwistTutorial(deltaTime) {
             mascotTwistAnimTimer = 0;
             mascotTwistAnimFlag = 1;
         } else {
-            mascotTwistAnimTimer += deltaTime;
+            mascotTwistAnimTimer += m_deltaTime;
         }
     }
 

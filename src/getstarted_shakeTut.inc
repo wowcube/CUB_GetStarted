@@ -162,13 +162,13 @@ DrawShakeTutorial(screen) {
     }
 }
 
-UpdateShakeTutorial(deltaTime) {
+UpdateShakeTutorial(m_deltaTime) {
     if (!beginShakeTutorial && !mascotShakeAnimFlag) {
         if (mascotShakeAnimTimer >= MASCOT_WAIT_TIME) {
             mascotShakeAnimTimer = 0;
             mascotShakeAnimFlag = 1;
         } else {
-            mascotShakeAnimTimer += deltaTime;
+            mascotShakeAnimTimer += m_deltaTime;
         }
     }
 }

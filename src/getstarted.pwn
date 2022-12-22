@@ -215,13 +215,6 @@ public ON_Init(id, size, const pkt[]) {
     mascotHandWaveAnimFrames{2} = MAIN_HAND_3_SPRITE;
     mascotHandWaveAnimFrames{3} = MAIN_HAND_2_SPRITE;
 
-    SHAKE_ORANGE_ICON_SPRITE = GFX_getAssetId("shakeIO.png");
-    TWIST_GREEN_ICON_SPRITE  = GFX_getAssetId("twistIG.png");
-
-    FL_TWIST_RIM_1 = GFX_getAssetId("twistRim1.png");
-    FL_TWIST_RIM_2 = GFX_getAssetId("twistRim2.png");
-    FL_TAP_RIM_2 = GFX_getAssetId("flTapRim.png");
-
     HE_GREEN_SPRITE  = GFX_getAssetId("heGreen.png");
     HE_ORANGE_SPRITE = GFX_getAssetId("heOrange.png");
     HE_PINK_SPRITE   = GFX_getAssetId("hePink.png");
@@ -290,9 +283,6 @@ public ON_Quit() {
 }
 
 public ON_Shake(const count) {
-    //if ((SELF_ID == 0) && (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) && alreadyLaunched) {
-    //    quit();
-    //}
     if (count > 0) {
         SetDefaultMascot();
     }

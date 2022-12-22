@@ -94,14 +94,14 @@ DrawStartCountdown(screen) {
     }
 }
 
-UpdateStartCountdown(deltaTime) {    
+UpdateStartCountdown(m_deltaTime) {    
     if (SELF_ID == 0) {
         if (getstartedGreetingFlag) {
-            getstartedGreetingTimer -= deltaTime;
+            getstartedGreetingTimer -= m_deltaTime;
         } else {
             neighbor = TOPOLOGY_getOppositeFacelet(SetFacelet(SELF_ID, 0));
             if (neighbor.connected) {
-                tutorialStartTimer -= deltaTime;
+                tutorialStartTimer -= m_deltaTime;
             }
             if (tutorialStartTimer <= 0) {
                 SetApplicationState(FSM:twistTutorial);

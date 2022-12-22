@@ -1,19 +1,19 @@
 #include "getstarted_vars.inc"
 
-const MASCOT     = 0;
-const EMPTY      = 1;
-const ICON       = 2;
-const SPEECH_BOX = 3;
-const TEXT_BOX   = 4;
-const ICON_2     = 5;
+const SUCCESS_MASCOT     = 0;
+const SUCCESS_EMPTY      = 1;
+const SUCCESS_ICON       = 2;
+const SUCCESS_SPEECH_BOX = 3;
+const SUCCESS_TEXT_BOX   = 4;
+const SUCCESS_ICON_2     = 5;
 
 new getstarted_successLayout{} = {
-    TEXT_BOX, MASCOT, SPEECH_BOX, ICON_2,
-    TEXT_BOX, MASCOT, SPEECH_BOX, ICON_2,
-    TEXT_BOX, EMPTY, ICON, EMPTY,
-    TEXT_BOX, EMPTY, ICON, EMPTY,
-    TEXT_BOX, EMPTY, ICON, EMPTY,
-    TEXT_BOX, EMPTY, ICON, EMPTY,
+    SUCCESS_TEXT_BOX, SUCCESS_MASCOT, SUCCESS_SPEECH_BOX, SUCCESS_ICON_2,
+    SUCCESS_TEXT_BOX, SUCCESS_MASCOT, SUCCESS_SPEECH_BOX, SUCCESS_ICON_2,
+    SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
+    SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
+    SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
+    SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
 };
 
 const SUCCESS_EFFECT_TIME = 500;
@@ -48,11 +48,11 @@ DrawSuccessScreen(screen) {
     new screenLayout = getstarted_successLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
-        case MASCOT: {
+        case SUCCESS_MASCOT: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
             GFX_drawImage([120, 31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
         }
-        case ICON: {
+        case SUCCESS_ICON: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, COMPLETE_ICON);
             new posX = 212;
             new posY = 120;
@@ -66,7 +66,7 @@ DrawSuccessScreen(screen) {
                 GFX_drawText(GetGFXPoint(posX, posY), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
         }
-        case ICON_2: {
+        case SUCCESS_ICON_2: {
             SuccessStarsPercents();
             GFX_drawImage(GetGFXPoint(smallStarX, smallStarY), 0xFF, 0, angle, MIRROR_BLANK, SMALL_STAR);
             GFX_drawImage(GetGFXPoint(bigStarX, bigStarY), 0xFF, 0, angle, MIRROR_BLANK, BIG_STAR);
@@ -78,7 +78,7 @@ DrawSuccessScreen(screen) {
             }
 
         }
-        case SPEECH_BOX: {
+        case SUCCESS_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF9898, 0xFF5252);
             DrawCrossAnimation();
@@ -91,7 +91,7 @@ DrawSuccessScreen(screen) {
                 GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
             }
         }
-        case TEXT_BOX: {
+        case SUCCESS_TEXT_BOX: {
             new posX_1 = 120;
             new posY_1 = 105;
             new posX_2 = 120;
@@ -112,10 +112,10 @@ DrawSuccessScreen(screen) {
     }
 }
 
-UpdateSuccessScreen(deltaTime) {
+UpdateSuccessScreen(m_deltaTime) {
     if (!successAnimationEffectFlag) {
         if (successAnimationEffectTimer < SUCCESS_EFFECT_TIME) {
-            successAnimationEffectTimer += deltaTime;
+            successAnimationEffectTimer += m_deltaTime;
         } else {
             successAnimationEffectTimer = SUCCESS_EFFECT_TIME;
             successAnimationEffectFlag = 1;

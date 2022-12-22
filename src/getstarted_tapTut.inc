@@ -1,30 +1,30 @@
 #include "getstarted_vars.inc"
 
-const MASCOT      = 0;
-const EMPTY       = 1;
-const ICON        = 2;
-const TEXT_BOX    = 3;
-const RIGHT_WAY   = 4;
-const WRONG_WAY   = 5;
-const FINGER_ANIM = 6;
-const BUBBLE_TEXT = 7;
+const TAPTUT_MASCOT      = 0;
+const TAPTUT_EMPTY       = 1;
+const TAPTUT_ICON        = 2;
+const TAPTUT_TEXT_BOX    = 3;
+const RIGHT_WAY          = 4;
+const WRONG_WAY          = 5;
+const FINGER_ANIM        = 6;
+const BUBBLE_TEXT        = 7;
 
 new getstarted_tapTutorial{} = {
-    EMPTY, MASCOT, EMPTY, TEXT_BOX,
-    EMPTY, MASCOT, EMPTY, TEXT_BOX,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX,
+    TAPTUT_EMPTY, TAPTUT_MASCOT, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
+    TAPTUT_EMPTY, TAPTUT_MASCOT, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
+    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
+    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
+    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
+    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
 };
 
 new getstarted_tapStartTutorial{} = {
     RIGHT_WAY, BUBBLE_TEXT, FINGER_ANIM, WRONG_WAY,
     RIGHT_WAY, BUBBLE_TEXT, FINGER_ANIM, WRONG_WAY,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
+    TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
+    TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
+    TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
+    TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
 };
 
 const FULFILLMENT_DROP_TIME = 3000;
@@ -157,7 +157,7 @@ DrawTapTutorial(screen) {
         TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation_mode:ORIENTATION_MODE_GRAVITY));
     }
     switch (screenLayout) {
-        case MASCOT: {
+        case TAPTUT_MASCOT: {
             GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
 
             if (mascotTapReactAnimFlag) {
@@ -173,7 +173,7 @@ DrawTapTutorial(screen) {
                 GFX_drawText([45, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the tap");
             }
         }
-        case TEXT_BOX: {
+        case TAPTUT_TEXT_BOX: {
             if (fillTapTutorial) {
                 GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
                 
@@ -189,7 +189,7 @@ DrawTapTutorial(screen) {
                 GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube!");
             }
         }
-        case EMPTY: {
+        case TAPTUT_EMPTY: {
             if (fillTapTutorial) {
                 GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
 
@@ -204,7 +204,7 @@ DrawTapTutorial(screen) {
                 }
             }
         }
-        case ICON: {
+        case TAPTUT_ICON: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TAP_ICON);
         }
         case WRONG_WAY: {
@@ -284,7 +284,7 @@ DrawTapTutorial(screen) {
     }
 }
 
-UpdateTapTutorial(deltaTime) {
+UpdateTapTutorial(m_deltaTime) {
     if (SELF_ID == 0) {
         if (fillTapTutorial) {
             if (fulfillmentTimer >= FULFILLMENT_DROP_TIME) {
@@ -294,7 +294,7 @@ UpdateTapTutorial(deltaTime) {
                 }
                 fulfillmentTimer = 0;
             } else {
-                fulfillmentTimer += deltaTime;
+                fulfillmentTimer += m_deltaTime;
             }
 
             if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {

@@ -1,38 +1,27 @@
 #include "getstarted_vars.inc"
 
-const EMPTY        = 0;
-const MASCOT       = 1;
-const LLO          = 2;
-const HE           = 3;
-const WELCOME_TEXT = 4;
-const HI           = 5;
-const FL_TWIST     = 6;
-const FL_TAP       = 7;
-const FL_QUESTION  = 8;
-const FL_TWIST_FIRST_TEXT = 9;
-const FL_TWIST_FIRST_ICON = 10;
+const FL_EMPTY        = 0;
+const FL_MASCOT       = 1;
+const LLO             = 2;
+const HE              = 3;
+const FL_WELCOME_TEXT = 4;
+const HI              = 5;
+const FL_QUESTION     = 6;
+const FL_TWIST_FIRST_TEXT = 7;
+const FL_TWIST_FIRST_ICON = 8;
 
 new getstarted_firstLaunch_hello{} = {
-    LLO, WELCOME_TEXT, MASCOT, HE,
-    LLO, WELCOME_TEXT, MASCOT, HE,
-    WELCOME_TEXT, EMPTY, HI, EMPTY,
-    WELCOME_TEXT, EMPTY, HI, EMPTY,
-    WELCOME_TEXT, EMPTY, HI, EMPTY,
-    WELCOME_TEXT, EMPTY, HI, EMPTY,
-};
-
-new getstarted_firstLaunch_second{} = {
-    FL_TAP, WELCOME_TEXT, MASCOT, FL_TWIST,
-    FL_TAP, WELCOME_TEXT, MASCOT, FL_TWIST,
-    FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
-    FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
-    FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
-    FL_TAP, FL_QUESTION, FL_TWIST, EMPTY,
+    LLO, FL_WELCOME_TEXT, FL_MASCOT, HE,
+    LLO, FL_WELCOME_TEXT, FL_MASCOT, HE,
+    FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
+    FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
+    FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
+    FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
 };
 
 new getstarted_firstLaunch_first{} = {
-    FL_TWIST_FIRST_TEXT, WELCOME_TEXT, MASCOT, FL_TWIST_FIRST_ICON,
-    FL_TWIST_FIRST_TEXT, WELCOME_TEXT, MASCOT, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_WELCOME_TEXT, FL_MASCOT, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_WELCOME_TEXT, FL_MASCOT, FL_TWIST_FIRST_ICON,
     FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
     FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
     FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
@@ -53,21 +42,9 @@ new changeLayoutFlag = 0;
 new helloVanishTimer = 0;
 new helloVanishFlag = 0;
 
-const CHANGE_LAYOUT_TIME = 1000;
+const FL_APPEAR_TIME = 1000;
 new fl_ChoiceAppearAnimTimer = 0;
 new fl_purpleTwistIconTimer = 0;
-
-const FL_RIM_ANIM_REPEAT = 2000;
-new twistRimFlag = 1;
-new twistRimAlpha_1 = 0;
-new twistRimAlpha_2 = 0;
-new twistRimTimer_1 = 180;
-new twistRimTimer_2 = 180;
-new twistRimResetTimer = 0;
-new tapRimFlag = 1;
-new tapRimAlpha = 0;
-new tapRimTimer = 180;
-new tapRimResetTimer = 0;
 
 const MAX_ARCS = 5;
 const VANISH_TIME_PER_ARC = 300;
@@ -84,11 +61,11 @@ new arcsInCurtain[MAX_ARCS][.x, .y, .sprite] = [
 ]
 
 FirstLaunchFontPercents() {
-    return (((100 * fl_ChoiceAppearAnimTimer) / CHANGE_LAYOUT_TIME) * 0xFF) / 100;
+    return (((100 * fl_ChoiceAppearAnimTimer) / FL_APPEAR_TIME) * 0xFF) / 100;
 }
 
 FirstLaunchPercents(maxValue, minValue) {
-    new percent = ((100 * fl_ChoiceAppearAnimTimer) / CHANGE_LAYOUT_TIME);
+    new percent = ((100 * fl_ChoiceAppearAnimTimer) / FL_APPEAR_TIME);
     return ((maxValue - minValue) * (100 - percent)) / 100;
 }
 
@@ -101,7 +78,7 @@ DrawFirstLaunch(screen) {
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
     switch (screenLayout) {
-        case MASCOT: {
+        case FL_MASCOT: {
             GFX_drawImage([217,  85], 0xFF, 0, angle, MIRROR_BLANK, OFF_HAND_SPRITE);
             GFX_drawImage([ 40, 160], 0xFF, 0, angle, MIRROR_BLANK, mascotHandWaveAnimFrames{mascotHandWaveAnimFrame});
             GFX_drawImage([135, 120], 0xFF, 0, 170, MIRROR_BLANK, currentMascotSprite);
@@ -109,7 +86,7 @@ DrawFirstLaunch(screen) {
         case HI: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, HI_SPRITE);
         }
-        case WELCOME_TEXT: {
+        case FL_WELCOME_TEXT: {
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
 
@@ -163,45 +140,6 @@ DrawFirstLaunch(screen) {
                 GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, LLO_WHITE_SPRITE);
             }
         }
-        case FL_TAP: {
-            new alpha = 0xFF;
-            new offsetY = 0;
-            if (fl_ChoiceAppearAnimTimer < CHANGE_LAYOUT_TIME) {
-                offsetY = FirstLaunchPercents(100, 80);
-                alpha = FirstLaunchFontPercents();
-            }
-            GFX_drawImageXY(120, 80 + offsetY, alpha, 0, angle, MIRROR_BLANK, SHAKE_ORANGE_ICON_SPRITE);
-            GFX_drawText([120, 180], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xF19752), "shake");
-            GFX_drawText([120, 210], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to exit");
-            if (fl_ChoiceAppearAnimTimer > CHANGE_LAYOUT_TIME) {
-                GFX_drawImage([120, 80], tapRimAlpha, 0, angle, MIRROR_BLANK, FL_TAP_RIM_2);
-            }
-        }
-        case FL_TWIST: {
-            new alpha = 0xFF;
-            new offset = 0;
-            if (fl_ChoiceAppearAnimTimer < CHANGE_LAYOUT_TIME) {
-                offset = FirstLaunchPercents(100, 80);
-                alpha = FirstLaunchFontPercents();
-            }
-            if (angle == 180) {
-                GFX_drawImageXY(120, 160 - offset, alpha, 0, angle, MIRROR_BLANK, TWIST_GREEN_ICON_SPRITE);
-                GFX_drawText([120, 60], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x07C995), "twist");
-                GFX_drawText([120, 30], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
-                if (fl_ChoiceAppearAnimTimer > CHANGE_LAYOUT_TIME) {
-                    GFX_drawImage([120, 160], twistRimAlpha_1, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_1);
-                    GFX_drawImage([120, 160], twistRimAlpha_2, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_2);
-                }
-            } else {
-                GFX_drawImageXY(80 + offset, 120, alpha, 0, angle, MIRROR_BLANK, TWIST_GREEN_ICON_SPRITE);
-                GFX_drawText([180, 120], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x07C995), "twist");
-                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
-                if (fl_ChoiceAppearAnimTimer > CHANGE_LAYOUT_TIME) {
-                    GFX_drawImage([80, 120], twistRimAlpha_1, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_1);
-                    GFX_drawImage([80, 120], twistRimAlpha_2, 0, angle, MIRROR_BLANK, FL_TWIST_RIM_2);
-                }
-            }
-        }
         case FL_QUESTION: {
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
@@ -212,7 +150,7 @@ DrawFirstLaunch(screen) {
         }
         case FL_TWIST_FIRST_TEXT: {
             new alpha = 0xFF;
-            if (fl_ChoiceAppearAnimTimer < CHANGE_LAYOUT_TIME) {
+            if (fl_ChoiceAppearAnimTimer < FL_APPEAR_TIME) {
                 alpha = FirstLaunchFontPercents();
             }
             GFX_drawText([120, 100], SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x8E36FF), "twist");
@@ -220,7 +158,7 @@ DrawFirstLaunch(screen) {
         }
         case FL_TWIST_FIRST_ICON: {
             new alpha = 0xFF;
-            if (fl_ChoiceAppearAnimTimer < CHANGE_LAYOUT_TIME) {
+            if (fl_ChoiceAppearAnimTimer < FL_APPEAR_TIME) {
                 alpha = FirstLaunchFontPercents();
             }
             GFX_drawImageXY(120, 120, alpha, 0, angle, MIRROR_BLANK,
@@ -232,72 +170,36 @@ DrawFirstLaunch(screen) {
     }
 }
 
-UpdateFirstLaunch(deltaTime) {
+UpdateFirstLaunch(m_deltaTime) {
     if (flStartFlag) {
         if (radianCurtainFlag < MAX_ARCS) {
-            radianCurtainTimer += deltaTime;
+            radianCurtainTimer += m_deltaTime;
             radianCurtainFlag = radianCurtainTimer / VANISH_TIME_PER_ARC;
         } else {
             if (changeLayoutFlag) {
-                fl_ChoiceAppearAnimTimer += deltaTime;
-                fl_purpleTwistIconTimer += deltaTime;
-                if (fl_purpleTwistIconTimer > 1000) {
+                fl_ChoiceAppearAnimTimer += m_deltaTime;
+                fl_purpleTwistIconTimer += m_deltaTime;
+                if (fl_purpleTwistIconTimer > FL_APPEAR_TIME) {
                     fl_purpleTwistIconTimer = 0;
-                }
-
-                // Twist
-                if (twistRimFlag == 1) {
-                    twistRimAlpha_1 = (FixedCos(((twistRimTimer_1 += 15)) % 359) + 256) >> 1;
-                    if ((twistRimTimer_1 % 360) == 180) {
-                        --twistRimFlag;
-                    } else if ((twistRimTimer_1 % 360) == 0) {
-                        ++twistRimFlag;
-                    }
-                }
-                if (twistRimFlag == 2) {
-                    twistRimAlpha_2 = (FixedCos(((twistRimTimer_2 += 15)) % 359) + 256) >> 1;
-                    if ((twistRimTimer_2 % 360) == 180) {
-                        --twistRimFlag;
-                    }
-                }
-                if (!twistRimFlag) {
-                    twistRimResetTimer += deltaTime;
-                }
-                if (twistRimResetTimer >= FL_RIM_ANIM_REPEAT) {
-                    twistRimResetTimer = 0;
-                    twistRimFlag = 1;
-                }
-                // Tap
-                if (tapRimFlag) {
-                    tapRimAlpha = (FixedCos(((tapRimTimer += 10)) % 359) + 256) >> 1;
-                } else {
-                    tapRimResetTimer += deltaTime;
-                }
-                if ((tapRimTimer % 360) == 180) {
-                    tapRimFlag = 0;
-                }
-                if (tapRimResetTimer >= FL_RIM_ANIM_REPEAT) {
-                    tapRimResetTimer = 0;
-                    tapRimFlag = 1;
                 }
             }
 
             if (!changeLayoutFlag) {
                 if (helloVanishFlag) {
-                    helloVanishTimer += deltaTime;
+                    helloVanishTimer += m_deltaTime;
                     helloVanishFlag = 1 + helloVanishTimer / HELLO_VANISH_ONE_STEP_TIME;
                     if (helloVanishTimer >= HELLO_VANISH_TIME) {
                         changeLayoutFlag = 1;
                     }
                 } else {
-                    changeLayoutTimer += deltaTime;
+                    changeLayoutTimer += m_deltaTime;
                     if (changeLayoutTimer >= CHANGE_LAYOUT_TIME) {
                         helloVanishFlag = 1;
                     }
                 }
             }
 
-            mascotHandWaveAnimTimer += deltaTime;
+            mascotHandWaveAnimTimer += m_deltaTime;
             if (mascotHandWaveAnimTimer >= HAND_WAVE_ONE_FRAME_TIME) {
                 mascotHandWaveAnimFrame = ++mascotHandWaveAnimFrame % MAX_HAND_WAVE_ANIM_FRAMES;
                 mascotHandWaveAnimTimer -= HAND_WAVE_ONE_FRAME_TIME;
@@ -305,7 +207,7 @@ UpdateFirstLaunch(deltaTime) {
         }
     }
     if ((SELF_ID == 0) && (!flStartFlag)) {
-        flStartTimer += deltaTime;
+        flStartTimer += m_deltaTime;
         if (flStartTimer > 1000) {
             flStartFlag = 1;
         }

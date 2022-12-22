@@ -1,3 +1,7 @@
+#pragma warning disable 203
+#pragma warning disable 213
+#pragma warning disable 229
+
 #define PKT_GENERAL_DATA       1
 #define PKT_BALL_TILT_TUT      2
 #define PKT_SELECTOR_TILT_TUT  3
@@ -74,11 +78,6 @@ new OFF_HAND_SPRITE = 28;
 new MAIN_HAND_1_SPRITE = 28;
 new MAIN_HAND_2_SPRITE = 28;
 new MAIN_HAND_3_SPRITE = 28;
-new SHAKE_ORANGE_ICON_SPRITE = 28;
-new TWIST_GREEN_ICON_SPRITE = 28;
-new FL_TWIST_RIM_1 = 28;
-new FL_TWIST_RIM_2 = 28;
-new FL_TAP_RIM_2 = 28;
 new HE_GREEN_SPRITE  = 28;
 new HE_ORANGE_SPRITE = 28;
 new HE_PINK_SPRITE   = 28;
@@ -231,20 +230,20 @@ DrawCrossAnimation() {
     GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, plusColor);
 }
 
-UpdateCrossAnimation(deltaTime) {
+UpdateCrossAnimation(m_deltaTime) {
     if (crossAnimationTimer >= CROSS_ANIMATION_CHANGE_TIME) {
         firstCrossAnimPairStage = ++firstCrossAnimPairStage % MAX_CROSS_STAGES;
         secondCrossAnimPairStage = ++secondCrossAnimPairStage % MAX_CROSS_STAGES;
         crossAnimationTimer = 0;
     } else {
-        crossAnimationTimer += deltaTime;
+        crossAnimationTimer += m_deltaTime;
     }
 }
 
-UpdateMascotAnimation(deltaTime) {
+UpdateMascotAnimation(m_deltaTime) {
     if (changeMascotTimer >= MASCOT_CHANGE_TIME) {
         currentMascotSprite = MASCOT_WAIT_SPRITE;
     } else {
-        changeMascotTimer += deltaTime;
+        changeMascotTimer += m_deltaTime;
     }
 }
