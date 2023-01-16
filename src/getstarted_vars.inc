@@ -24,7 +24,7 @@ const BACKGROUND_COLOR = 0xFF1D1027;//0xFF18193F;
 const MAX_TANGIBLE_ICONS = 4;
 const MAX_ARROW_ICONS = 3;
 
-const MASCOT_CHANGE_TIME = 30000;
+const MASCOT_CHANGE_TIME = 10000;
 
 const MODULE_GAP = 30;
 const HALF_MODULE_GAP = MODULE_GAP >> 1;
@@ -43,9 +43,6 @@ new COMPLETE_ICON       = 7;
 new COUNT_BAR           = 8;
 
 new DIALOGUE              = 9;
-new MASCOT_MAIN_SPRITE    = 10;
-new MASCOT_SUCCESS_SPRITE = 11;
-new MASCOT_WAIT_SPRITE    = 12;
 new CIRCLE_QUARTER        = 13;
 new SELECTOR              = 14;
 new SHAKE_ICON            = 15;
@@ -71,7 +68,17 @@ new SPEECH_BUBBLE_TAP_SPRITE = 26;
 
 new MASCOT_MAIN_EMPTY_SPRITE       = 27;
 new MASCOT_MAIN_EYES_NORMAL_SPRITE = 27;
+new MASCOT_MAIN_EYES_CUTE_SPRITE   = 27;
+new MASCOT_MAIN_EYES_X_SPRITE      = 27;
 new MASCOT_MAIN_MOUNTH_O_SPRITE    = 27;
+
+new MASCOT_WAIT_BODY_SPRITE   = 27;
+new MASCOT_WAIT_EYES_SPRITE   = 27;
+new MASCOT_WAIT_MOUNTH_SPRITE = 27;
+
+new MASCOT_SUCCESS_BODY_SPRITE   = 27;
+new MASCOT_SUCCESS_EYES_SPRITE   = 27;
+new MASCOT_SUCCESS_MOUNTH_SPRITE = 27;
 
 new HI_SPRITE = 28;
 new OFF_HAND_SPRITE = 28;
@@ -96,6 +103,12 @@ new ARC_5_SPRITE = 28;
 
 new TWIST_PURPLE_ICON_1_SPRITE = 28;
 new TWIST_PURPLE_ICON_2_SPRITE = 28;
+
+new TAP_SIDE_ICON = 29;
+new SIDE_TAP_INDICATOR = 29;
+new SILUETTE_SPRITE = 29;
+
+new bakeAppStateSpritesFlag = 0;
 
 new ACTION_SOUND = 0;
 new GOOD_SOUND = 1;
@@ -138,7 +151,7 @@ new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
     [TOPOLOGY_orientation:ORIENTATION_UP, 180],
 ]
 
-new currentMascotSprite = 0;
+new mascotWaitModeFlag = 0;
 new generalDataPkt = 0;
 new alreadyLaunched = 0;
 new dataSaved = 0;
@@ -168,6 +181,10 @@ new crossAnimationTimer = 0;
 new firstCrossAnimPairStage = 1;
 new secondCrossAnimPairStage = 0;
 
+new prevAccelX = 0;
+new prevAccelY = 0;
+new prevAccelZ = 0;
+
 new crossColor = 0xFFFFFFFF;
 new plusColor  = 0xFFFFFFFF;
 
@@ -176,9 +193,25 @@ InitCrossAnimationVars(m_crossColor, m_plusColor) {
     plusColor  = m_plusColor;
 }
 
+CheckAcceleration() {
+    new tempAccelX = MS_getFaceAccelX(0) / 20;
+    new tempAccelY = MS_getFaceAccelY(0) / 20;
+    new tempAccelZ = MS_getFaceAccelZ(0) / 20;
+
+    if ((prevAccelX != tempAccelX)
+     || (prevAccelY != tempAccelY)
+     || (prevAccelZ != tempAccelZ)) {
+        prevAccelX = tempAccelX;
+        prevAccelY = tempAccelY;
+        prevAccelZ = tempAccelZ;
+
+        SetDefaultMascot();
+    }
+}
+
 SetDefaultMascot() {
     changeMascotTimer = 0;
-    currentMascotSprite = (applicationState != FSM:successScreen) ? (MASCOT_MAIN_SPRITE) : (MASCOT_SUCCESS_SPRITE);
+    mascotWaitModeFlag = 0;
 }
 
 SetFacelet(module, screen) {
@@ -242,7 +275,7 @@ UpdateCrossAnimation(m_deltaTime) {
 
 UpdateMascotAnimation(m_deltaTime) {
     if (changeMascotTimer >= MASCOT_CHANGE_TIME) {
-        currentMascotSprite = MASCOT_WAIT_SPRITE;
+        mascotWaitModeFlag = 1;
     } else {
         changeMascotTimer += m_deltaTime;
     }

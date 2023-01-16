@@ -8,28 +8,30 @@ const RIGHT_WAY          = 4;
 const WRONG_WAY          = 5;
 const FINGER_ANIM        = 6;
 const BUBBLE_TEXT        = 7;
+const TAPTUT_BIG_TAP_COUNT   = 8;
+const TAPTUT_SMALL_TAP_COUNT = 9;
+const TAPTUT_TAPSIDE_ICON    = 10;
+const TAPTUT_TEXT_BOX_2      = 11;
 
 new getstarted_tapTutorial{} = {
-    TAPTUT_EMPTY, TAPTUT_MASCOT, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
-    TAPTUT_EMPTY, TAPTUT_MASCOT, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
-    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
-    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
-    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
-    TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_EMPTY, TAPTUT_TEXT_BOX,
+    TAPTUT_TAPSIDE_ICON, TAPTUT_MASCOT, TAPTUT_BIG_TAP_COUNT, TAPTUT_TEXT_BOX_2,
+    TAPTUT_TAPSIDE_ICON, TAPTUT_MASCOT, TAPTUT_BIG_TAP_COUNT, TAPTUT_TEXT_BOX_2,
+    TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
+    TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
+    TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
+    TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
 };
 
 new getstarted_tapStartTutorial{} = {
-    RIGHT_WAY, BUBBLE_TEXT, FINGER_ANIM, WRONG_WAY,
-    RIGHT_WAY, BUBBLE_TEXT, FINGER_ANIM, WRONG_WAY,
+    RIGHT_WAY, FINGER_ANIM, BUBBLE_TEXT, WRONG_WAY,
+    RIGHT_WAY, FINGER_ANIM, BUBBLE_TEXT, WRONG_WAY,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
 };
 
-const FULFILLMENT_DROP_TIME = 3000;
-const TAPS_TO_FINISH_TUTORIAL = 6;
-new fulfillmentTimer = 0;
+const TAPS_TO_FINISH_TUTORIAL = 3;
 new tapTutorialStage = 0;
 new beginTapTutorial = 0;
 new fillTapTutorial  = 0;
@@ -44,6 +46,7 @@ new tapAnimationFrame = 0;
 new repeatAnimFlag = 0;
 new fingerAngle = 0;
 new mascotPosY  = 0;
+new sideTapIndicatorPos  = 0;
 
 const TAP_RIM_ANIM_REPEAT = 3000;
 new wrongTapRimTimer = 180;
@@ -58,6 +61,31 @@ new rightTapRimTimer_1 = 180;
 new rightTapRimTimer_2 = 180;
 new rightTapRimTimer_3 = 180;
 new rightTapRimResetTimer = 0;
+
+const TAPTUT_TRANSITION_STATE_TIME = 750;
+new taptutTransitionTimer = 0;
+
+const BAKED_TAPTUT_MASCOT_SPRITE = 0;
+const BAKED_TAPTUT_MAS_TAPED_SPRITE = 1;
+const BAKED_TAPTUT_WAIT_SPRITE = 2;
+
+TapTutorialBakeSprites() {
+    GFX_bakeImage(BAKED_TAPTUT_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(115, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TAPTUT_MAS_TAPED_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(115, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TAPTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(115, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_render();
+}
 
 MascotTapReaction() {
     if (!alreadyCheckTapReaction) {
@@ -80,7 +108,45 @@ GetTapFillColor(tapsInPercents) {
 }
 
 TapFillBackground(angle) {
-    new tapsInPercents = (tapTutorialStage * 100) / TAPS_TO_FINISH_TUTORIAL;
+    switch (angle) {
+        case 0: {
+            if (tapTutorialStage >= 2) {
+                GFX_clear(0xFF8B329F);
+            } else if (tapTutorialStage == 1) {
+                GFX_drawRectangle([0, 180, 240, 60], 0xFF8B329F);
+                GFX_drawRectangle([0, 120, 240, 60], 0x7F8B329F);
+                GFX_drawRectangle([0,  60, 240, 60], 0x198B329F);
+            }
+        }
+        case 270: {
+            if (tapTutorialStage >= 2) {
+                GFX_clear(0xFF8B329F);
+            } else if (tapTutorialStage == 1) {
+                GFX_drawRectangle([180, 0, 60, 240], 0xFF8B329F);
+                GFX_drawRectangle([120, 0, 60, 240], 0x7F8B329F);
+                GFX_drawRectangle([ 60, 0, 60, 240], 0x198B329F);
+            }
+        }
+        case 90: {
+            if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {
+                GFX_clear(0xFF8B329F);
+            } else if (tapTutorialStage == 2) {
+                GFX_drawRectangle([  0, 0, 60, 240], 0xFF8B329F);
+                GFX_drawRectangle([ 60, 0, 60, 240], 0x7F8B329F);
+                GFX_drawRectangle([120, 0, 60, 240], 0x198B329F);
+            }
+        }
+        case 180: {
+            if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {
+                GFX_clear(0xFF8B329F);
+            } else if (tapTutorialStage == 2) {
+                GFX_drawRectangle([0,   0, 240, 60], 0xFF8B329F);
+                GFX_drawRectangle([0,  60, 240, 60], 0x7F8B329F);
+                GFX_drawRectangle([0, 120, 240, 60], 0x198B329F);
+            }
+        }
+    }
+    /*new tapsInPercents = (tapTutorialStage * 100) / TAPS_TO_FINISH_TUTORIAL;
     new rect[GFX_RECTANGLE];
     rect.x = 0;
     rect.y = 0;
@@ -113,26 +179,28 @@ TapFillBackground(angle) {
         }
     }
 
-    GFX_drawRectangle(rect, GetTapFillColor(tapsInPercents));
+    GFX_drawRectangle(rect, GetTapFillColor(tapsInPercents));*/
 }
 
 FingerTapAnimation() {
     ++tapAnimationFrame;
-    if (tapAnimationFrame >= 12) {
+    if (tapAnimationFrame >= 11) {
         if (!repeatAnimFlag) {
             repeatAnimFlag = 1;
-            fingerAngle = mascotPosY = tapAnimationFrame = 0;
+            fingerAngle = mascotPosY = sideTapIndicatorPos = tapAnimationFrame = 0;
         }
         if (tapAnimationFrame > 33) {
             repeatAnimFlag = 0;
-            fingerAngle = mascotPosY = tapAnimationFrame = 0;
+            fingerAngle = mascotPosY = sideTapIndicatorPos = tapAnimationFrame = 0;
         }
         return;
     }
     if (tapAnimationFrame >= 6) {
         fingerAngle -= 8;
+        --sideTapIndicatorPos;
     } else if (tapAnimationFrame >= 0) {
         fingerAngle += 8;
+        ++sideTapIndicatorPos;
     }
     
     if ((tapAnimationFrame >= 8) && (tapAnimationFrame <= 9)) {
@@ -154,20 +222,38 @@ DrawTapTutorial(screen) {
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
     if (fillTapTutorial) {
+        if ((SELF_ID == 0) && (screen == 0)) {
+            // Try to sync side tap indicator movement
+            FingerTapAnimation();
+        }
         TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation_mode:ORIENTATION_MODE_GRAVITY));
     }
     switch (screenLayout) {
         case TAPTUT_MASCOT: {
-            GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
-
-            if (mascotTapReactAnimFlag) {
-                MascotTapReaction();
-                GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
+            GFX_drawImageXY(120, 232 + sideTapIndicatorPos, 0xFF, 0, angle, MIRROR_BLANK, SIDE_TAP_INDICATOR);
+            if (!mascotWaitModeFlag) {
+                GFX_drawBakedImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, BAKED_TAPTUT_MASCOT_SPRITE);
+            } else {
+                GFX_drawBakedImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, BAKED_TAPTUT_WAIT_SPRITE);
             }
-            GFX_drawImage([210, 210], 0xFF, 0, mascotTapReactAngle, MIRROR_BLANK, currentMascotSprite);
             GFX_drawImage([ 91, 120], 0xFF, 0, angle, MIRROR_BLANK, DIALOGUE_SMALL);
             if (beginTapTutorial) {
-                GFX_drawText([55, 130], 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "tap!");
+                if (tapTutorialStage == 0) {
+                    GFX_drawText([100, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "repeat");
+                    GFX_drawText([ 70, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "double tap");
+                    GFX_drawText([ 40, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "three times");
+                } else if (tapTutorialStage == 1) {
+                    GFX_drawText([100, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "awesome!");
+                    GFX_drawText([ 70, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "two more");
+                    GFX_drawText([ 40, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "to go");
+                } else if (tapTutorialStage == 2) {
+                    GFX_drawText([100, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "nicely done!");
+                    GFX_drawText([ 70, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "now the");
+                    GFX_drawText([ 40, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "last one");
+                } else if (tapTutorialStage == TAPS_TO_FINISH_TUTORIAL) {
+                    GFX_drawText([80, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "yay");
+                    GFX_drawText([60, 125], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "!!!");
+                }
             } else {
                 GFX_drawText([90, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "moving on");
                 GFX_drawText([45, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the tap");
@@ -182,12 +268,20 @@ DrawTapTutorial(screen) {
                     GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
                 }
 
-                GFX_drawText([170, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "tap to fill");
-                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "the cube");
+                GFX_drawText([120, 160], 9, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double");
+                GFX_drawText([120, 210], 9, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "tap");
             } else {
-                GFX_drawText([120, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
-                GFX_drawText([120, 100], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube!");
+                GFX_drawText([120, 170], 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double");
+                GFX_drawText([120, 135], 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "tap");
+                GFX_drawText([120,  90], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the side of");
+                GFX_drawText([120,  65], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
             }
+        }
+        case TAPTUT_TEXT_BOX_2: {
+            GFX_drawText([ 70, 120], 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double");
+            GFX_drawText([105, 120], 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "tap");
+            GFX_drawText([150, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the side of");
+            GFX_drawText([175, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
         }
         case TAPTUT_EMPTY: {
             if (fillTapTutorial) {
@@ -264,18 +358,48 @@ DrawTapTutorial(screen) {
         }
         case FINGER_ANIM: {
             FingerTapAnimation();
-            GFX_drawImage([180, 200], 0xFF, 0, angle - 10 + fingerAngle, MIRROR_BLANK, FINGER_SPRITE);
-            GFX_drawImage(GetGFXPoint(120, 60 - mascotPosY), 0xFF, 0, angle - 10, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawImage([60, 227], 0xFF, 0, angle - 10 - fingerAngle, MIRROR_BLANK, FINGER_SPRITE);
+            new curMascotSprite = BAKED_TAPTUT_MASCOT_SPRITE;
             if ((tapAnimationFrame >= 5) && tapAnimationFrame <= 7) {
-                GFX_drawLine([188, 163], [170, 155], 6, 0xFFFFFFFF);
-                GFX_drawLine([ 95, 180], [ 92, 195], 6, 0xFFFFFFFF);
-                GFX_drawLine([ 90, 160], [ 72, 168], 6, 0xFFFFFFFF);
+                curMascotSprite = BAKED_TAPTUT_MAS_TAPED_SPRITE;
+                GFX_drawLine([ 60, 183], [ 48, 191], 8, 0xFFFFFFFF);
+                GFX_drawLine([170, 180], [185, 190], 8, 0xFFFFFFFF);
+                GFX_drawLine([150, 195], [154, 215], 8, 0xFFFFFFFF);
             }
+            if (mascotWaitModeFlag) {
+                curMascotSprite = BAKED_TAPTUT_WAIT_SPRITE;
+            }
+            GFX_drawBakedImage(GetGFXPoint(120, 90 - mascotPosY), 0xFF, 0, angle, MIRROR_BLANK, curMascotSprite);
         }
         case BUBBLE_TEXT: {
-            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SPEECH_BUBBLE_TAP_SPRITE);
-            GFX_drawText([140, 140], 9, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double tap");
-            GFX_drawText([100, 140], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_X, SPEECH_BUBBLE_TAP_SPRITE);
+            GFX_drawText([140, 170], 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double");
+            GFX_drawText([140, 135], 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "tap");
+            GFX_drawText([140, 100], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the side of");
+            GFX_drawText([140,  75], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
+        }
+        case TAPTUT_BIG_TAP_COUNT: {
+            GFX_drawText([120, 170], 35, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%02d", tapTutorialStage);
+            GFX_drawText([120,  70], 35, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "03");
+        }
+        case TAPTUT_SMALL_TAP_COUNT: {
+            GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER);
+
+            if (mascotTapReactAnimFlag) {
+                MascotTapReaction();
+                if ((angle % 180) == 0) {
+                    GFX_drawLine([165,  86], [177,  86], 6, 0xFFFFFFFF);
+                    GFX_drawLine([ 86, 165], [ 86, 177], 6, 0xFFFFFFFF);
+                    GFX_drawLine([146, 146], [156, 156], 6, 0xFFFFFFFF);
+                }
+                GFX_drawImage([60, 60], 0xFF, 0, 0, MIRROR_BLANK, CIRCLE_QUARTER_PUSH);
+            }
+            GFX_drawText([200, 205], 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%02d", tapTutorialStage);
+            GFX_drawText([200, 175], 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "03");
+        }
+        case TAPTUT_TAPSIDE_ICON: {
+            GFX_drawImageXY(232 + sideTapIndicatorPos, 120, 0xFF, 0, angle, MIRROR_BLANK, SIDE_TAP_INDICATOR);
+            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TAP_SIDE_ICON);
         }
     }
 
@@ -287,19 +411,12 @@ DrawTapTutorial(screen) {
 UpdateTapTutorial(m_deltaTime) {
     if (SELF_ID == 0) {
         if (fillTapTutorial) {
-            if (fulfillmentTimer >= FULFILLMENT_DROP_TIME) {
-                --tapTutorialStage;
-                if (tapTutorialStage < 0) {
-                    tapTutorialStage = 0;
-                }
-                fulfillmentTimer = 0;
-            } else {
-                fulfillmentTimer += m_deltaTime;
-            }
-
             if (tapTutorialStage >= TAPS_TO_FINISH_TUTORIAL) {
-                SetApplicationState(FSM:successScreen);
-                SND_play(TAP_STAGE_SUCCESS_SOUND, SOUND_VOLUME);
+                taptutTransitionTimer += m_deltaTime;
+                if (taptutTransitionTimer >= TAPTUT_TRANSITION_STATE_TIME) {
+                    SetApplicationState(FSM:successScreen);
+                    SND_play(TAP_STAGE_SUCCESS_SOUND, SOUND_VOLUME);
+                }
             }
         }
     }

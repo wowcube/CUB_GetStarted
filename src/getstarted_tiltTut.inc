@@ -57,16 +57,10 @@ new collectablesAngles[SCREENS_MAX] = [0, 90, 270];
 new ballPkt = 0;
 new selectorPkt = 0;
 
-new mascotTiltAnimFlag = 1;
-new mascotTiltAnimAngle = 90;
-new tiltAngleAnimChange = -4;
-new mascotTiltAnimTimer = 0;
-
 new selectorOutAnimation = 0;
 new selectorInAnimation = 0;
 new selectorYOffset = 0; 
 new selectorXOffset = 0;
-
 
 const PLUS_ONE_MAX_TICKS = 15;
 new currentPlusOneTick = 0;
@@ -75,6 +69,42 @@ new collectedPlusOneEffect = 0;
 new backPlusOneOffset = 5;
 new mainOneX = 75;
 new mainOneY = 75;
+
+new COLLECTED_MASCOT_ANIM_TIME = 500;
+new collectedTokens = 0;
+new collectedMascotEyesAnimFlag = 0;
+new collectedMascotEyesAnimTimer = 0;
+
+const BAKED_TILTTUT_WAIT_SPRITE = 0;
+const BAKED_TILTTUT_MAIN_N_SPRITE = 1;
+const BAKED_TILTTUT_MAIN_V_SPRITE = 2;
+const BAKED_TILTTUT_SUCCESS_SPRITE = 2;
+
+TiltTutorialBakeSprites() {
+    GFX_bakeImage(BAKED_TILTTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(110, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TILTTUT_MAIN_N_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(110, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TILTTUT_MAIN_V_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(110, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+}
+
+TiltTutorialBakeSuccessSprite() {
+    GFX_bakeImage(BAKED_TILTTUT_SUCCESS_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+    GFX_drawImageXY(110, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
+    GFX_drawImageXY(110, 140, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
+    GFX_render();
+}
 
 MovePlusOneEffect(angle) {
     new offsetX = 0;
@@ -103,16 +133,6 @@ MovePlusOneEffect(angle) {
 
     if (currentPlusOneTick > PLUS_ONE_MAX_TICKS) {
         collectedPlusOneEffect = 0;
-    }
-}
-
-MascotTiltAnimation() {
-    mascotTiltAnimAngle += tiltAngleAnimChange;
-    if ((mascotTiltAnimAngle == 70) || (mascotTiltAnimAngle == 90)) {
-        tiltAngleAnimChange = -tiltAngleAnimChange;
-    }
-    if (mascotTiltAnimAngle == 90) {
-        mascotTiltAnimFlag = 0;
     }
 }
 
@@ -249,8 +269,14 @@ BallLogic() {
     for (new item = 0; item < SCREENS_MAX; ++item) {
         allCollected += (collectables{item} == 0);
     }
-    if (allCollected == SCREENS_MAX) {
+    if (collectedTokens < allCollected) {
+        collectedMascotEyesAnimFlag = 1;
+        collectedMascotEyesAnimTimer = 0;
+        collectedTokens = allCollected;
+    }
+    if ((allCollected == SCREENS_MAX) && (finishTiltTutorial == 0)) {
         finishTiltTutorial = 1;
+        TiltTutorialBakeSuccessSprite();
     }
 
     if (tiltTutBall.module == SELF_ID) {
@@ -351,15 +377,21 @@ DrawTiltTutorial(screen) {
         case COLLECT_CIRCLE: {
             GFX_drawArc([-15, -15],  95, 4, 0, 90, 0xFFFFC28A);
             GFX_drawArc([-15, -15], 160, 4, 0, 90, 0xFFFFC28A);
-            
+
+            new curMascotSprite = BAKED_TILTTUT_MAIN_N_SPRITE;
+            if (mascotWaitModeFlag) {
+                curMascotSprite = BAKED_TILTTUT_WAIT_SPRITE;
+            } else if (collectedMascotEyesAnimFlag) {
+                curMascotSprite = BAKED_TILTTUT_MAIN_V_SPRITE;
+            }
             if (angle == 0) {
                 GFX_drawImage([ 75,  75], 0xFF, 0, angle, MIRROR_BLANK, (collectables{0}) ? (COLLECTABLE) : (COLLECTED));
-                GFX_drawImage([205,  20], 0xFF, 0, 350, MIRROR_BLANK, currentMascotSprite);
+                GFX_drawBakedImage([205,  20], 0xFF, 0, 350, MIRROR_BLANK, curMascotSprite);
                 GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
                 GFX_drawText([120, 145], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
                 GFX_drawText([120, 185], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
             } else if (angle == 90) {
-                GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, currentMascotSprite);
+                GFX_drawBakedImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, curMascotSprite);
                 GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, (collectables{1}) ? (COLLECTABLE) : (COLLECTED));
             } else if (angle == 180) {
                 GFX_drawImage([176, 208], 0xFF, 0, angle, MIRROR_BLANK, COUNT_BAR);
@@ -384,18 +416,22 @@ DrawTiltTutorial(screen) {
         case FINISHED_TOP: {
             GFX_drawArc([-15, -15],  95, 4, 0, 90, 0xFFFF5252);
             GFX_drawArc([-15, -15], 160, 4, 0, 90, 0xFFFF5252);
-            
+
+            new curMascotSprite = BAKED_TILTTUT_SUCCESS_SPRITE;
+            if (mascotWaitModeFlag) {
+                curMascotSprite = BAKED_TILTTUT_WAIT_SPRITE;
+            }
             if (angle != 180) {
                 GFX_drawImage([75, 75], 0xFF, 0, 0, MIRROR_BLANK, COLLECTED);
             }
             if (angle == 0) {
-                GFX_drawImage([205,  20], 0xFF, 0, 350, MIRROR_BLANK, MASCOT_SUCCESS_SPRITE);
+                GFX_drawBakedImage([205,  20], 0xFF, 0, 350, MIRROR_BLANK, curMascotSprite);
                 GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
                 GFX_drawText([120, 135], 10, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
                 GFX_drawText([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
                 GFX_drawText([120, 200], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
             } else if (angle == 90) {
-                GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, MASCOT_SUCCESS_SPRITE);
+                GFX_drawBakedImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, curMascotSprite);
             } else if (angle == 180) {
                 GFX_drawImage([176, 208], 0xFF, 0, angle, MIRROR_BLANK, COUNT_BAR);
                 for (new item = 0; item < SCREENS_MAX; ++item) {
@@ -446,7 +482,15 @@ DrawTiltTutorial(screen) {
                     GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "or selection");
                 }
             } else if (angle == 270) {
-                GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_Y, currentMascotSprite);
+                if (!mascotWaitModeFlag) {
+                    GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    GFX_drawImageXY(120, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                    GFX_drawImageXY(170, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+                } else {
+                    GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                    GFX_drawImageXY(120, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+                    GFX_drawImageXY(170, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+                }
                 if (tiltTutSelector.screenAngle % 270) {
                     GFX_drawImage([120, 31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
                 }
@@ -514,5 +558,12 @@ UpdateTiltTutorial(m_deltaTime) {
         SelectorLogic();
     } else {
         BallLogic();
+        if (collectedMascotEyesAnimFlag) {
+            if (collectedMascotEyesAnimTimer >= COLLECTED_MASCOT_ANIM_TIME) {
+                collectedMascotEyesAnimFlag = 0;
+            } else {
+                collectedMascotEyesAnimTimer += m_deltaTime;
+            }
+        }
     }
 }

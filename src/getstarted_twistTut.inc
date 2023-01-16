@@ -39,12 +39,28 @@ new mascotTwistAnimFlag = 1;
 
 new mascotBakedNormalSprite = 1;
 
+const BAKED_TWISTTUT_WAIT_SPRITE = 0;
+const BAKED_TWISTTUT_MASCOT_X_SPRITE = 1;
+
+TwistTutorialBakeSprites() {
+    GFX_bakeImage(BAKED_TWISTTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TWISTTUT_MASCOT_X_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_X_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+}
+
 MascotTwistAnimUpdate(angle) {
     if (((mascotTwistAngle <= (angle + 90)) && (mascotTwistAngle >= angle))
      || ((mascotTwistAngle >= (angle - 90)) && (mascotTwistAngle <= angle))) {
-        mascotTwistAngle -= 15;
+        mascotTwistAngle -= 15;//15;
     } else {
-        mascotTwistAngle -= 30;
+        mascotTwistAngle -= 30;// 30;
     }
     mascotTwistAngle %= 360;
     if (mascotTwistAngle == angle) {
@@ -63,17 +79,62 @@ DrawTwistTutorial(screen) {
         case TWISTTUT_MASCOT: {
             if (twistTutorialStage) {
                 if (currentStage) {
-                    GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+                    if (!mascotWaitModeFlag) {
+                        GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                        GFX_drawImageXY(110, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                        GFX_drawImageXY( 70, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+                    } else {
+                        GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                        GFX_drawImageXY(110, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+                        GFX_drawImageXY( 70, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+                    }
                     GFX_drawImage([120,  31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
                 } else {
-                    GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_Y, currentMascotSprite);
+                    if (!mascotWaitModeFlag) {
+                        GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                        GFX_drawImageXY(105, 105, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                        GFX_drawImageXY(150, 110, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+                    } else {
+                        GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                        GFX_drawImageXY(105, 105, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+                        GFX_drawImageXY(150, 110, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+                    }
                     GFX_drawImage([ 31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
                 }
-            } else {
+            } else {    
                 if (mascotTwistAnimFlag) {
                     MascotTwistAnimUpdate(angle);
+                    GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SILUETTE_SPRITE);
+                    /*new siluetteColor = 0xFFAD5F17;
+                    if (mascotWaitModeFlag) {
+                        siluetteColor = 0xFF9D50DB;
+                    }
+                    // Back shadowed mascot siluette
+                    GFX_drawSolidCircleXY( 57,  57, 18, siluetteColor);
+                    GFX_drawSolidCircleXY( 57, 183, 18, siluetteColor);
+                    GFX_drawSolidCircleXY(183,  57, 18, siluetteColor);
+                    GFX_drawSolidCircleXY(183, 183, 18, siluetteColor);
+                    GFX_drawLineXY( 53,  57,  53, 183, 30, siluetteColor);
+                    GFX_drawLineXY( 53,  53, 183,  53, 30, siluetteColor);
+                    GFX_drawLineXY(184,  53, 184, 183, 30, siluetteColor);
+                    GFX_drawLineXY( 53, 184, 183, 184, 30, siluetteColor);*/
+
+                    if (!mascotWaitModeFlag) {
+                        GFX_drawBakedImage([120, 120], 0xFF, 0, mascotTwistAngle, MIRROR_BLANK, BAKED_TWISTTUT_MASCOT_X_SPRITE);
+                    } else {
+                        GFX_drawBakedImage([120, 120], 0xFF, 0, mascotTwistAngle, MIRROR_BLANK, BAKED_TWISTTUT_WAIT_SPRITE);
+                    }
+                } else {
+                    if (!mascotWaitModeFlag) {
+                        GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                        GFX_drawImageXY(120, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                        GFX_drawImageXY(170, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+                    } else {
+                        GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                        GFX_drawImageXY(120, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+                        GFX_drawImageXY(170, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+                    }
                 }
-                GFX_drawImage([120, 120], 0xFF, 0, mascotTwistAngle, MIRROR_Y, currentMascotSprite);
                 GFX_drawImage([ 31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
             }
         }

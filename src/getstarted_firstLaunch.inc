@@ -1,5 +1,7 @@
 #include "getstarted_vars.inc"
 
+const FL_MASCOT_SPRITE = 0;
+
 const FL_EMPTY        = 0;
 const FL_MASCOT       = 1;
 const LLO             = 2;
@@ -60,6 +62,14 @@ new arcsInCurtain[MAX_ARCS][.x, .y, .sprite] = [
     [120, 120, 1],
 ]
 
+FirstLaunchBakeSprites() {
+    GFX_bakeImage(FL_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(125, 130, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+}
+
 FirstLaunchFontPercents() {
     return (((100 * fl_ChoiceAppearAnimTimer) / FL_APPEAR_TIME) * 0xFF) / 100;
 }
@@ -81,7 +91,7 @@ DrawFirstLaunch(screen) {
         case FL_MASCOT: {
             GFX_drawImage([217,  85], 0xFF, 0, angle, MIRROR_BLANK, OFF_HAND_SPRITE);
             GFX_drawImage([ 40, 160], 0xFF, 0, angle, MIRROR_BLANK, mascotHandWaveAnimFrames{mascotHandWaveAnimFrame});
-            GFX_drawImage([135, 120], 0xFF, 0, 170, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawBakedImage([135, 120], 0xFF, 0, 170, MIRROR_BLANK, FL_MASCOT_SPRITE);
         }
         case HI: {
             GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, HI_SPRITE);

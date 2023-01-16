@@ -49,7 +49,15 @@ DrawSuccessScreen(screen) {
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case SUCCESS_MASCOT: {
-            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+            if (!mascotWaitModeFlag) {
+                GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+                GFX_drawImageXY(120, 110, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
+                GFX_drawImageXY( 90, 110, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
+            } else {
+                GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                GFX_drawImageXY(110, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+                GFX_drawImageXY( 70, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+            }
             GFX_drawImage([120, 31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
         }
         case SUCCESS_ICON: {

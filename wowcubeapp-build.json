@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.7.1",
+  "version": "0.7.3",
   "sdkVersion": "5.0",
   "appIcon": {
     "path": "assets/icon.png",
@@ -66,18 +66,6 @@
     {
       "path": "assets/images/masMouthO.png",
       "alias": "masMouthO.png"
-    },
-    {
-      "path": "assets/images/mas_main.png",
-      "alias": "mas_main.png"
-    },
-    {
-      "path": "assets/images/mas_success.png",
-      "alias": "mas_success.png"
-    },
-    {
-      "path": "assets/images/mas_wait.png",
-      "alias": "mas_wait.png"
     },
     {
       "path": "assets/images/quarter.png",
@@ -168,26 +156,6 @@
       "alias": "hand_main3.png"
     },
     {
-      "path": "assets/images/twistIG.png",
-      "alias": "twistIG.png"
-    },
-    {
-      "path": "assets/images/twistRim1.png",
-      "alias": "twistRim1.png"
-    },
-    {
-      "path": "assets/images/twistRim2.png",
-      "alias": "twistRim2.png"
-    },
-    {
-      "path": "assets/images/flTapRim.png",
-      "alias": "flTapRim.png"
-    },
-    {
-      "path": "assets/images/shakeIO.png",
-      "alias": "shakeIO.png"
-    },
-    {
       "path": "assets/images/heGreen.png",
       "alias": "heGreen.png"
     },
@@ -254,6 +222,51 @@
     {
       "path": "assets/images/twistP2.png",
       "alias": "twistP2.png"
+    },
+    {
+      "path": "assets/images/tapSideicon.png",
+      "alias": "tapSideicon.png"
+    },
+    {
+      "path": "assets/images/sideTapInd.png",
+      "alias": "sideTapInd.png",
+      "encoding": "ARGB6666"
+    },
+    {
+      "path": "assets/images/masEyesV.png",
+      "alias": "masEyesV.png"
+    },
+    {
+      "path": "assets/images/masEyesX.png",
+      "alias": "masEyesX.png"
+    },
+    {
+      "path": "assets/images/masWait.png",
+      "alias": "masWait.png"
+    },
+    {
+      "path": "assets/images/masWaitEyes.png",
+      "alias": "masWaitEyes.png"
+    },
+    {
+      "path": "assets/images/mWaitMouth.png",
+      "alias": "mWaitMouth.png"
+    },
+    {
+      "path": "assets/images/masSuccess.png",
+      "alias": "masSuccess.png"
+    },
+    {
+      "path": "assets/images/masSucEyes.png",
+      "alias": "masSucEyes.png"
+    },
+    {
+      "path": "assets/images/mSucMouth.png",
+      "alias": "mSucMouth.png"
+    },
+    {
+      "path": "assets/images/siluette.png",
+      "alias": "siluette.png"
     }
   ],
   "soundAssets": [

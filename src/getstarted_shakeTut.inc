@@ -34,6 +34,22 @@ new mascotShakePosX = 120;
 new mascotShakeStep = -10;
 new mascotShakeAnimTimer = 0;
 
+const BAKED_SHAKETUT_MASCOT_SPRITE = 0;
+const BAKED_SHAKETUT_WAIT_SPRITE = 1;
+
+ShakeTutorialBakeSprites() {
+    GFX_bakeImage(BAKED_SHAKETUT_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(130, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_SHAKETUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(130, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_render();
+}
+
 MascotShakeAnimation() {
     mascotShakePosX += mascotShakeStep;
     if ((mascotShakePosX == 90) || (mascotShakePosX == 150)) {
@@ -107,7 +123,11 @@ DrawShakeTutorial(screen) {
             if (mascotShakeAnimFlag) {
                 MascotShakeAnimation();
             }
-            GFX_drawImage(GetGFXPoint(mascotShakePosX, 120), 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+            if (!mascotWaitModeFlag) {
+                GFX_drawBakedImage(GetGFXPoint(mascotShakePosX, 120), 0xFF, 0, angle, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
+            } else {
+                GFX_drawBakedImage(GetGFXPoint(mascotShakePosX, 120), 0xFF, 0, angle, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
+            }
             GFX_drawImage([31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
         }
         case ICON: {
@@ -154,7 +174,11 @@ DrawShakeTutorial(screen) {
         }
         case MASCOT_2: {
             if (!shakeTutorialStage) {
-                GFX_drawImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, currentMascotSprite);
+                if (!mascotWaitModeFlag) {
+                    GFX_drawBakedImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
+                } else {
+                    GFX_drawBakedImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
+                }
                 GFX_drawImage([ 91, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE_SMALL);
                 GFX_drawText([70, 130], 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
             }

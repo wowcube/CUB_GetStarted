@@ -42,8 +42,6 @@ SetApplicationState(newState) {
             tiltTutSelector.moduleT = tiltTutSelector.module = MODULES_MAX;
             tiltTutSelector.screenT = tiltTutSelector.screen = SCREENS_MAX;
         } else if (newState == FSM:successScreen) {
-            currentMascotSprite = MASCOT_SUCCESS_SPRITE;
-            
             successAnimationEffectTimer = 0;
             successAnimationEffectFlag = 0;
             sucAnimEffectTimePercent = 0;
@@ -56,7 +54,35 @@ SetApplicationState(newState) {
         previousAppState = applicationState;
         applicationState = newState;
         SetDefaultMascot();
+        bakeAppStateSpritesFlag = 1;
     }
+}
+
+BakeSpritesForCurrentAppState(currentAppState) {
+    GFX_clearCache();
+    switch (currentAppState) {
+        case start: {
+            StartBakeSprites();
+        }
+        case twistTutorial: {
+            TwistTutorialBakeSprites();
+        }
+        case tapTutorial: {
+            TapTutorialBakeSprites();
+        }
+        case tiltTutorial: {
+            TiltTutorialBakeSprites();
+        }
+        case shakeTutorial: {
+            ShakeTutorialBakeSprites();
+        }
+        case successScreen: {
+        }
+        case firstLaunch: {
+            FirstLaunchBakeSprites();
+        }
+    }
+    bakeAppStateSpritesFlag = 0;
 }
 
 SendGeneralInfo(pktNumber) {
@@ -75,7 +101,7 @@ SendGeneralInfo(pktNumber) {
         randomSoundOrder |= (tiltTutCollectableSounds{soundI} << (soundI * 2));
     }
     data[0] = PKT_GENERAL_DATA | (previousAppState << 16) | (applicationState << 24);
-    data[1] = tapTutorialStage | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
+    data[1] = tapTutorialStage | (sideTapIndicatorPos << 4) | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
     data[3] = pktNumber;
     data[4] = flags;
@@ -87,6 +113,10 @@ public ON_PhysicsTick() {
 }
 
 public ON_Render() {
+    if (bakeAppStateSpritesFlag) {
+        BakeSpritesForCurrentAppState(applicationState);
+    }
+
     for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
         GFX_setRenderTarget(screenI);
         
@@ -122,6 +152,7 @@ public ON_Tick() {
     deltaTime = currentTime - previousTime;
     previousTime = currentTime;
 
+    CheckAcceleration();
     UpdateCrossAnimation(deltaTime);
     UpdateMascotAnimation(deltaTime);
 
@@ -175,9 +206,6 @@ public ON_Init(id, size, const pkt[]) {
     COLLECTED_CHECK       = GFX_getAssetId("checked.png");
     COLLECTED_CHECK_RED   = GFX_getAssetId("checked_red.png");
 
-    MASCOT_MAIN_SPRITE    = GFX_getAssetId("mas_main.png");
-    MASCOT_SUCCESS_SPRITE = GFX_getAssetId("mas_success.png");
-    MASCOT_WAIT_SPRITE    = GFX_getAssetId("mas_wait.png");
     CIRCLE_QUARTER        = GFX_getAssetId("quarter.png");
     SELECTOR              = GFX_getAssetId("selector.png");
     SHAKE_ICON            = GFX_getAssetId("shake_icon.png");
@@ -202,7 +230,21 @@ public ON_Init(id, size, const pkt[]) {
 
     MASCOT_MAIN_EMPTY_SPRITE       = GFX_getAssetId("masMainE.png");
     MASCOT_MAIN_EYES_NORMAL_SPRITE = GFX_getAssetId("masEyesN.png");
+    MASCOT_MAIN_EYES_CUTE_SPRITE   = GFX_getAssetId("masEyesV.png");
+    MASCOT_MAIN_EYES_X_SPRITE      = GFX_getAssetId("masEyesX.png");
     MASCOT_MAIN_MOUNTH_O_SPRITE    = GFX_getAssetId("masMouthO.png");
+
+    MASCOT_WAIT_BODY_SPRITE   = GFX_getAssetId("masWait.png");
+    MASCOT_WAIT_EYES_SPRITE   = GFX_getAssetId("masWaitEyes.png");
+    MASCOT_WAIT_MOUNTH_SPRITE = GFX_getAssetId("mWaitMouth.png");
+
+    MASCOT_WAIT_BODY_SPRITE   = GFX_getAssetId("masWait.png");
+    MASCOT_WAIT_EYES_SPRITE   = GFX_getAssetId("masWaitEyes.png");
+    MASCOT_WAIT_MOUNTH_SPRITE = GFX_getAssetId("mWaitMouth.png");
+
+    MASCOT_SUCCESS_BODY_SPRITE   = GFX_getAssetId("masSuccess.png");
+    MASCOT_SUCCESS_EYES_SPRITE   = GFX_getAssetId("masSucEyes.png");
+    MASCOT_SUCCESS_MOUNTH_SPRITE = GFX_getAssetId("mSucMouth.png");
 
     HI_SPRITE          = GFX_getAssetId("hi.png");
     OFF_HAND_SPRITE    = GFX_getAssetId("off_hand.png");
@@ -241,6 +283,10 @@ public ON_Init(id, size, const pkt[]) {
     TWIST_PURPLE_ICON_1_SPRITE = GFX_getAssetId("twistP1.png");
     TWIST_PURPLE_ICON_2_SPRITE = GFX_getAssetId("twistP2.png");
 
+    TAP_SIDE_ICON = GFX_getAssetId("tapSideicon.png");
+    SIDE_TAP_INDICATOR = GFX_getAssetId("sideTapInd.png");
+    SILUETTE_SPRITE = GFX_getAssetId("siluette.png");
+
     // Sounds
     ACTION_SOUND      = SND_getAssetId("action.wav");
     GOOD_SOUND        = SND_getAssetId("good.wav");
@@ -275,7 +321,7 @@ public ON_Init(id, size, const pkt[]) {
         getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletOrientation(SetFacelet(SELF_ID, screenI));
         getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
     }
-
+    
     SetApplicationState(FSM:firstLaunch);
 }
 
@@ -311,17 +357,16 @@ public ON_Tap(const count, const display, const bool:opposite) {
         switch(applicationState) {
             case tapTutorial: {
                 if (fillTapTutorial) {
-                    if(count >= 1) {
+                    if(count > 1) {
                         ++tapTutorialStage;
-                        if (tapTutorialStage >= 5) {
+                        if (tapTutorialStage >= 2) {
                             SND_play(TAPS_5_6_SOUND, SOUND_VOLUME);
-                        } else if (tapTutorialStage >= 3) {
+                        } else if (tapTutorialStage >= 1) {
                             SND_play(TAPS_3_4_SOUND, SOUND_VOLUME);
                         } else if (tapTutorialStage >= 0) {
                             SND_play(TAPS_1_2_SOUND, SOUND_VOLUME);
                         }
                         mascotTapReactAnimFlag = 1;
-                        fulfillmentTimer = 0;
                     }
                 }
                 if (!fillTapTutorial && beginTapTutorial && (count == 2)) {
@@ -358,9 +403,7 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
         getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
     }
 
-    if (applicationState == FSM:twistTutorial) {
-        SetDefaultMascot();
-    }
+    SetDefaultMascot();
     
     if (SELF_ID == 0) {
         if (applicationState == FSM:twistTutorial) {
@@ -407,15 +450,16 @@ public ON_Message(const pkt[MESSAGE_SIZE]) {
                 getstartedGreetingFlag = (flags >> 6) & 0x1;
                 fillTapTutorial = (flags >> 7) & 0x1;
                 flStartFlag = (flags >> 8) & 0x1;
-                if (parseByte(pkt, 4) > tapTutorialStage) {
+                if ((parseByte(pkt, 4) & 0xF) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
                 }
                 for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
                     tiltTutCollectableSounds{soundI} = (parseByte(pkt, 7) >> (soundI * 2)) & 0x3;
                 }
-                tapTutorialStage = parseByte(pkt, 4);
+                tapTutorialStage = parseByte(pkt, 4) & 0xF;
                 shakeTutorialStage = parseByte(pkt, 5);
                 twistTutorialStage = parseByte(pkt, 6);
+                sideTapIndicatorPos = (parseByte(pkt, 4) >> 4) & 0xF;
                 tutorialStartTimer = pkt[2];
             }
         }

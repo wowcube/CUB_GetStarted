@@ -29,13 +29,23 @@ const GREETING_TIME = 1000;
 new getstartedGreetingFlag = 1;
 new getstartedGreetingTimer = GREETING_TIME;
 
+const BAKED_START_MASCOT_SPRITE = 0;
+
+StartBakeSprites() {
+    GFX_bakeImage(BAKED_START_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(115, 135, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();
+}
+
 DrawStartCountdown(screen) {
     new angle = getStarted_screenData[screen].angle;
     new screenLayout = getstarted_startLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
-            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, currentMascotSprite);
+            GFX_drawBakedImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, BAKED_START_MASCOT_SPRITE);
             GFX_drawImage([ 31, 120], 0xFF, 0, angle, MIRROR_BLANK, DIALOGUE);
         }
         case GREETING: {
