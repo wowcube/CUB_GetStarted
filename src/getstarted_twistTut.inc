@@ -105,19 +105,6 @@ DrawTwistTutorial(screen) {
                 if (mascotTwistAnimFlag) {
                     MascotTwistAnimUpdate(angle);
                     GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SILUETTE_SPRITE);
-                    /*new siluetteColor = 0xFFAD5F17;
-                    if (mascotWaitModeFlag) {
-                        siluetteColor = 0xFF9D50DB;
-                    }
-                    // Back shadowed mascot siluette
-                    GFX_drawSolidCircleXY( 57,  57, 18, siluetteColor);
-                    GFX_drawSolidCircleXY( 57, 183, 18, siluetteColor);
-                    GFX_drawSolidCircleXY(183,  57, 18, siluetteColor);
-                    GFX_drawSolidCircleXY(183, 183, 18, siluetteColor);
-                    GFX_drawLineXY( 53,  57,  53, 183, 30, siluetteColor);
-                    GFX_drawLineXY( 53,  53, 183,  53, 30, siluetteColor);
-                    GFX_drawLineXY(184,  53, 184, 183, 30, siluetteColor);
-                    GFX_drawLineXY( 53, 184, 183, 184, 30, siluetteColor);*/
 
                     if (!mascotWaitModeFlag) {
                         GFX_drawBakedImage([120, 120], 0xFF, 0, mascotTwistAngle, MIRROR_BLANK, BAKED_TWISTTUT_MASCOT_X_SPRITE);

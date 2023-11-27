@@ -1,15 +1,12 @@
 {
   "name": "Get_Started",
   "version": "0.7.3",
-  "sdkVersion": "5.0",
+  "sdkVersion": "5.1",
   "appIcon": {
-    "path": "assets/icon.png",
-    "encoding": "ARGB6666"
+    "path": "assets/icon.png"
   },
   "sourceFile": "src/getstarted.pwn",
   "scriptFile": "binary/getstarted.amx",
-  "imageAssetsDir": "assets/images",
-  "soundAssetsDir": "assets/sounds",
   "imageAssets": [
     {
       "path": "assets/images/arrow_tilt.png",
@@ -319,5 +316,8 @@
       "alias": "taps_5-6.wav"
     }
   ],
-  "appFlags": 0
+  "appFlags": 0,
+  "language": "pawn",
+  "interpreter": "pawn",
+  "adhocDescription": "Get started."
 }

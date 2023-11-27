@@ -13,7 +13,7 @@
 #include "topology.inc"
 #include "graphics.inc"
 #include "string.inc"
-#include "console.inc"
+#include "log.inc"
 #include "sound.inc"
 #include "motion_sensor.inc"
 
