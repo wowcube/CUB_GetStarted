@@ -288,21 +288,21 @@ public ON_Init(id, size, const pkt[]) {
     SILUETTE_SPRITE = GFX_getAssetId("siluette.png");
 
     // Sounds
-    ACTION_SOUND      = SND_getAssetId("action.wav");
-    GOOD_SOUND        = SND_getAssetId("good.wav");
-    EXCELLENT_1_SOUND = SND_getAssetId("excellent_1.wav");
-    EXCELLENT_2_SOUND = SND_getAssetId("excellent_2.wav");
+    ACTION_SOUND      = SND_getAssetId("action.mp3");
+    GOOD_SOUND        = SND_getAssetId("good.mp3");
+    EXCELLENT_1_SOUND = SND_getAssetId("excellent_1.mp3");
+    EXCELLENT_2_SOUND = SND_getAssetId("excellent_2.mp3");
     
-    SELECTOR_MENU_SOUND = SND_getAssetId("selec_menu.wav");
+    SELECTOR_MENU_SOUND = SND_getAssetId("selec_menu.mp3");
     
     TAPS_1_2_SOUND = SND_getAssetId("taps_1-2.wav");
     TAPS_3_4_SOUND = SND_getAssetId("taps_3-4.wav");
     TAPS_5_6_SOUND = SND_getAssetId("taps_5-6.wav");
-    TAP_STAGE_SUCCESS_SOUND = SND_getAssetId("tapsSuccess.wav");
+    TAP_STAGE_SUCCESS_SOUND = SND_getAssetId("tapsSuccess.mp3");
 
-    PLUS_1_SHAPE_COLLECT_1_SOUND = SND_getAssetId("collect_1.wav");
-    PLUS_1_SHAPE_COLLECT_2_SOUND = SND_getAssetId("collect_2.wav");
-    PLUS_1_SHAPE_COLLECT_3_SOUND = SND_getAssetId("collect_3.wav");
+    PLUS_1_SHAPE_COLLECT_1_SOUND = SND_getAssetId("collect_1.mp3");
+    PLUS_1_SHAPE_COLLECT_2_SOUND = SND_getAssetId("collect_2.mp3");
+    PLUS_1_SHAPE_COLLECT_3_SOUND = SND_getAssetId("collect_3.mp3");
 
     tiltTutCollectableSounds{0} = PLUS_1_SHAPE_COLLECT_1_SOUND;
     tiltTutCollectableSounds{1} = PLUS_1_SHAPE_COLLECT_2_SOUND;

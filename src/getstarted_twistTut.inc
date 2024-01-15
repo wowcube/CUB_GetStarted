@@ -43,6 +43,7 @@ const BAKED_TWISTTUT_WAIT_SPRITE = 0;
 const BAKED_TWISTTUT_MASCOT_X_SPRITE = 1;
 
 TwistTutorialBakeSprites() {
+    GFX_clearCache();
     GFX_bakeImage(BAKED_TWISTTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
     GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
@@ -58,9 +59,9 @@ TwistTutorialBakeSprites() {
 MascotTwistAnimUpdate(angle) {
     if (((mascotTwistAngle <= (angle + 90)) && (mascotTwistAngle >= angle))
      || ((mascotTwistAngle >= (angle - 90)) && (mascotTwistAngle <= angle))) {
-        mascotTwistAngle -= 15;//15;
+        mascotTwistAngle -= 15;
     } else {
-        mascotTwistAngle -= 30;// 30;
+        mascotTwistAngle -= 30;
     }
     mascotTwistAngle %= 360;
     if (mascotTwistAngle == angle) {

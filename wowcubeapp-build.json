@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "sdkVersion": "5.1",
   "appIcon": {
     "path": "assets/icon.png"
@@ -268,42 +268,6 @@
   ],
   "soundAssets": [
     {
-      "path": "assets/sounds/action.wav",
-      "alias": "action.wav"
-    },
-    {
-      "path": "assets/sounds/collect_1.wav",
-      "alias": "collect_1.wav"
-    },
-    {
-      "path": "assets/sounds/collect_2.wav",
-      "alias": "collect_2.wav"
-    },
-    {
-      "path": "assets/sounds/collect_3.wav",
-      "alias": "collect_3.wav"
-    },
-    {
-      "path": "assets/sounds/excellent_1.wav",
-      "alias": "excellent_1.wav"
-    },
-    {
-      "path": "assets/sounds/excellent_2.wav",
-      "alias": "excellent_2.wav"
-    },
-    {
-      "path": "assets/sounds/good.wav",
-      "alias": "good.wav"
-    },
-    {
-      "path": "assets/sounds/selec_menu.wav",
-      "alias": "selec_menu.wav"
-    },
-    {
-      "path": "assets/sounds/tapsSuccess.wav",
-      "alias": "tapsSuccess.wav"
-    },
-    {
       "path": "assets/sounds/taps_1-2.wav",
       "alias": "taps_1-2.wav"
     },
@@ -314,6 +278,42 @@
     {
       "path": "assets/sounds/taps_5-6.wav",
       "alias": "taps_5-6.wav"
+    },
+    {
+      "path": "assets/sounds/action.mp3",
+      "alias": "action.mp3"
+    },
+    {
+      "path": "assets/sounds/collect_1.mp3",
+      "alias": "collect_1.mp3"
+    },
+    {
+      "path": "assets/sounds/collect_2.mp3",
+      "alias": "collect_2.mp3"
+    },
+    {
+      "path": "assets/sounds/collect_3.mp3",
+      "alias": "collect_3.mp3"
+    },
+    {
+      "path": "assets/sounds/excellent_1.mp3",
+      "alias": "excellent_1.mp3"
+    },
+    {
+      "path": "assets/sounds/excellent_2.mp3",
+      "alias": "excellent_2.mp3"
+    },
+    {
+      "path": "assets/sounds/good.mp3",
+      "alias": "good.mp3"
+    },
+    {
+      "path": "assets/sounds/selec_menu.mp3",
+      "alias": "selec_menu.mp3"
+    },
+    {
+      "path": "assets/sounds/tapsSuccess.mp3",
+      "alias": "tapsSuccess.mp3"
     }
   ],
   "appFlags": 0,

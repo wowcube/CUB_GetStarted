@@ -32,6 +32,7 @@ new getstartedGreetingTimer = GREETING_TIME;
 const BAKED_START_MASCOT_SPRITE = 0;
 
 StartBakeSprites() {
+    GFX_clearCache();
     GFX_bakeImage(BAKED_START_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
     GFX_drawImageXY(115, 135, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);

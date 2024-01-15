@@ -70,6 +70,7 @@ const BAKED_TAPTUT_MAS_TAPED_SPRITE = 1;
 const BAKED_TAPTUT_WAIT_SPRITE = 2;
 
 TapTutorialBakeSprites() {
+    GFX_clearCache();
     GFX_bakeImage(BAKED_TAPTUT_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
     GFX_drawImageXY(115, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
@@ -146,40 +147,6 @@ TapFillBackground(angle) {
             }
         }
     }
-    /*new tapsInPercents = (tapTutorialStage * 100) / TAPS_TO_FINISH_TUTORIAL;
-    new rect[GFX_RECTANGLE];
-    rect.x = 0;
-    rect.y = 0;
-    rect.w = 240;
-    rect.h = 240;
-    switch (angle) {
-        case 0: {
-            if (tapsInPercents <= 50) {
-                rect.y = rect.h - (480 * tapsInPercents) / 100;
-            }
-        }
-        case 90: {
-            if (tapsInPercents >= 50) {
-                rect.w = (480 * tapsInPercents) / 100 - rect.w;
-            } else {
-                rect.w = rect.h = 0;
-            }
-        }
-        case 180: {
-            if (tapsInPercents >= 50) {
-                rect.h = (480 * tapsInPercents) / 100 - rect.h;
-            } else {
-                rect.w = rect.h = 0;
-            }
-        }
-        case 270: {
-            if (tapsInPercents <= 50) {
-                rect.x = rect.w - (480 * tapsInPercents) / 100;
-            }
-        }
-    }
-
-    GFX_drawRectangle(rect, GetTapFillColor(tapsInPercents));*/
 }
 
 FingerTapAnimation() {
