@@ -84,49 +84,49 @@ const BAKED_TILTTUT_WAIT_END_SPRITE = 4;
 TiltTutorialBakeSprites() {
     GFX_clearCache();
     GFX_bakeImage(BAKED_TILTTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(205, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-    GFX_drawImageXY(195, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-    GFX_drawImageXY(205, 70, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
-    GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, COLLECTED);
-    GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-    GFX_drawText([120, 145], SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
-    GFX_drawText([120, 185], SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
+    GFX_drawImageXY(205,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(195,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(205,  70, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_drawImageXY( 75,  75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, COLLECTED);
+    GFX_drawImageXY(120, 147, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
+    GFX_drawTextXY(120, 145, SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
+    GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
     GFX_render();
     GFX_bakeImage(BAKED_TILTTUT_MAIN_N_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(205, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-    GFX_drawImageXY(195, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-    GFX_drawImageXY(205, 70, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-    GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, COLLECTED);
-    GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-    GFX_drawText([120, 145], SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
-    GFX_drawText([120, 185], SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
+    GFX_drawImageXY(205,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(195,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(205,  70, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_drawImageXY( 75,  75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, COLLECTED);
+    GFX_drawImageXY(120, 147, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
+    GFX_drawTextXY(120, 145, SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
+    GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
     GFX_render();
     GFX_bakeImage(BAKED_TILTTUT_MAIN_V_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(205, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-    GFX_drawImageXY(195, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
-    GFX_drawImageXY(205, 70, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-    GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, COLLECTED);
-    GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-    GFX_drawText([120, 145], SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
-    GFX_drawText([120, 185], SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
+    GFX_drawImageXY(205,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(195,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
+    GFX_drawImageXY(205,  70, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_drawImageXY( 75,  75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, COLLECTED);
+    GFX_drawImageXY(120, 147, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
+    GFX_drawTextXY(120, 145, SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "collect");
+    GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE + 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "all shapes");
     GFX_render();
     GFX_bakeImage(BAKED_TILTTUT_SUCCESS_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(205, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
-    GFX_drawImageXY(195, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
-    GFX_drawImageXY(205, 65, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
-    GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-    GFX_drawText([125, 135], 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
-    GFX_drawText([120, 170], SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
-    GFX_drawText([120, 200], SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
+    GFX_drawImageXY(205,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+    GFX_drawImageXY(195,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
+    GFX_drawImageXY(205,  65, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
+    GFX_drawImageXY(120, 147, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
+    GFX_drawTextXY(125, 135, 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
+    GFX_drawTextXY(120, 170, SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
+    GFX_drawTextXY(120, 200, SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
     GFX_render();
     GFX_bakeImage(BAKED_TILTTUT_WAIT_END_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(205, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-    GFX_drawImageXY(195, 20, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-    GFX_drawImageXY(205, 65, 0xFF, 0, 350, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
-    GFX_drawImage([120, 147], 0xFF, 0, 0, MIRROR_BLANK, DIALOGUE_SMALL);
-    GFX_drawText([125, 135], 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
-    GFX_drawText([120, 170], SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
-    GFX_drawText([120, 200], SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
+    GFX_drawImageXY(205,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(195,  20, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(205,  65, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_drawImageXY(120, 147, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
+    GFX_drawTextXY(125, 135, 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
+    GFX_drawTextXY(120, 170, SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double tap");
+    GFX_drawTextXY(120, 200, SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
     GFX_render();
 }
 
@@ -150,8 +150,8 @@ MovePlusOneEffect(angle) {
         offsetY =  backPlusOneOffset;
     }
 
-    GFX_drawText(GetGFXPoint(mainOneX + offsetX, mainOneY + offsetY), 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFF8008, "+1");
-    GFX_drawText(GetGFXPoint(mainOneX, mainOneY), 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "+1");
+    GFX_drawTextXY(mainOneX + offsetX, mainOneY + offsetY, 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFF8008, "+1");
+    GFX_drawTextXY(mainOneX, mainOneY, 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "+1");
 
     ++currentPlusOneTick;
 
@@ -169,25 +169,25 @@ CheckCollectables() {
 }
 
 SendBall(pktNumber) {
-    new data[MESSAGE_SIZE];
+    new data[MAX_PACKET_SIZE / 4];
 
-    data[0] = PKT_BALL_TILT_TUT | (tiltTutBall.module << 8) | (tiltTutBall.screen << 16) | (CheckCollectables() << 24);
+    data[0] = (tiltTutBall.module << 8) | (tiltTutBall.screen << 16) | (CheckCollectables() << 24);
     data[1] = tiltTutBall.angle;
     data[2] = tiltTutBall.screenAngle;
     data[3] = pktNumber;
 
-    broadcastMessage(data);
+    broadcastPacket(PKT_BALL_TILT_TUT, data);
 }
 
 SendSelector(pktNumber) {
-    new data[MESSAGE_SIZE];
+    new data[MAX_PACKET_SIZE / 4];
 
-    data[0] = PKT_SELECTOR_TILT_TUT | (tiltTutSelector.module << 8) | (tiltTutSelector.screen << 16);
+    data[0] = (tiltTutSelector.module << 8) | (tiltTutSelector.screen << 16);
     data[1] = tiltTutSelector.screenAngle;
     data[2] = pktNumber;
     data[3] = (selectorOutAnimation == 1) ? (2) : (1);
 
-    broadcastMessage(data);
+    broadcastPacket(PKT_SELECTOR_TILT_TUT, data);
 }
 
 FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
@@ -378,9 +378,9 @@ DrawTiltTutorial(screen) {
     switch (screenLayout) {
         case TILTTUT_ICON: {
             if (tiltTutSelector.screenAngle != 270) {
-                GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TILT_ICON);
+                GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TILT_ICON);
             } else {
-                GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, TAP_ICON);
+                GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TAP_ICON);
             }
         }
         case TILTTUT_TEXT_BOX: {
@@ -390,12 +390,12 @@ DrawTiltTutorial(screen) {
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
             
-            GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
-            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and collect");
-            GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "all shapes");
+            GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and collect");
+            GFX_drawTextXY(posX_2, posY_2, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "all shapes");
         }
         case ARROW_HINT: {
-            GFX_drawImage([120, 120], 0xFF, 0, 0, MIRROR_BLANK, ARROW_TILT);
+            GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, ARROW_TILT);
         }
         case COLLECT_CIRCLE: {
             GFX_drawArc([-15, -15],  95, 4, 0, 90, 0xFFFFC28A);
@@ -408,27 +408,27 @@ DrawTiltTutorial(screen) {
                 curMascotSprite = BAKED_TILTTUT_MAIN_V_SPRITE;
             }
             if (angle == 0) {
-                GFX_drawBakedImage([120, 120], 0xFF, 0, 0, MIRROR_BLANK, curMascotSprite);
+                GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, 0, MIRROR_BLANK, curMascotSprite);
                 if (collectables{0}) {
-                    GFX_drawImage([ 75,  75], 0xFF, 0, angle, MIRROR_BLANK, COLLECTABLE);
+                    GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTABLE);
                 }
             } else if (angle == 90) {
                 if (curMascotSprite == BAKED_TILTTUT_WAIT_SPRITE) {
-                    GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
                 } else {
-                    GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
                 }
-                GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, (collectables{1}) ? (COLLECTABLE) : (COLLECTED));
+                GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, (collectables{1}) ? (COLLECTABLE) : (COLLECTED));
             } else if (angle == 180) {
-                GFX_drawImage([176, 208], 0xFF, 0, angle, MIRROR_BLANK, COUNT_BAR);
+                GFX_drawImageXY(176, 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COUNT_BAR);
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     if (!collectables{item}) {
-                        GFX_drawImage(GetGFXPoint(200 - (24 * item), 208), 0xFF, 0, angle, MIRROR_BLANK, COLLECTED_CHECK);
+                        GFX_drawImageXY(200 - (24 * item), 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTED_CHECK);
                     }
                 }
             } else if (angle == 270) {
-                GFX_drawText([210, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "tilt the cube");
-                GFX_drawImage([ 75,  75], 0xFF, 0, 0, MIRROR_BLANK, (collectables{2}) ? (COLLECTABLE) : (COLLECTED));
+                GFX_drawTextXY(210, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "tilt the cube");
+                GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, (collectables{2}) ? (COLLECTABLE) : (COLLECTED));
             }
 
             if (collectedPlusOneEffect) {
@@ -436,7 +436,7 @@ DrawTiltTutorial(screen) {
             }
 
             if ((tiltTutBall.module == SELF_ID) && (tiltTutBall.screen == screen)) {
-                GFX_drawImage(GetGFXPoint(tiltTutBall.posX, tiltTutBall.posY), 0xFF, 0, 0, MIRROR_BLANK, BALL);
+                GFX_drawImageXY(tiltTutBall.posX, tiltTutBall.posY, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
             }
         }
         case FINISHED_TOP: {
@@ -448,23 +448,23 @@ DrawTiltTutorial(screen) {
                 curMascotSprite = BAKED_TILTTUT_WAIT_END_SPRITE;
             }
             if (angle != 180) {
-                GFX_drawImage([75, 75], 0xFF, 0, 0, MIRROR_BLANK, COLLECTED);
+                GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, COLLECTED);
             }
             if (angle == 0) {
-                GFX_drawBakedImage([120, 120], 0xFF, 0, 0, MIRROR_BLANK, curMascotSprite);
+                GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, 0, MIRROR_BLANK, curMascotSprite);
                 if (collectables{0}) {
-                    GFX_drawImage([ 75,  75], 0xFF, 0, angle, MIRROR_BLANK, COLLECTABLE);
+                    GFX_drawImageXY( 75,  75, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTABLE);
                 }
             } else if (angle == 90) {
                 if (curMascotSprite == BAKED_TILTTUT_WAIT_END_SPRITE) {
-                    GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
                 } else {
-                    GFX_drawImage([-50, 205], 0xFF, 0, 80, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
                 }
             } else if (angle == 180) {
-                GFX_drawImage([176, 208], 0xFF, 0, angle, MIRROR_BLANK, COUNT_BAR);
+                GFX_drawImageXY(176, 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COUNT_BAR);
                 for (new item = 0; item < SCREENS_MAX; ++item) {
-                    GFX_drawImage(GetGFXPoint(200 - (24 * item), 208), 0xFF, 0, angle, MIRROR_BLANK, COLLECTED_CHECK_RED);
+                    GFX_drawImageXY(200 - (24 * item), 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTED_CHECK_RED);
                 }
             }
 
@@ -473,7 +473,7 @@ DrawTiltTutorial(screen) {
             }
 
             if ((tiltTutBall.module == SELF_ID) && (tiltTutBall.screen == screen)) {
-                GFX_drawImage(GetGFXPoint(tiltTutBall.posX, tiltTutBall.posY), 0xFF, 0, 0, MIRROR_BLANK, BALL);
+                GFX_drawImageXY(tiltTutBall.posX, tiltTutBall.posY, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
             }
         }
         case FINISHED_DOUBLE_TAP: {
@@ -482,11 +482,11 @@ DrawTiltTutorial(screen) {
             new posX_2 = 120;
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
-            GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double tap");
-            GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "to continue");
+            GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double tap");
+            GFX_drawTextXY(posX_2, posY_2, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "to continue");
         }
         case FINISHED_EXCELLENT: {
-            GFX_drawText([120, 120], SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "excellent!");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "excellent!");
         }
         case SELECTOR_TOP: {
             if ((angle == 0) && (tiltTutSelector.module != SELF_ID)) {
@@ -494,34 +494,34 @@ DrawTiltTutorial(screen) {
                     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
                     InitCrossAnimationVars(0xFF5C00, 0xFFB576);
                     DrawCrossAnimation();
-                    GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "put the white");
-                    GFX_drawText([120, 105], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "hightlight on me");
-                    GFX_drawText([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and tap the");
-                    GFX_drawText([120, 155], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "cube 2 times");
+                    GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "put the white");
+                    GFX_drawTextXY(120, 105, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "hightlight on me");
+                    GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and tap the");
+                    GFX_drawTextXY(120, 155, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "cube 2 times");
                 }
             } else if ((angle == 180) && (tiltTutSelector.module != SELF_ID)) {
                 InitCrossAnimationVars(0xFF5C00, 0x513469);
                 DrawCrossAnimation();
                 if (tiltTutSelector.screenAngle == 270) {
-                    GFX_drawText([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tap the cube");
-                    GFX_drawText([120, 110], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times now");
+                    GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tap the cube");
+                    GFX_drawTextXY(120, 110, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times now");
                 } else {
-                    GFX_drawText([120, 155], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
-                    GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "for navigation");
-                    GFX_drawText([120,  80], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "or selection");
+                    GFX_drawTextXY(120, 155, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tilt the cube");
+                    GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "for navigation");
+                    GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "or selection");
                 }
             } else if (angle == 270) {
                 if (!mascotWaitModeFlag) {
-                    GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-                    GFX_drawImageXY(120, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-                    GFX_drawImageXY(170, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+                    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                    GFX_drawImageXY(170, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
                 } else {
-                    GFX_drawImageXY(120, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-                    GFX_drawImageXY(120, 115, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-                    GFX_drawImageXY(170, 120, 0xFF, 0, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+                    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                    GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+                    GFX_drawImageXY(170, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
                 }
                 if (tiltTutSelector.screenAngle % 270) {
-                    GFX_drawImage([120, 31], 0xFF, 0, 180, MIRROR_BLANK, DIALOGUE);
+                    GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
                 }
             }
 
@@ -533,7 +533,7 @@ DrawTiltTutorial(screen) {
                     selectorYOffset += 30;
                     selectorXOffset = -35;
                 }
-                GFX_drawImage(GetGFXPoint(85 - selectorXOffset, 85 - selectorYOffset), 0xFF, 0, 0, MIRROR_BLANK, SELECTOR);
+                GFX_drawImageXY(85 - selectorXOffset, 85 - selectorYOffset, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, SELECTOR);
                 if ((-selectorXOffset < -180) || (-selectorYOffset < -180)) {
                     selectorInAnimation = selectorOutAnimation = selectorYOffset = selectorXOffset = 0;
                 }
@@ -545,13 +545,13 @@ DrawTiltTutorial(screen) {
                     selectorYOffset += 30;
                     selectorXOffset = 210;
                 }
-                GFX_drawImage(GetGFXPoint(-90 + selectorXOffset, -90 + selectorYOffset), 0xFF, 0, 0, MIRROR_BLANK, SELECTOR);
+                GFX_drawImageXY(-90 + selectorXOffset, -90 + selectorYOffset, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, SELECTOR);
                 if ((selectorXOffset > 210) || (selectorYOffset > 210)) {
                     selectorOutAnimation = selectorInAnimation = selectorYOffset = selectorXOffset = 0;
                     SND_play(SELECTOR_MENU_SOUND, SOUND_VOLUME);
                 }
             } else if ((tiltTutSelector.module == SELF_ID) && (tiltTutSelector.screen == screen)) {
-                GFX_drawImage(GetGFXPoint(120 + tiltTutSelector.accelX, 120 + tiltTutSelector.accelY), 0xFF, 0, 0, MIRROR_BLANK, SELECTOR);
+                GFX_drawImageXY(120 + tiltTutSelector.accelX, 120 + tiltTutSelector.accelY, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, SELECTOR);
             }
         }
         case SELECTOR_TEXT_BOX: {
@@ -572,11 +572,11 @@ DrawTiltTutorial(screen) {
                 isStaticX = 0;
                 isStaticY = 1;
             }
-            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + changingPos * isStaticY, staticCenterPos * isStaticY + changingPos * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "put the");
-            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 1) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 1) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "highlight on");
-            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 2) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 2) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the little");
-            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 3) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 3) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube and");
-            GFX_drawText(GetGFXPoint(staticCenterPos * isStaticX + (changingPos + posStep * 4) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 4) * isStaticX), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
+            GFX_drawTextXY(staticCenterPos * isStaticX + changingPos * isStaticY, staticCenterPos * isStaticY + changingPos * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "put the");
+            GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 1) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 1) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "highlight on");
+            GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 2) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 2) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the little");
+            GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 3) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 3) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube and");
+            GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 4) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 4) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double tap");
         }
     }
 

@@ -40,14 +40,14 @@ const BAKED_SHAKETUT_WAIT_SPRITE = 1;
 ShakeTutorialBakeSprites() {
     GFX_clearCache();
     GFX_bakeImage(BAKED_SHAKETUT_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-    GFX_drawImageXY(130, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(130, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
     GFX_bakeImage(BAKED_SHAKETUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-    GFX_drawImageXY(130, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_drawImageXY(130, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
     GFX_render();
 }
 
@@ -125,23 +125,23 @@ DrawShakeTutorial(screen) {
                 MascotShakeAnimation();
             }
             if (!mascotWaitModeFlag) {
-                GFX_drawBakedImage(GetGFXPoint(mascotShakePosX, 120), 0xFF, 0, angle, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
+                GFX_drawBakedImageXY(mascotShakePosX, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
             } else {
-                GFX_drawBakedImage(GetGFXPoint(mascotShakePosX, 120), 0xFF, 0, angle, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
+                GFX_drawBakedImageXY(mascotShakePosX, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
             }
-            GFX_drawImage([31, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE);
+            GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE);
         }
         case ICON: {
-            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, SHAKE_ICON);
+            GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON);
         }
         case SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            GFX_drawText([120, 180], 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
-            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
-            GFX_drawText([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
-            GFX_drawText([120,  60], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
+            GFX_drawTextXY(120, 180, 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
+            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
+            GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
         }
         case TEXT_BOX: {
             new posX_1 = 120;
@@ -164,24 +164,24 @@ DrawShakeTutorial(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            GFX_drawText(GetGFXPoint(posX_1, posY_1), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
-            GFX_drawText([120, 120], 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube up");
-            GFX_drawText(GetGFXPoint(posX_2, posY_2), 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
+            GFX_drawTextXY(posX_1, posY_1, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
+            GFX_drawTextXY(120, 120, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube up");
+            GFX_drawTextXY(posX_2, posY_2, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
         }
         case TEXT_BOX_2: {
-            GFX_drawText([100, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
-            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
-            GFX_drawText([140, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
+            GFX_drawTextXY(100, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
+            GFX_drawTextXY(140, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
         }
         case MASCOT_2: {
             if (!shakeTutorialStage) {
                 if (!mascotWaitModeFlag) {
-                    GFX_drawBakedImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
+                    GFX_drawBakedImage([210, 210], 0xFF, 0, 100, 100, 75, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
                 } else {
-                    GFX_drawBakedImage([210, 210], 0xFF, 0, 75, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
+                    GFX_drawBakedImage([210, 210], 0xFF, 0, 100, 100, 75, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
                 }
-                GFX_drawImage([ 91, 120], 0xFF, 0, 90, MIRROR_BLANK, DIALOGUE_SMALL);
-                GFX_drawText([70, 130], 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
+                GFX_drawImageXY(91, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
+                GFX_drawTextXY(70, 130, 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
             }
         }
     }

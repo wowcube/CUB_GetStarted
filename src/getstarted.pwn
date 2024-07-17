@@ -86,7 +86,7 @@ BakeSpritesForCurrentAppState(currentAppState) {
 }
 
 SendGeneralInfo(pktNumber) {
-    new data[MESSAGE_SIZE];
+    new data[MAX_PACKET_SIZE / 4];
 
     new flags = beginTapTutorial
     | (finishTiltTutorial << 3) 
@@ -100,13 +100,13 @@ SendGeneralInfo(pktNumber) {
     for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
         randomSoundOrder |= (tiltTutCollectableSounds{soundI} << (soundI * 2));
     }
-    data[0] = PKT_GENERAL_DATA | (previousAppState << 16) | (applicationState << 24);
+    data[0] = (previousAppState << 16) | (applicationState << 24);
     data[1] = tapTutorialStage | (sideTapIndicatorPos << 4) | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
     data[3] = pktNumber;
     data[4] = flags;
 
-    broadcastMessage(data);
+    broadcastPacket(PKT_GENERAL_DATA, data);
 }
 
 public ON_PhysicsTick() {
@@ -435,8 +435,8 @@ public ON_Load(id, size, const pkt[]) {
     alreadyLaunched = pkt[0];
 }
 
-public ON_Message(const pkt[MESSAGE_SIZE]) {
-    switch (parseByte(pkt, 0)) {
+public ON_Packet(type, size, const pkt[]) {
+    switch (type) {
         case PKT_GENERAL_DATA: {
             new packetNumberReceived = pkt[3];
             if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {

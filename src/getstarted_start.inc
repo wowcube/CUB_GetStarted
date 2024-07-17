@@ -34,9 +34,9 @@ const BAKED_START_MASCOT_SPRITE = 0;
 StartBakeSprites() {
     GFX_clearCache();
     GFX_bakeImage(BAKED_START_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(120, 120, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-    GFX_drawImageXY(115, 135, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-    GFX_drawImageXY(120, 170, 0xFF, 0, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(115, 135, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
 }
 
@@ -46,30 +46,30 @@ DrawStartCountdown(screen) {
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
-            GFX_drawBakedImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, BAKED_START_MASCOT_SPRITE);
-            GFX_drawImage([ 31, 120], 0xFF, 0, angle, MIRROR_BLANK, DIALOGUE);
+            GFX_drawBakedImageXY(120, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_START_MASCOT_SPRITE);
+            GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DIALOGUE);
         }
         case GREETING: {
             InitCrossAnimationVars(0xFF5C00, 0x513469);
             DrawCrossAnimation();
             if (getstartedGreetingFlag) {
-                GFX_drawText([120, 120], 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
+                GFX_drawTextXY(120, 120, 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
             } else {
-                GFX_drawText([120, 170], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
-                GFX_drawText([120, 130], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
-                GFX_drawText([120,  70], 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
+                GFX_drawTextXY(120, 170, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
+                GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
+                GFX_drawTextXY(120,  70, 20, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
             }
         }
         case ICONS: {
-            GFX_drawImage([120, 120], 0xFF, 0, angle, MIRROR_BLANK, tangibleIcons[currentTangibleIcon]);
+            GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, tangibleIcons[currentTangibleIcon]);
         }
         case SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             InitCrossAnimationVars(0xFF5C00, 0xFFB576);
             DrawCrossAnimation();
-            GFX_drawText([120,  90], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
-            GFX_drawText([120, 120], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
-            GFX_drawText([120, 150], SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "use wowcube");
+            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
+            GFX_drawTextXY(120, 150, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "use wowcube");
         }
         case TEXT_BOX: {
             if (!getstartedGreetingFlag) {
@@ -93,13 +93,13 @@ DrawStartCountdown(screen) {
                     posX_2 = 140;
                     posY_2 = 120;
                 }
-                GFX_drawText(GetGFXPoint(posX_1, posY_1), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
-                GFX_drawText(GetGFXPoint(posX_2, posY_2), SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
+                GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "we will");
+                GFX_drawTextXY(posX_2, posY_2, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "start in");
             }
         }
         case COUNTDOWN: {
             if (!getstartedGreetingFlag) {
-                GFX_drawText([120, 120], 25, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
+                GFX_drawTextXY(120, 120, 25, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "%d", tutorialStartTimer / 1000);
             }
         }
     }

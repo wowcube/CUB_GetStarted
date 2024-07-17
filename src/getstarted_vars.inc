@@ -188,6 +188,8 @@ new prevAccelZ = 0;
 new crossColor = 0xFFFFFFFF;
 new plusColor  = 0xFFFFFFFF;
 
+new magenta = 0xFFFF00FF;
+
 InitCrossAnimationVars(m_crossColor, m_plusColor) {
     crossColor = m_crossColor;
     plusColor  = m_plusColor;
@@ -228,13 +230,6 @@ SetPlace(face, position) {
     return place;
 }
 
-GetGFXPoint(x, y) {
-    new pointGFX[GFX_POINT];
-    pointGFX.x = x;
-    pointGFX.y = y;
-    return pointGFX;
-}
-
 GetRightScreen(screen) {
     return ((screen - 1) % SCREENS_MAX);
 }
@@ -247,20 +242,20 @@ DrawCrossAnimation() {
     new pos[CROSS_ANIM_DATA];
 
     pos = leftBottom[firstCrossAnimPairStage];
-    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, crossColor);
-    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, crossColor);
+    GFX_drawLineXY(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, crossLineThickness, crossColor);
+    GFX_drawLineXY(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, crossLineThickness, crossColor);
     
     pos = rightBottom[secondCrossAnimPairStage];
-    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, plusColor);
-    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, plusColor);
+    GFX_drawLineXY(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, crossLineThickness, plusColor);
+    GFX_drawLineXY(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, crossLineThickness, plusColor);
 
     pos = rightTop[firstCrossAnimPairStage];
-    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, crossColor);
-    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, crossColor);
+    GFX_drawLineXY(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, crossLineThickness, crossColor);
+    GFX_drawLineXY(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, crossLineThickness, crossColor);
     
     pos = leftTop[secondCrossAnimPairStage];
-    GFX_drawLine(GetGFXPoint(pos.posX_b_1, pos.posY_b_1), GetGFXPoint(pos.posX_e_1, pos.posY_e_1), crossLineThickness, plusColor);
-    GFX_drawLine(GetGFXPoint(pos.posX_b_2, pos.posY_b_2), GetGFXPoint(pos.posX_e_2, pos.posY_e_2), crossLineThickness, plusColor);
+    GFX_drawLineXY(pos.posX_b_1, pos.posY_b_1, pos.posX_e_1, pos.posY_e_1, crossLineThickness, plusColor);
+    GFX_drawLineXY(pos.posX_b_2, pos.posY_b_2, pos.posX_e_2, pos.posY_e_2, crossLineThickness, plusColor);
 }
 
 UpdateCrossAnimation(m_deltaTime) {
