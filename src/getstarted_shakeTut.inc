@@ -9,21 +9,21 @@ const TEXT_BOX_2 = 5;
 const MASCOT_2   = 6;
 
 new getstarted_shakeTutorial{} = {
-    EMPTY, EMPTY, SPEECH_BOX, MASCOT,
-    EMPTY, EMPTY, SPEECH_BOX, MASCOT,
-    EMPTY, ICON, EMPTY, TEXT_BOX,
+    EMPTY, MASCOT, SPEECH_BOX, EMPTY,
+    EMPTY, MASCOT, SPEECH_BOX, EMPTY,
     EMPTY, TEXT_BOX, EMPTY, ICON,
-    ICON, EMPTY, TEXT_BOX, EMPTY,
     EMPTY, ICON, EMPTY, TEXT_BOX,
+    ICON, EMPTY, TEXT_BOX, EMPTY,
+    EMPTY, TEXT_BOX, EMPTY, ICON,
 };
 
 new getstarted_shakeTutorialFill{} = {
-    EMPTY, MASCOT_2, EMPTY, TEXT_BOX_2,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX_2,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX_2,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX_2,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX_2,
-    EMPTY, EMPTY, EMPTY, TEXT_BOX_2,
+    EMPTY, TEXT_BOX_2, EMPTY, MASCOT_2,
+    EMPTY, TEXT_BOX_2, EMPTY, MASCOT_2,
+    EMPTY, TEXT_BOX_2, EMPTY, EMPTY,
+    EMPTY, TEXT_BOX_2, EMPTY, EMPTY,
+    EMPTY, TEXT_BOX_2, EMPTY, EMPTY,
+    EMPTY, TEXT_BOX_2, EMPTY, EMPTY,
 };
 
 new shakeTutorialStage = 0;
@@ -109,11 +109,12 @@ ShakeFillBackground(angle) {
 }
 
 DrawShakeTutorial(screen) {
-    new angle = getStarted_screenData[screen].angle;
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
     new screenLayout = (beginShakeTutorial) ? 
-                       (getstarted_shakeTutorialFill{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90}) : 
-                       (getstarted_shakeTutorial{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
-    
+                       (getstarted_shakeTutorialFill{getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX + getStarted_AllScreensData[screenI].pos}) : 
+                       (getstarted_shakeTutorial{getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX + getStarted_AllScreensData[screenI].pos});
+
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
 
     if (beginShakeTutorial) {
@@ -136,7 +137,7 @@ DrawShakeTutorial(screen) {
         }
         case SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-            InitCrossAnimationVars(0xFF5C00, 0xFFB576);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
             DrawCrossAnimation();
             GFX_drawTextXY(120, 180, 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
             GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");

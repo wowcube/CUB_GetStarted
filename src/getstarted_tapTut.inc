@@ -14,8 +14,8 @@ const TAPTUT_TAPSIDE_ICON    = 10;
 const TAPTUT_TEXT_BOX_2      = 11;
 
 new getstarted_tapTutorial{} = {
-    TAPTUT_TAPSIDE_ICON, TAPTUT_MASCOT, TAPTUT_BIG_TAP_COUNT, TAPTUT_TEXT_BOX_2,
-    TAPTUT_TAPSIDE_ICON, TAPTUT_MASCOT, TAPTUT_BIG_TAP_COUNT, TAPTUT_TEXT_BOX_2,
+    TAPTUT_TAPSIDE_ICON, TAPTUT_TEXT_BOX_2, TAPTUT_BIG_TAP_COUNT, TAPTUT_MASCOT,
+    TAPTUT_TAPSIDE_ICON, TAPTUT_TEXT_BOX_2, TAPTUT_BIG_TAP_COUNT, TAPTUT_MASCOT,
     TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
     TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
     TAPTUT_TEXT_BOX, TAPTUT_EMPTY, TAPTUT_SMALL_TAP_COUNT, TAPTUT_EMPTY,
@@ -23,8 +23,8 @@ new getstarted_tapTutorial{} = {
 };
 
 new getstarted_tapStartTutorial{} = {
-    RIGHT_WAY, FINGER_ANIM, BUBBLE_TEXT, WRONG_WAY,
-    RIGHT_WAY, FINGER_ANIM, BUBBLE_TEXT, WRONG_WAY,
+    RIGHT_WAY, WRONG_WAY, BUBBLE_TEXT, FINGER_ANIM,
+    RIGHT_WAY, WRONG_WAY, BUBBLE_TEXT, FINGER_ANIM,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
     TAPTUT_ICON, TAPTUT_EMPTY, TAPTUT_TEXT_BOX, TAPTUT_EMPTY,
@@ -178,9 +178,10 @@ FingerTapAnimation() {
 }
 
 DrawTapTutorial(screen) {
-    new angle = getStarted_screenData[screen].angle;
-    
-    new layoutElement = getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90;
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
+    new layoutElement = getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX + getStarted_AllScreensData[screenI].pos;
+
     new screenLayout = (getstarted_tapStartTutorial{layoutElement});
     if (fillTapTutorial) {
         screenLayout = (getstarted_tapTutorial{layoutElement});

@@ -34,11 +34,11 @@ SetApplicationState(newState) {
             fillTapTutorial  = 0;
         } else if (newState == FSM:tiltTutorial) {
             tiltTutBall.angle = 45;
-            tiltTutBall.screenAngle = 180;
+            tiltTutBall.pos = 2;
             tiltTutBall.moduleT = tiltTutBall.module = MODULES_MAX;
             tiltTutBall.screenT = tiltTutBall.screen = SCREENS_MAX;
 
-            tiltTutSelector.screenAngle = 90;
+            tiltTutSelector.pos = 3;
             tiltTutSelector.moduleT = tiltTutSelector.module = MODULES_MAX;
             tiltTutSelector.screenT = tiltTutSelector.screen = SCREENS_MAX;
         } else if (newState == FSM:successScreen) {
@@ -85,6 +85,17 @@ BakeSpritesForCurrentAppState(currentAppState) {
     bakeAppStateSpritesFlag = 0;
 }
 
+GetMapping() {
+    for (new moduleI = 0; moduleI < MODULES_MAX; ++moduleI) {
+        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
+            new curPlace[TOPOLOGY_PLACE];
+            curPlace = TOPOLOGY_getPlace(SetFacelet(moduleI, screenI), ORIENTATION_MODE_SPLASH);
+            getStarted_AllScreensData[moduleI * SCREENS_MAX + screenI].face = TOPOLOGY_getFaceletOrientation(SetFacelet(moduleI, screenI));
+            getStarted_AllScreensData[moduleI * SCREENS_MAX + screenI].pos = curPlace.position;
+        }
+    }
+}
+
 SendGeneralInfo(pktNumber) {
     new data[MAX_PACKET_SIZE / 4];
 
@@ -107,6 +118,22 @@ SendGeneralInfo(pktNumber) {
     data[4] = flags;
 
     broadcastPacket(PKT_GENERAL_DATA, data);
+}
+
+SendMapping() {
+    new data[MAX_PACKET_SIZE / 4];
+
+    new dataI = 0;
+    for (new screenI = 3, offset = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI, ++offset) {
+        if (offset >= 5) {
+            offset = 0;
+            ++dataI;
+        }
+        data[dataI] |= (getStarted_AllScreensData[screenI].face << (5 * offset))
+                     | (getStarted_AllScreensData[screenI].pos << (3 + (5 * offset)));
+    }
+
+    broadcastPacket(PKT_MAPPING, data);
 }
 
 public ON_PhysicsTick() {
@@ -183,6 +210,7 @@ public ON_Tick() {
     if (SELF_ID == 0) {
         generalDataPkt = ++generalDataPkt % 0x7FFFFFFF;
         SendGeneralInfo(generalDataPkt);
+        SendMapping();
     }
 }
 
@@ -317,10 +345,7 @@ public ON_Init(id, size, const pkt[]) {
         }
     }
 
-    for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-        getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletOrientation(SetFacelet(SELF_ID, screenI));
-        getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
-    }
+    GetMapping();
     
     SetApplicationState(FSM:firstLaunch);
 }
@@ -376,7 +401,7 @@ public ON_Tap(const count, const display, const bool:opposite) {
             case tiltTutorial: {
                 if (count >= 2) {
                     if (selectorTutorial) {
-                        if (tiltTutSelector.screenAngle == 270) {
+                        if (tiltTutSelector.pos == 1) {
                             SetApplicationState(FSM:shakeTutorial);
                             SND_play(EXCELLENT_2_SOUND, SOUND_VOLUME);
                         }
@@ -398,9 +423,8 @@ public ON_Tap(const count, const display, const bool:opposite) {
 }
 
 public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
-    for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-        getStarted_screenData[screenI].sideType = TOPOLOGY_getFaceletOrientation(SetFacelet(SELF_ID, screenI));
-        getStarted_screenData[screenI].angle = TOPOLOGY_getAngle(SetFacelet(SELF_ID, screenI), TOPOLOGY_orientation_mode:ORIENTATION_MODE_SPLASH);
+    if (SELF_ID == 0) {
+        GetMapping();
     }
 
     SetDefaultMascot();
@@ -470,7 +494,7 @@ public ON_Packet(type, size, const pkt[]) {
                 tiltTutBall.module = parseByte(pkt, 1);
                 tiltTutBall.screen = parseByte(pkt, 2);
                 tiltTutBall.angle = pkt[1];
-                tiltTutBall.screenAngle = pkt[2];
+                tiltTutBall.pos = pkt[2];
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     collectables{item} = (parseByte(pkt, 3) >> item) & 0x1;
                 }
@@ -485,7 +509,18 @@ public ON_Packet(type, size, const pkt[]) {
                     selectorInAnimation = pkt[3];
                 }
                 tiltTutSelector.screen = parseByte(pkt, 2);
-                tiltTutSelector.screenAngle = pkt[1];
+                tiltTutSelector.pos = pkt[1];
+            }
+        }
+        case PKT_MAPPING: {
+            new dataI = 0;
+            for (new screenI = 3, offset = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI, ++offset) {
+                if (offset >= 5) {
+                    offset = 0;
+                    ++dataI;
+                }
+                getStarted_AllScreensData[screenI].face = (pkt[dataI] >> (5 * offset)) & 0x7;
+                getStarted_AllScreensData[screenI].pos = (pkt[dataI] >> (3 + (5 * offset))) & 0x3;
             }
         }
     }

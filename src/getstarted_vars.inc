@@ -5,6 +5,7 @@
 #define PKT_GENERAL_DATA       1
 #define PKT_BALL_TILT_TUT      2
 #define PKT_SELECTOR_TILT_TUT  3
+#define PKT_MAPPING            4
 
 #define CROSS_ANIM_DATA .posX_b_1, .posY_b_1, .posX_e_1, .posY_e_1, .posX_b_2, .posY_b_2, .posX_e_2, .posY_e_2
 
@@ -145,10 +146,15 @@ const FSM: {
 new FSM:applicationState = 0;
 new FSM:previousAppState = 0;
 
-new getStarted_screenData[SCREENS_MAX][.sideType, .angle] = [
-    [TOPOLOGY_orientation:ORIENTATION_UP, 180],
-    [TOPOLOGY_orientation:ORIENTATION_UP, 180],
-    [TOPOLOGY_orientation:ORIENTATION_UP, 180],
+new getStarted_AllScreensData[MODULES_MAX * SCREENS_MAX][.face, .pos] = [
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
+    [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
 ]
 
 new mascotWaitModeFlag = 0;

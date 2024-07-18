@@ -1,5 +1,5 @@
-#define GS_BALL_DATA .posX, .posY, .angle, .screenAngle, .module, .screen, .moduleT, .screenT, .collectables
-#define GS_SELECTOR_DATA .accelX, .accelY, .screenAngle, .module, .screen, .moduleT, .screenT
+#define GS_BALL_DATA .posX, .posY, .angle, .pos, .module, .screen, .moduleT, .screenT, .collectables
+#define GS_SELECTOR_DATA .accelX, .accelY, .pos, .module, .screen, .moduleT, .screenT
 
 #include "getstarted_vars.inc"
 
@@ -18,11 +18,11 @@ const SELECTOR_SENSITIVITY = -38;
 
 new getstarted_tiltTutCollect{} = {
     COLLECT_CIRCLE, COLLECT_CIRCLE, COLLECT_CIRCLE, COLLECT_CIRCLE,
-    TILTTUT_EMPTY, TILTTUT_ICON, TILTTUT_EMPTY, TILTTUT_TEXT_BOX,
-    TILTTUT_EMPTY, TILTTUT_ICON, ARROW_HINT, TILTTUT_TEXT_BOX,
-    ARROW_HINT, TILTTUT_TEXT_BOX, TILTTUT_EMPTY, TILTTUT_ICON,
-    TILTTUT_ICON, ARROW_HINT, TILTTUT_TEXT_BOX, TILTTUT_EMPTY,
-    TILTTUT_TEXT_BOX, TILTTUT_EMPTY, TILTTUT_ICON, ARROW_HINT,
+    TILTTUT_EMPTY, TILTTUT_TEXT_BOX, TILTTUT_EMPTY, TILTTUT_ICON,
+    TILTTUT_EMPTY, TILTTUT_TEXT_BOX, ARROW_HINT, TILTTUT_ICON,
+    ARROW_HINT, TILTTUT_ICON, TILTTUT_EMPTY, TILTTUT_TEXT_BOX,
+    TILTTUT_ICON, TILTTUT_EMPTY, TILTTUT_TEXT_BOX, ARROW_HINT,
+    TILTTUT_TEXT_BOX, ARROW_HINT, TILTTUT_ICON, TILTTUT_EMPTY,
 };
 
 new getstarted_tiltTutFinished{} = {
@@ -52,7 +52,7 @@ new tiltTutSelector[GS_SELECTOR_DATA];
 new finishTiltTutorial = 0;
 new selectorTutorial = 0;
 new collectables{SCREENS_MAX} = {1, 1, 1};
-new collectablesAngles[SCREENS_MAX] = [0, 90, 270];
+new collectablesAngles[SCREENS_MAX] = [0, 3, 1];
 
 new ballPkt = 0;
 new selectorPkt = 0;
@@ -173,7 +173,7 @@ SendBall(pktNumber) {
 
     data[0] = (tiltTutBall.module << 8) | (tiltTutBall.screen << 16) | (CheckCollectables() << 24);
     data[1] = tiltTutBall.angle;
-    data[2] = tiltTutBall.screenAngle;
+    data[2] = tiltTutBall.pos;
     data[3] = pktNumber;
 
     broadcastPacket(PKT_BALL_TILT_TUT, data);
@@ -183,7 +183,7 @@ SendSelector(pktNumber) {
     new data[MAX_PACKET_SIZE / 4];
 
     data[0] = (tiltTutSelector.module << 8) | (tiltTutSelector.screen << 16);
-    data[1] = tiltTutSelector.screenAngle;
+    data[1] = tiltTutSelector.pos;
     data[2] = pktNumber;
     data[3] = (selectorOutAnimation == 1) ? (2) : (1);
 
@@ -212,8 +212,8 @@ FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
 SelectorLogic() {
     if (tiltTutSelector.module >= MODULES_MAX) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            if (getStarted_screenData[screenI].sideType == TOPOLOGY_orientation:ORIENTATION_UP) {
-                if (getStarted_screenData[screenI].angle == tiltTutSelector.screenAngle) {
+            if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].face == ORIENTATION_UP) {
+                if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos == tiltTutSelector.pos) {
                     tiltTutSelector.module = SELF_ID;
                     tiltTutSelector.screen = screenI;
                     break;
@@ -241,14 +241,14 @@ SelectorLogic() {
                     tiltTutSelector.accelY = accelY >> 1;
                 }
                 
-                tiltTutSelector.screenAngle = getStarted_screenData[screenI].angle;
+                tiltTutSelector.pos = getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos;
                 
                 if (accelX < SELECTOR_SENSITIVITY) {
                     neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
                     if (neighbor.connected) {
                         tiltTutSelector.module = neighbor.module;
                         tiltTutSelector.screen = neighbor.screen;
-                        tiltTutSelector.screenAngle = (getStarted_screenData[screenI].angle - 90) % 360;
+                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos + 1) % 4;
                         selectorOutAnimation = 1;
                     }
                 } else if (accelY < SELECTOR_SENSITIVITY) {
@@ -256,7 +256,7 @@ SelectorLogic() {
                     if (neighbor.connected) {
                         tiltTutSelector.module = neighbor.module;
                         tiltTutSelector.screen = neighbor.screen;
-                        tiltTutSelector.screenAngle = (getStarted_screenData[screenI].angle + 90) % 360;
+                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos - 1) % 4;
                         selectorOutAnimation = 2;
                     }
                 }
@@ -275,8 +275,8 @@ SelectorLogic() {
 BallLogic() {
     if (tiltTutBall.module >= MODULES_MAX) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            if (getStarted_screenData[screenI].sideType == TOPOLOGY_orientation:ORIENTATION_UP) {
-                if (getStarted_screenData[screenI].angle == tiltTutBall.screenAngle) {
+            if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].face == TOPOLOGY_orientation:ORIENTATION_UP) {
+                if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos == tiltTutBall.pos) {
                     tiltTutBall.module = SELF_ID;
                     tiltTutBall.screen = screenI;
                     break;
@@ -321,10 +321,10 @@ BallLogic() {
                 tiltTutBall.posX = BALL_ORBIT * FixedCos(tiltTutBall.angle) >> FP;
                 tiltTutBall.posY = BALL_ORBIT * FixedSin(tiltTutBall.angle) >> FP;
 
-                tiltTutBall.screenAngle = getStarted_screenData[tiltTutBall.screen].angle;
+                tiltTutBall.pos = getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos;
 
                 for (new item = 0; item < SCREENS_MAX; ++item) {
-                    if (collectables{item} && (collectablesAngles[item] == tiltTutBall.screenAngle)) {
+                    if (collectables{item} && (collectablesAngles[item] == tiltTutBall.pos)) {
                         new distance = CheapDistance(75 - tiltTutBall.posX, 75 - tiltTutBall.posY);
                         if (distance < BALL_SQUARE_RADIUS) {
                             collectables{item} = 0;
@@ -340,7 +340,7 @@ BallLogic() {
                         tiltTutBall.module = neighbor.module;
                         tiltTutBall.screen = neighbor.screen;
                         tiltTutBall.angle = 352;
-                        tiltTutBall.screenAngle = (getStarted_screenData[tiltTutBall.screen].angle - 90) % 360;
+                        tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos + 1) % 4;
                     }
                 } else if (tiltTutBall.posY < -HALF_MODULE_GAP) {
                     neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_TOP);
@@ -348,7 +348,7 @@ BallLogic() {
                         tiltTutBall.module = neighbor.module;
                         tiltTutBall.screen = neighbor.screen;
                         tiltTutBall.angle = 98;
-                        tiltTutBall.screenAngle = (getStarted_screenData[tiltTutBall.screen].angle + 90) % 360;
+                        tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos - 1) % 4;
                     }
                 }
 
@@ -364,8 +364,10 @@ BallLogic() {
 }
 
 DrawTiltTutorial(screen) {
-    new angle = getStarted_screenData[screen].angle;
-    new layoutElement = getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90;
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
+    new layoutElement = getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX + getStarted_AllScreensData[screenI].pos;
+
     new screenLayout = getstarted_tiltTutCollect{layoutElement};
     if (finishTiltTutorial) {
         screenLayout = getstarted_tiltTutFinished{layoutElement};
@@ -377,7 +379,7 @@ DrawTiltTutorial(screen) {
 
     switch (screenLayout) {
         case TILTTUT_ICON: {
-            if (tiltTutSelector.screenAngle != 270) {
+            if (tiltTutSelector.pos != 1) {
                 GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TILT_ICON);
             } else {
                 GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TAP_ICON);
@@ -407,26 +409,26 @@ DrawTiltTutorial(screen) {
             } else if (collectedMascotEyesAnimFlag) {
                 curMascotSprite = BAKED_TILTTUT_MAIN_V_SPRITE;
             }
-            if (angle == 0) {
+            if (getStarted_AllScreensData[screenI].pos == 0) {
                 GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, 0, MIRROR_BLANK, curMascotSprite);
                 if (collectables{0}) {
                     GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTABLE);
                 }
-            } else if (angle == 90) {
+            } else if (getStarted_AllScreensData[screenI].pos == 3) {
                 if (curMascotSprite == BAKED_TILTTUT_WAIT_SPRITE) {
                     GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
                 } else {
                     GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
                 }
                 GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, (collectables{1}) ? (COLLECTABLE) : (COLLECTED));
-            } else if (angle == 180) {
+            } else if (getStarted_AllScreensData[screenI].pos == 2) {
                 GFX_drawImageXY(176, 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COUNT_BAR);
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     if (!collectables{item}) {
                         GFX_drawImageXY(200 - (24 * item), 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTED_CHECK);
                     }
                 }
-            } else if (angle == 270) {
+            } else if (getStarted_AllScreensData[screenI].pos == 1) {
                 GFX_drawTextXY(210, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "tilt the cube");
                 GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, (collectables{2}) ? (COLLECTABLE) : (COLLECTED));
             }
@@ -447,21 +449,21 @@ DrawTiltTutorial(screen) {
             if (mascotWaitModeFlag) {
                 curMascotSprite = BAKED_TILTTUT_WAIT_END_SPRITE;
             }
-            if (angle != 180) {
+            if (getStarted_AllScreensData[screenI].pos != 2) {
                 GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, COLLECTED);
             }
-            if (angle == 0) {
+            if (getStarted_AllScreensData[screenI].pos == 0) {
                 GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, 0, MIRROR_BLANK, curMascotSprite);
                 if (collectables{0}) {
                     GFX_drawImageXY( 75,  75, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTABLE);
                 }
-            } else if (angle == 90) {
+            } else if (getStarted_AllScreensData[screenI].pos == 3) {
                 if (curMascotSprite == BAKED_TILTTUT_WAIT_END_SPRITE) {
                     GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
                 } else {
                     GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
                 }
-            } else if (angle == 180) {
+            } else if (getStarted_AllScreensData[screenI].pos == 2) {
                 GFX_drawImageXY(176, 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COUNT_BAR);
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     GFX_drawImageXY(200 - (24 * item), 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COLLECTED_CHECK_RED);
@@ -489,20 +491,20 @@ DrawTiltTutorial(screen) {
             GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "excellent!");
         }
         case SELECTOR_TOP: {
-            if ((angle == 0) && (tiltTutSelector.module != SELF_ID)) {
-                if (tiltTutSelector.screenAngle != 270) {
+            if ((getStarted_AllScreensData[screenI].pos == 0) && (tiltTutSelector.module != SELF_ID)) {
+                if (tiltTutSelector.pos != 1) {
                     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-                    InitCrossAnimationVars(0xFF5C00, 0xFFB576);
+                    InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
                     DrawCrossAnimation();
                     GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "put the white");
                     GFX_drawTextXY(120, 105, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "hightlight on me");
                     GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and tap the");
                     GFX_drawTextXY(120, 155, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "cube 2 times");
                 }
-            } else if ((angle == 180) && (tiltTutSelector.module != SELF_ID)) {
-                InitCrossAnimationVars(0xFF5C00, 0x513469);
+            } else if ((getStarted_AllScreensData[screenI].pos == 2) && (tiltTutSelector.module != SELF_ID)) {
+                InitCrossAnimationVars(0xFFFF5C00, 0xFF513469);
                 DrawCrossAnimation();
-                if (tiltTutSelector.screenAngle == 270) {
+                if (tiltTutSelector.pos == 1) {
                     GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "tap the cube");
                     GFX_drawTextXY(120, 110, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times now");
                 } else {
@@ -510,7 +512,7 @@ DrawTiltTutorial(screen) {
                     GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "for navigation");
                     GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "or selection");
                 }
-            } else if (angle == 270) {
+            } else if (getStarted_AllScreensData[screenI].pos == 1) {
                 if (!mascotWaitModeFlag) {
                     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
                     GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
@@ -520,7 +522,7 @@ DrawTiltTutorial(screen) {
                     GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
                     GFX_drawImageXY(170, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
                 }
-                if (tiltTutSelector.screenAngle % 270) {
+                if ((tiltTutSelector.pos == 2) || (tiltTutSelector.pos == 3)) {
                     GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
                 }
             }
@@ -560,15 +562,15 @@ DrawTiltTutorial(screen) {
             new posStep = 20;
             new isStaticX = 1;
             new isStaticY = 0;
-            if (angle == 90) {
+            if (getStarted_AllScreensData[screenI].pos == 3) {
                 changingPos = 140;
                 posStep = -posStep;
                 isStaticX = 0;
                 isStaticY = 1;
-            } else if (angle == 180) {
+            } else if (getStarted_AllScreensData[screenI].pos == 2) {
                 changingPos = 140;
                 posStep = -posStep;
-            } else if (angle == 270) {
+            } else if (getStarted_AllScreensData[screenI].pos == 1) {
                 isStaticX = 0;
                 isStaticY = 1;
             }

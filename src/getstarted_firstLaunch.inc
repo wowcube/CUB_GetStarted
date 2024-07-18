@@ -13,8 +13,8 @@ const FL_TWIST_FIRST_TEXT = 7;
 const FL_TWIST_FIRST_ICON = 8;
 
 new getstarted_firstLaunch_hello{} = {
-    LLO, FL_WELCOME_TEXT, FL_MASCOT, HE,
-    LLO, FL_WELCOME_TEXT, FL_MASCOT, HE,
+    LLO, HE, FL_MASCOT, FL_WELCOME_TEXT,
+    LLO, HE, FL_MASCOT, FL_WELCOME_TEXT,
     FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
     FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
     FL_WELCOME_TEXT, FL_EMPTY, HI, FL_EMPTY,
@@ -22,12 +22,12 @@ new getstarted_firstLaunch_hello{} = {
 };
 
 new getstarted_firstLaunch_first{} = {
-    FL_TWIST_FIRST_TEXT, FL_WELCOME_TEXT, FL_MASCOT, FL_TWIST_FIRST_ICON,
-    FL_TWIST_FIRST_TEXT, FL_WELCOME_TEXT, FL_MASCOT, FL_TWIST_FIRST_ICON,
-    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
-    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
-    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
-    FL_TWIST_FIRST_TEXT, FL_QUESTION, HI, FL_TWIST_FIRST_ICON,
+    FL_TWIST_FIRST_TEXT, FL_TWIST_FIRST_ICON, FL_MASCOT, FL_WELCOME_TEXT,
+    FL_TWIST_FIRST_TEXT, FL_TWIST_FIRST_ICON, FL_MASCOT, FL_WELCOME_TEXT,
+    FL_TWIST_FIRST_TEXT, FL_TWIST_FIRST_ICON, HI, FL_QUESTION,
+    FL_TWIST_FIRST_TEXT, FL_TWIST_FIRST_ICON, HI, FL_QUESTION,
+    FL_TWIST_FIRST_TEXT, FL_TWIST_FIRST_ICON, HI, FL_QUESTION,
+    FL_TWIST_FIRST_TEXT, FL_TWIST_FIRST_ICON, HI, FL_QUESTION,
 };
 
 const MAX_HAND_WAVE_ANIM_FRAMES = 4;
@@ -80,9 +80,11 @@ FirstLaunchPercents(maxValue, minValue) {
 }
 
 DrawFirstLaunch(screen) {
-    new angle = getStarted_screenData[screen].angle;
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
     
-    new layoutElement = getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90;
+    new layoutElement = getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX
+                      + getStarted_AllScreensData[screenI].pos;
     new screenLayout = (changeLayoutFlag) ? (getstarted_firstLaunch_first{layoutElement}) : (getstarted_firstLaunch_hello{layoutElement});
     
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
@@ -97,7 +99,7 @@ DrawFirstLaunch(screen) {
             GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, HI_SPRITE);
         }
         case FL_WELCOME_TEXT: {
-            InitCrossAnimationVars(0xFF5C00, 0xFFB576);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
             DrawCrossAnimation();
 
             new posX_1 = 120;
@@ -151,7 +153,7 @@ DrawFirstLaunch(screen) {
             }
         }
         case FL_QUESTION: {
-            InitCrossAnimationVars(0xFF5C00, 0xFFB576);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
             DrawCrossAnimation();
             
             GFX_drawTextXY(140, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "want to learn");

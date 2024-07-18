@@ -8,8 +8,8 @@ const SUCCESS_TEXT_BOX   = 4;
 const SUCCESS_ICON_2     = 5;
 
 new getstarted_successLayout{} = {
-    SUCCESS_TEXT_BOX, SUCCESS_MASCOT, SUCCESS_SPEECH_BOX, SUCCESS_ICON_2,
-    SUCCESS_TEXT_BOX, SUCCESS_MASCOT, SUCCESS_SPEECH_BOX, SUCCESS_ICON_2,
+    SUCCESS_TEXT_BOX, SUCCESS_ICON_2, SUCCESS_SPEECH_BOX, SUCCESS_MASCOT,
+    SUCCESS_TEXT_BOX, SUCCESS_ICON_2, SUCCESS_SPEECH_BOX, SUCCESS_MASCOT,
     SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
     SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
     SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
@@ -44,8 +44,12 @@ SuccessStarsPercents() {
 }
 
 DrawSuccessScreen(screen) {
-    new angle = getStarted_screenData[screen].angle;
-    new screenLayout = getstarted_successLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
+    new screenLayout = getstarted_successLayout{
+                        getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX
+                      + getStarted_AllScreensData[screenI].pos};
+
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case SUCCESS_MASCOT: {
@@ -88,13 +92,13 @@ DrawSuccessScreen(screen) {
         }
         case SUCCESS_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-            InitCrossAnimationVars(0xFF9898, 0xFF5252);
+            InitCrossAnimationVars(0xFFFF9898, 0xFFFF5252);
             DrawCrossAnimation();
             if (previousAppState == FSM:twistTutorial) {
                 GFX_drawTextXY(110, 140, 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "good!");
                 GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "go ahead");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawTextXY(110, 140, 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
+                GFX_drawTextXY(120, 140, 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
                 GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "next thing to");
                 GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
             }
@@ -104,9 +108,9 @@ DrawSuccessScreen(screen) {
             new posY_1 = 105;
             new posX_2 = 120;
             new posY_2 = 135;
-            if ((getStarted_screenData[screen].sideType == TOPOLOGY_orientation:ORIENTATION_DOWN) ||
-                (getStarted_screenData[screen].sideType == TOPOLOGY_orientation:ORIENTATION_UP)) {
-                InitCrossAnimationVars(0xFF9898, 0xFF5252);
+            if ((getStarted_AllScreensData[screenI].face == TOPOLOGY_orientation:ORIENTATION_DOWN) ||
+                (getStarted_AllScreensData[screenI].face == TOPOLOGY_orientation:ORIENTATION_UP)) {
+                InitCrossAnimationVars(0xFFFF9898, 0xFFFF5252);
                 DrawCrossAnimation();
             }
             if (previousAppState == FSM:twistTutorial) {

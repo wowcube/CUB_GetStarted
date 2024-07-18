@@ -17,20 +17,20 @@ new arrowAnimationTime = 0;
 new twistTutorialStage = 0;
 
 new getstarted_twistTutLayout_X{} = {
-    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_SPEECH_BOX, TWISTTUT_MASCOT,
-    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_SPEECH_BOX, TWISTTUT_MASCOT,
-    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW,      TWISTTUT_ARROW,
-    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW,      TWISTTUT_ARROW,
-    TWISTTUT_ICON,  TWISTTUT_EMPTY, TWISTTUT_TEXT_BOX,   TWISTTUT_EMPTY,
-    TWISTTUT_EMPTY, TWISTTUT_ICON,  TWISTTUT_EMPTY,      TWISTTUT_TEXT_BOX,
+    TWISTTUT_ARROW, TWISTTUT_MASCOT, TWISTTUT_SPEECH_BOX, TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_MASCOT, TWISTTUT_SPEECH_BOX, TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW, TWISTTUT_ARROW,
+    TWISTTUT_ICON, TWISTTUT_EMPTY, TWISTTUT_TEXT_BOX, TWISTTUT_EMPTY,
+    TWISTTUT_EMPTY, TWISTTUT_TEXT_BOX, TWISTTUT_EMPTY, TWISTTUT_ICON,
 };
 new getstarted_twistTutLayout_Y{} = {
-    TWISTTUT_ARROW, TWISTTUT_MASCOT, TWISTTUT_SPEECH_BOX, TWISTTUT_ARROW,
-    TWISTTUT_ARROW, TWISTTUT_MASCOT, TWISTTUT_SPEECH_BOX, TWISTTUT_ARROW,
-    TWISTTUT_ICON,  TWISTTUT_EMPTY,  TWISTTUT_TEXT_BOX,   TWISTTUT_EMPTY,
-    TWISTTUT_EMPTY, TWISTTUT_ICON,   TWISTTUT_EMPTY,      TWISTTUT_TEXT_BOX,
-    TWISTTUT_ARROW, TWISTTUT_ARROW,  TWISTTUT_ARROW,      TWISTTUT_ARROW,
-    TWISTTUT_ARROW, TWISTTUT_ARROW,  TWISTTUT_ARROW,      TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_ARROW,    TWISTTUT_SPEECH_BOX, TWISTTUT_MASCOT,
+    TWISTTUT_ARROW, TWISTTUT_ARROW,    TWISTTUT_SPEECH_BOX, TWISTTUT_MASCOT,
+    TWISTTUT_ICON,  TWISTTUT_EMPTY,    TWISTTUT_TEXT_BOX,   TWISTTUT_EMPTY,
+    TWISTTUT_EMPTY, TWISTTUT_TEXT_BOX, TWISTTUT_EMPTY,      TWISTTUT_ICON,
+    TWISTTUT_ARROW, TWISTTUT_ARROW,    TWISTTUT_ARROW,      TWISTTUT_ARROW,
+    TWISTTUT_ARROW, TWISTTUT_ARROW,    TWISTTUT_ARROW,      TWISTTUT_ARROW,
 };
 
 new mascotTwistAnimTimer = 0;
@@ -70,11 +70,12 @@ MascotTwistAnimUpdate(angle) {
 }
 
 DrawTwistTutorial(screen) {
-    new angle = getStarted_screenData[screen].angle;
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
     new currentStage = twistTutorialStage % 2;
     new screenLayout = (currentStage) ? 
-                       (getstarted_twistTutLayout_Y{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90}) : 
-                       (getstarted_twistTutLayout_X{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90});
+                       (getstarted_twistTutLayout_Y{getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX + getStarted_AllScreensData[screenI].pos}) : 
+                       (getstarted_twistTutLayout_X{getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX + getStarted_AllScreensData[screenI].pos});
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case TWISTTUT_MASCOT: {
@@ -131,7 +132,7 @@ DrawTwistTutorial(screen) {
         }
         case TWISTTUT_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-            InitCrossAnimationVars(0xFF5C00, 0xFFB576);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
             DrawCrossAnimation();
             if (twistTutorialStage > 1) {
                 GFX_drawTextXY(120, 160, 17, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "twist");

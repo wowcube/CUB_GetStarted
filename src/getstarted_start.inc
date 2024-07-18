@@ -13,11 +13,11 @@ const DISPLAY_ONE_ICON_TIME = 1250;
 new tutorialStartTimer = TUTORIAL_COUNTDOWN_TIME - 1;
 
 new getstarted_startLayout{} = {
-    SPEECH_BOX, MASCOT, GREETING, ICONS,
-    SPEECH_BOX, MASCOT, GREETING, ICONS,
+    SPEECH_BOX, ICONS, GREETING, MASCOT,
+    SPEECH_BOX, ICONS, GREETING, MASCOT,
     COUNTDOWN, COUNTDOWN, TEXT_BOX, COUNTDOWN,
-    TEXT_BOX, COUNTDOWN, COUNTDOWN, COUNTDOWN,
-    COUNTDOWN, TEXT_BOX, COUNTDOWN, COUNTDOWN,
+    COUNTDOWN, COUNTDOWN, TEXT_BOX, COUNTDOWN,
+    COUNTDOWN, COUNTDOWN, TEXT_BOX, COUNTDOWN,
     COUNTDOWN, COUNTDOWN, TEXT_BOX, COUNTDOWN,
 };
 
@@ -41,8 +41,11 @@ StartBakeSprites() {
 }
 
 DrawStartCountdown(screen) {
-    new angle = getStarted_screenData[screen].angle;
-    new screenLayout = getstarted_startLayout{getStarted_screenData[screen].sideType * TOPOLOGY_POSITIONS_MAX + angle / 90};
+    new screenI = SELF_ID * SCREENS_MAX + screen;
+    new angle = (4 - getStarted_AllScreensData[screenI].pos) * 90;
+    new screenLayout = getstarted_startLayout{
+                        getStarted_AllScreensData[screenI].face * TOPOLOGY_POSITIONS_MAX
+                      + getStarted_AllScreensData[screenI].pos};
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case MASCOT: {
@@ -50,7 +53,7 @@ DrawStartCountdown(screen) {
             GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DIALOGUE);
         }
         case GREETING: {
-            InitCrossAnimationVars(0xFF5C00, 0x513469);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFF513469);
             DrawCrossAnimation();
             if (getstartedGreetingFlag) {
                 GFX_drawTextXY(120, 120, 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
@@ -65,7 +68,7 @@ DrawStartCountdown(screen) {
         }
         case SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-            InitCrossAnimationVars(0xFF5C00, 0xFFB576);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
             DrawCrossAnimation();
             GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
             GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
