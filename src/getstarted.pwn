@@ -125,13 +125,15 @@ SendMapping() {
 
     new dataI = 0;
     for (new screenI = 3, offset = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI, ++offset) {
-        if (offset >= 5) {
+        if (offset >= 6) {
             offset = 0;
             ++dataI;
         }
         data[dataI] |= (getStarted_AllScreensData[screenI].face << (5 * offset))
                      | (getStarted_AllScreensData[screenI].pos << (3 + (5 * offset)));
     }
+    
+    data[4] = mappingPkt;
 
     broadcastPacket(PKT_MAPPING, data);
 }
@@ -343,11 +345,13 @@ public ON_Init(id, size, const pkt[]) {
             tiltTutCollectableSounds{j} = tiltTutCollectableSounds{soundI};
             tiltTutCollectableSounds{soundI} = temp;
         }
+        ++mappingPkt;
     }
 
     GetMapping();
     
     SetApplicationState(FSM:firstLaunch);
+    //SetApplicationState(FSM:tiltTutorial);
 }
 
 public ON_Quit() {
@@ -423,8 +427,10 @@ public ON_Tap(const count, const display, const bool:opposite) {
 }
 
 public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
+    //LOG_i("twist");
     if (SELF_ID == 0) {
         GetMapping();
+        ++mappingPkt;
     }
 
     SetDefaultMascot();
@@ -513,14 +519,18 @@ public ON_Packet(type, size, const pkt[]) {
             }
         }
         case PKT_MAPPING: {
-            new dataI = 0;
-            for (new screenI = 3, offset = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI, ++offset) {
-                if (offset >= 5) {
-                    offset = 0;
-                    ++dataI;
+            new packetNumberReceived = pkt[4];
+            if (mappingPkt < packetNumberReceived) {
+                mappingPkt = packetNumberReceived;
+                new dataI = 0;
+                for (new screenI = 3, offset = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI, ++offset) {
+                    if (offset >= 6) {
+                        offset = 0;
+                        ++dataI;
+                    }
+                    getStarted_AllScreensData[screenI].face = (pkt[dataI] >> (5 * offset)) & 0x7;
+                    getStarted_AllScreensData[screenI].pos = (pkt[dataI] >> (3 + (5 * offset))) & 0x3;
                 }
-                getStarted_AllScreensData[screenI].face = (pkt[dataI] >> (5 * offset)) & 0x7;
-                getStarted_AllScreensData[screenI].pos = (pkt[dataI] >> (3 + (5 * offset))) & 0x3;
             }
         }
     }

@@ -159,6 +159,7 @@ new getStarted_AllScreensData[MODULES_MAX * SCREENS_MAX][.face, .pos] = [
 
 new mascotWaitModeFlag = 0;
 new generalDataPkt = 0;
+new mappingPkt = 0;
 new alreadyLaunched = 0;
 new dataSaved = 0;
 new neighbor[TOPOLOGY_FACELET_INFO];

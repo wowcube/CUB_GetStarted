@@ -80,6 +80,9 @@ const BAKED_TILTTUT_MAIN_N_SPRITE = 1;
 const BAKED_TILTTUT_MAIN_V_SPRITE = 2;
 const BAKED_TILTTUT_SUCCESS_SPRITE = 3;
 const BAKED_TILTTUT_WAIT_END_SPRITE = 4;
+const BAKED_TILTTUT_MAIN_HEAD_SPRITE = 5;
+const BAKED_TILTTUT_WAIT_HEAD_SPRITE = 6;
+const BAKED_TILTTUT_SUCC_HEAD_SPRITE = 7;
 
 TiltTutorialBakeSprites() {
     GFX_clearCache();
@@ -127,6 +130,15 @@ TiltTutorialBakeSprites() {
     GFX_drawTextXY(125, 135, 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "excellent!");
     GFX_drawTextXY(120, 170, SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double slap");
     GFX_drawTextXY(120, 200, SIMPLE_FONT_SIZE, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
+    GFX_render();
+    GFX_bakeImage(BAKED_TILTTUT_MAIN_HEAD_SPRITE, 130, 40, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(95, 95, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TILTTUT_WAIT_HEAD_SPRITE, 130, 40, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(95, 95, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+    GFX_render();
+    GFX_bakeImage(BAKED_TILTTUT_SUCC_HEAD_SPRITE, 130, 40, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(95, 95, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
     GFX_render();
 }
 
@@ -209,6 +221,29 @@ FindPosDependOnAngle(angle, &posX_1, &posY_1, &posX_2, &posY_2) {
     }
 }
 
+FindUpSecondPosBall() {
+    for (new screenI = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI) {
+        if ((getStarted_AllScreensData[screenI].face == ORIENTATION_UP)
+         && (getStarted_AllScreensData[screenI].pos == 2)) {
+            tiltTutBall.module = screenI / SCREENS_MAX;
+            tiltTutBall.screen = screenI % SCREENS_MAX;
+            tiltTutBall.angle = 45;
+            tiltTutBall.pos = 2;
+        }
+    }
+}
+
+FindUpSecondPosSelector() {
+    for (new screenI = 0; screenI < MODULES_MAX * SCREENS_MAX; ++screenI) {
+        if ((getStarted_AllScreensData[screenI].face == ORIENTATION_UP)
+         && (getStarted_AllScreensData[screenI].pos == 3)) {
+            tiltTutSelector.module = screenI / SCREENS_MAX;
+            tiltTutSelector.screen = screenI % SCREENS_MAX;
+            tiltTutSelector.pos = 3;
+        }
+    }
+}
+
 SelectorLogic() {
     if (tiltTutSelector.module >= MODULES_MAX) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
@@ -223,13 +258,13 @@ SelectorLogic() {
     }
 
     if (tiltTutSelector.module == SELF_ID) {
-        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            if (tiltTutSelector.screen == screenI) {
+        if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].face == TOPOLOGY_orientation:ORIENTATION_UP) {
+            if (tiltTutSelector.pos == getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos) {
                 tiltTutSelector.moduleT = SELF_ID;
-                tiltTutSelector.screenT = screenI;
+                tiltTutSelector.screenT = tiltTutSelector.screen;
 
-                new accelX = -MS_getFaceAccelX(screenI);
-                new accelY = -MS_getFaceAccelY(screenI);
+                new accelX = -MS_getFaceAccelX(tiltTutSelector.screen);
+                new accelY = -MS_getFaceAccelY(tiltTutSelector.screen);
 
                 tiltTutSelector.accelX = tiltTutSelector.accelY = 0;
 
@@ -241,44 +276,47 @@ SelectorLogic() {
                     tiltTutSelector.accelY = accelY >> 1;
                 }
                 
-                tiltTutSelector.pos = getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos;
-                
                 if (accelX < SELECTOR_SENSITIVITY) {
-                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutSelector.screen), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
                     if (neighbor.connected) {
+                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos + 1) % 4;
                         tiltTutSelector.module = neighbor.module;
                         tiltTutSelector.screen = neighbor.screen;
-                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos + 1) % 4;
                         selectorOutAnimation = 1;
                     }
                 } else if (accelY < SELECTOR_SENSITIVITY) {
-                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_TOP);
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutSelector.screen), TOPOLOGY_neighbor:NEIGHBOR_TOP);
                     if (neighbor.connected) {
+                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos - 1) % 4;
                         tiltTutSelector.module = neighbor.module;
                         tiltTutSelector.screen = neighbor.screen;
-                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos - 1) % 4;
                         selectorOutAnimation = 2;
                     }
                 }
-
-                selectorPkt = ++selectorPkt % 0xFFFF;
-                SendSelector(selectorPkt);
-                
-                break;
+            } else {
+                FindUpSecondPosSelector();
             }
+        } else {
+            FindUpSecondPosSelector();
         }
+        selectorPkt = ++selectorPkt % 0xFFFF;
+        SendSelector(selectorPkt);
     } else if (tiltTutSelector.moduleT == SELF_ID) {
         SendSelector(selectorPkt);
     }
 }
 
 BallLogic() {
-    if (tiltTutBall.module >= MODULES_MAX) {
+    //LOG_i("ball logic %d %d",tiltTutBall.module, tiltTutBall.pos);
+    if ((tiltTutBall.module >= MODULES_MAX)) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
+            //LOG_i("screen face %d %d",screenI, getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].face);
             if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].face == TOPOLOGY_orientation:ORIENTATION_UP) {
                 if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos == tiltTutBall.pos) {
                     tiltTutBall.module = SELF_ID;
                     tiltTutBall.screen = screenI;
+                    tiltTutBall.angle = 45;
+                    //LOG_i("ball is here");
                     break;
                 }
             }
@@ -303,13 +341,13 @@ BallLogic() {
     }
 
     if (tiltTutBall.module == SELF_ID) {
-        for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            if (tiltTutBall.screen == screenI) {
+        if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].face == TOPOLOGY_orientation:ORIENTATION_UP) {
+            if (tiltTutBall.pos == getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos) {
                 tiltTutBall.moduleT = SELF_ID;
-                tiltTutBall.screenT = screenI;
+                tiltTutBall.screenT = tiltTutBall.screen;
 
-                new accelX = MS_getFaceAccelX(screenI) >> 2;
-                new accelY = MS_getFaceAccelY(screenI) >> 2;
+                new accelX = MS_getFaceAccelX(tiltTutBall.screen) >> 2;
+                new accelY = MS_getFaceAccelY(tiltTutBall.screen) >> 2;
 
                 tiltTutBall.angle += accelX - accelY;
 
@@ -320,8 +358,7 @@ BallLogic() {
                                     
                 tiltTutBall.posX = BALL_ORBIT * FixedCos(tiltTutBall.angle) >> FP;
                 tiltTutBall.posY = BALL_ORBIT * FixedSin(tiltTutBall.angle) >> FP;
-
-                tiltTutBall.pos = getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos;
+                //LOG_i("got the ball %d %d %d %d",tiltTutBall.screen, tiltTutBall.angle, tiltTutBall.posX, tiltTutBall.posY);
 
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     if (collectables{item} && (collectablesAngles[item] == tiltTutBall.pos)) {
@@ -335,29 +372,34 @@ BallLogic() {
                 }
 
                 if (tiltTutBall.posX < -HALF_MODULE_GAP) {
-                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutBall.screen), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
                     if (neighbor.connected) {
+                        //LOG_i("left %d %d",tiltTutBall.pos, getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos);
+                        tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos + 1) % 4;
                         tiltTutBall.module = neighbor.module;
                         tiltTutBall.screen = neighbor.screen;
                         tiltTutBall.angle = 352;
-                        tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos + 1) % 4;
+                        //LOG_i("left end %d %d",tiltTutBall.pos, getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos);
                     }
                 } else if (tiltTutBall.posY < -HALF_MODULE_GAP) {
-                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, screenI), TOPOLOGY_neighbor:NEIGHBOR_TOP);
+                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutBall.screen), TOPOLOGY_neighbor:NEIGHBOR_TOP);
                     if (neighbor.connected) {
+                        //LOG_i("top %d",tiltTutBall.pos);
+                        tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos - 1) % 4;
                         tiltTutBall.module = neighbor.module;
                         tiltTutBall.screen = neighbor.screen;
                         tiltTutBall.angle = 98;
-                        tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos - 1) % 4;
                     }
                 }
-
-                ballPkt = ++ballPkt % 0xFFFF;
-                SendBall(ballPkt);
-
-                break;
+                //LOG_i("send ball to %d %d %d",tiltTutBall.module, tiltTutBall.screen, tiltTutBall.pos);
+            } else {
+                FindUpSecondPosBall();
             }
+        } else {
+            FindUpSecondPosBall();
         }
+        ballPkt = ++ballPkt % 0xFFFF;
+        SendBall(ballPkt);
     } else if (tiltTutBall.moduleT == SELF_ID) {
         SendBall(ballPkt);
     }
@@ -416,9 +458,9 @@ DrawTiltTutorial(screen) {
                 }
             } else if (getStarted_AllScreensData[screenI].pos == 3) {
                 if (curMascotSprite == BAKED_TILTTUT_WAIT_SPRITE) {
-                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                    GFX_drawBakedImage([20, 175], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_TILTTUT_WAIT_HEAD_SPRITE);
                 } else {
-                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    GFX_drawBakedImage([20, 175], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_TILTTUT_MAIN_HEAD_SPRITE);
                 }
                 GFX_drawImageXY(75, 75, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, (collectables{1}) ? (COLLECTABLE) : (COLLECTED));
             } else if (getStarted_AllScreensData[screenI].pos == 2) {
@@ -459,9 +501,9 @@ DrawTiltTutorial(screen) {
                 }
             } else if (getStarted_AllScreensData[screenI].pos == 3) {
                 if (curMascotSprite == BAKED_TILTTUT_WAIT_END_SPRITE) {
-                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
+                    GFX_drawBakedImage([20, 175], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_TILTTUT_WAIT_HEAD_SPRITE);
                 } else {
-                    GFX_drawImageXY(-50, 205, 0xFF, magenta, 100, 100, 80, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+                    GFX_drawBakedImage([20, 175], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_TILTTUT_SUCC_HEAD_SPRITE);
                 }
             } else if (getStarted_AllScreensData[screenI].pos == 2) {
                 GFX_drawImageXY(176, 208, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COUNT_BAR);
