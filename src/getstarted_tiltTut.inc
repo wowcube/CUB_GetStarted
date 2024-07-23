@@ -1,4 +1,4 @@
-#define GS_BALL_DATA .posX, .posY, .angle, .pos, .module, .screen, .moduleT, .screenT, .collectables
+#define GS_BALL_DATA .posX, .posY, .angle, .pos, .module, .screen, .moduleT, .screenT, .collectables, .spd
 #define GS_SELECTOR_DATA .accelX, .accelY, .pos, .module, .screen, .moduleT, .screenT
 
 #include "getstarted_vars.inc"
@@ -187,6 +187,7 @@ SendBall(pktNumber) {
     data[1] = tiltTutBall.angle;
     data[2] = tiltTutBall.pos;
     data[3] = pktNumber;
+    data[4] = tiltTutBall.spd;
 
     broadcastPacket(PKT_BALL_TILT_TUT, data);
 }
@@ -348,8 +349,19 @@ BallLogic() {
 
                 new accelX = MS_getFaceAccelX(tiltTutBall.screen) >> 2;
                 new accelY = MS_getFaceAccelY(tiltTutBall.screen) >> 2;
-
-                tiltTutBall.angle += accelX - accelY;
+                //LOG_i("%d",accelX - accelY);
+                if (tiltTutBall.spd >= 0) {
+                    tiltTutBall.spd -= 6;
+                } else if (tiltTutBall.spd < 0) {
+                    tiltTutBall.spd += 6;
+                }
+                new tempSpd = tiltTutBall.spd += accelX - accelY;
+                if ((tiltTutBall.spd > -16) && (tiltTutBall.spd < 0)) {
+                    tempSpd *= -1;
+                }
+                //LOG_i("%d %d", tiltTutBall.spd, tempSpd);
+                tiltTutBall.angle += (tempSpd >> 4);
+                //tiltTutBall.angle += accelX - accelY;
 
                 if (tiltTutBall.angle < 0) {
                     tiltTutBall.angle = 360 + tiltTutBall.angle;

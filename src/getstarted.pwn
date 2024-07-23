@@ -501,6 +501,7 @@ public ON_Packet(type, size, const pkt[]) {
                 tiltTutBall.screen = parseByte(pkt, 2);
                 tiltTutBall.angle = pkt[1];
                 tiltTutBall.pos = pkt[2];
+                tiltTutBall.spd = pkt[4];
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     collectables{item} = (parseByte(pkt, 3) >> item) & 0x1;
                 }
