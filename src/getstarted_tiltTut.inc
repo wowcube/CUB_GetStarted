@@ -187,16 +187,17 @@ MovePlusOneEffect(angle) {
 
 RenderBall(screen) {
     if ((tiltTutBall.module == SELF_ID) && (tiltTutBall.screen == screen)) {
-        new traceAngle = -(tiltTutBall.spd >> 3);
+        new ballAlpha = 0x19;//0x19;//0x26
+        new traceAngle = -(tiltTutBall.spd >> 2);
         new posX = BALL_ORBIT * FixedCos(tiltTutBall.angle + traceAngle) >> FP;
         new posY = BALL_ORBIT * FixedSin(tiltTutBall.angle + traceAngle) >> FP;
-        GFX_drawImageXY(posX, posY, 0x19, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
+        GFX_drawImageXY(posX, posY, ballAlpha, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
         posX = BALL_ORBIT * FixedCos(tiltTutBall.angle + (traceAngle / 3)) >> FP;
         posY = BALL_ORBIT * FixedSin(tiltTutBall.angle + (traceAngle / 3)) >> FP;
-        GFX_drawImageXY(posX, posY, 0x19, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
+        GFX_drawImageXY(posX, posY, ballAlpha, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
         posX = BALL_ORBIT * FixedCos(tiltTutBall.angle + ((traceAngle * 2) / 3)) >> FP;
         posY = BALL_ORBIT * FixedSin(tiltTutBall.angle + ((traceAngle * 2) / 3)) >> FP;
-        GFX_drawImageXY(posX, posY, 0x19, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
+        GFX_drawImageXY(posX, posY, ballAlpha, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
 
         GFX_drawImageXY(tiltTutBall.posX, tiltTutBall.posY, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, BALL);
     } else {
