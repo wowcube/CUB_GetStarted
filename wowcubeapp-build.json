@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "sdkVersion": "6.0",
   "appIcon": {
     "path": "assets/icon.png"
@@ -213,14 +213,6 @@
       "alias": "arc5.png"
     },
     {
-      "path": "assets/images/twistP1.png",
-      "alias": "twistP1.png"
-    },
-    {
-      "path": "assets/images/twistP2.png",
-      "alias": "twistP2.png"
-    },
-    {
       "path": "assets/images/tapSideicon.png",
       "alias": "tapSideicon.png"
     },
@@ -242,10 +234,6 @@
       "alias": "masWait.png"
     },
     {
-      "path": "assets/images/masWaitEyes.png",
-      "alias": "masWaitEyes.png"
-    },
-    {
       "path": "assets/images/mWaitMouth.png",
       "alias": "mWaitMouth.png"
     },
@@ -264,6 +252,210 @@
     {
       "path": "assets/images/siluette.png",
       "alias": "siluette.png"
+    },
+    {
+      "path": "assets/images/arrow-wait.png",
+      "alias": "arrow-wait.png"
+    },
+    {
+      "path": "assets/images/TXtwistOXL.png",
+      "alias": "TXtwistOXL.png"
+    },
+    {
+      "path": "assets/images/TXtwistPXL.png",
+      "alias": "TXtwistPXL.png"
+    },
+    {
+      "path": "assets/images/TXtwistRXL.png",
+      "alias": "TXtwistRXL.png"
+    },
+    {
+      "path": "assets/images/TXgoodGXL.png",
+      "alias": "TXgoodGXL.png"
+    },
+    {
+      "path": "assets/images/TXgoodOXL.png",
+      "alias": "TXgoodOXL.png"
+    },
+    {
+      "path": "assets/images/masSucBrow.png",
+      "alias": "masSucBrow.png"
+    },
+    {
+      "path": "assets/images/masWaitBrow.png",
+      "alias": "masWaitBrow.png"
+    },
+    {
+      "path": "assets/images/masWaitEye1.png",
+      "alias": "masWaitEye1.png"
+    },
+    {
+      "path": "assets/images/masWaitEye2.png",
+      "alias": "masWaitEye2.png"
+    },
+    {
+      "path": "assets/images/masWaitEye3.png",
+      "alias": "masWaitEye3.png"
+    },
+    {
+      "path": "assets/images/masWaitEye4.png",
+      "alias": "masWaitEye4.png"
+    },
+    {
+      "path": "assets/images/TXComeOn.png",
+      "alias": "TXComeOn.png"
+    },
+    {
+      "path": "assets/images/TX_00_O.png",
+      "alias": "TX_00_O.png"
+    },
+    {
+      "path": "assets/images/TX_00_R.png",
+      "alias": "TX_00_R.png"
+    },
+    {
+      "path": "assets/images/TX_01_O.png",
+      "alias": "TX_01_O.png"
+    },
+    {
+      "path": "assets/images/TX_01_R.png",
+      "alias": "TX_01_R.png"
+    },
+    {
+      "path": "assets/images/TX_02_O.png",
+      "alias": "TX_02_O.png"
+    },
+    {
+      "path": "assets/images/TX_02_R.png",
+      "alias": "TX_02_R.png"
+    },
+    {
+      "path": "assets/images/TX_03_O.png",
+      "alias": "TX_03_O.png"
+    },
+    {
+      "path": "assets/images/TX_03_R.png",
+      "alias": "TX_03_R.png"
+    },
+    {
+      "path": "assets/images/TX_03_W.png",
+      "alias": "TX_03_W.png"
+    },
+    {
+      "path": "assets/images/TX_D_SlapO.png",
+      "alias": "TX_D_SlapO.png"
+    },
+    {
+      "path": "assets/images/TX_D_SlapR.png",
+      "alias": "TX_D_SlapR.png"
+    },
+    {
+      "path": "assets/images/TX_00_OS.png",
+      "alias": "TX_00_OS.png"
+    },
+    {
+      "path": "assets/images/TX_00_RS.png",
+      "alias": "TX_00_RS.png"
+    },
+    {
+      "path": "assets/images/TX_01_OS.png",
+      "alias": "TX_01_OS.png"
+    },
+    {
+      "path": "assets/images/TX_01_RS.png",
+      "alias": "TX_01_RS.png"
+    },
+    {
+      "path": "assets/images/TX_02_OS.png",
+      "alias": "TX_02_OS.png"
+    },
+    {
+      "path": "assets/images/TX_02_RS.png",
+      "alias": "TX_02_RS.png"
+    },
+    {
+      "path": "assets/images/TX_03_OS.png",
+      "alias": "TX_03_OS.png"
+    },
+    {
+      "path": "assets/images/TX_03_RS.png",
+      "alias": "TX_03_RS.png"
+    },
+    {
+      "path": "assets/images/TX_03_WS.png",
+      "alias": "TX_03_WS.png"
+    },
+    {
+      "path": "assets/images/tap_iconR.png",
+      "alias": "tap_iconR.png"
+    },
+    {
+      "path": "assets/images/TXdybest.png",
+      "alias": "TXdybest.png"
+    },
+    {
+      "path": "assets/images/TXvgoodGXL.png",
+      "alias": "TXvgoodGXL.png"
+    },
+    {
+      "path": "assets/images/plusOne.png",
+      "alias": "plusOne.png"
+    },
+    {
+      "path": "assets/images/TXexcellent.png",
+      "alias": "TXexcellent.png"
+    },
+    {
+      "path": "assets/images/collectR.png",
+      "alias": "collectR.png"
+    },
+    {
+      "path": "assets/images/TXfocus.png",
+      "alias": "TXfocus.png"
+    },
+    {
+      "path": "assets/images/checked_grn.png",
+      "alias": "checked_grn.png"
+    },
+    {
+      "path": "assets/images/TXtry.png",
+      "alias": "TXtry.png"
+    },
+    {
+      "path": "assets/images/tap_iconG.png",
+      "alias": "tap_iconG.png"
+    },
+    {
+      "path": "assets/images/TX_D_SlapG.png",
+      "alias": "TX_D_SlapG.png"
+    },
+    {
+      "path": "assets/images/TXshakeL.png",
+      "alias": "TXshakeL.png"
+    },
+    {
+      "path": "assets/images/TXshakeXL.png",
+      "alias": "TXshakeXL.png"
+    },
+    {
+      "path": "assets/images/shake_iconR.png",
+      "alias": "shake_iconR.png"
+    },
+    {
+      "path": "assets/images/TXgoforit.png",
+      "alias": "TXgoforit.png"
+    },
+    {
+      "path": "assets/images/twist_iconG.png",
+      "alias": "twist_iconG.png"
+    },
+    {
+      "path": "assets/images/TXtwistGL.png",
+      "alias": "TXtwistGL.png"
+    },
+    {
+      "path": "assets/images/TXtwistOL.png",
+      "alias": "TXtwistOL.png"
     }
   ],
   "soundAssets": [

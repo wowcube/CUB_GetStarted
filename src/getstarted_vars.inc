@@ -1,4 +1,5 @@
 #pragma warning disable 203
+#pragma warning disable 204
 #pragma warning disable 213
 #pragma warning disable 229
 
@@ -8,6 +9,8 @@
 #define PKT_MAPPING            4
 
 #define CROSS_ANIM_DATA .posX_b_1, .posY_b_1, .posX_e_1, .posY_e_1, .posX_b_2, .posY_b_2, .posX_e_2, .posY_e_2
+
+#define SPRITE_TEXT
 
 #include "math.inc"
 #include "wowcore.inc"
@@ -102,12 +105,48 @@ new ARC_3_SPRITE = 28;
 new ARC_4_SPRITE = 28;
 new ARC_5_SPRITE = 28;
 
-new TWIST_PURPLE_ICON_1_SPRITE = 28;
-new TWIST_PURPLE_ICON_2_SPRITE = 28;
-
 new TAP_SIDE_ICON = 29;
 new SIDE_TAP_INDICATOR = 29;
 new SILUETTE_SPRITE = 29;
+
+new ARROW_WAIT_TWIST = 30;
+new TWIST_TEXT_ORANGE = 30;
+new TWIST_TEXT_PURPLE = 30;
+new TWIST_TEXT_RED    = 30;
+new GOOD_TEXT_GREEN   = 30;
+new GOOD_TEXT_ORANGE  = 30;
+new MASCOT_SUCCESS_EYEBROWS_SPRITE = 30;
+new MASCOT_WAIT_EYE_2_SPRITE = 30;
+new MASCOT_WAIT_EYE_3_SPRITE = 30;
+new MASCOT_WAIT_EYE_4_SPRITE = 30;
+new MASCOT_WAIT_EYEBROWS_SPRITE = 30;
+new COME_ON_TEXT_SPRITE = 30;
+new DOUBLE_SLAP_TEXT_ORANGE_SPRITE = 30;
+new DOUBLE_SLAP_TEXT_RED_SPRITE = 30;
+new DOUBLE_SLAP_TEXT_GREEN_SPRITE = 30;
+new DO_YOUR_BEST_TEXT_SPRITE = 30;
+new VERY_GOOD_TEXT_GREED_SPRITE = 30;
+new countOrangeXL[4];
+new countRedXL[4];
+new countOrangeS[4];
+new countRedS[4];
+new _03_WHITE_TEXT_SPRITE = 30;
+new _03_WHITE_TEXT_SMALL_SPRITE = 30;
+new TAP_ICON_RED_SPRITE = 30;
+new TAP_ICON_GREEN_SPRITE = 30;
+new PLUS_ONE_TEXT_SPRITE = 30;
+new EXCELLENT_TEXT_SPRITE = 30;
+new FOCUS_TEXT_SPRITE = 30;
+new COLLECTABLE_WAIT = 30;
+new COLLECTED_CHECK_GREEN = 30;
+new ANOTHER_TRY_TEXT_SPRITE = 30;
+new SHAKE_L_TEXT_SPRITE = 30;
+new SHAKE_XL_TEXT_SPRITE = 30;
+new GO_FOR_IT_TEXT_SPRITE = 30;
+new SHAKE_ICON_RED_SPRITE = 30;
+new TWIST_ICON_GREEN = 30;
+new TWIST_TEXT_ORANGE_L = 30;
+new TWIST_TEXT_GREEN_L = 30;
 
 new bakeAppStateSpritesFlag = 0;
 
@@ -167,20 +206,28 @@ new neighbor[TOPOLOGY_FACELET_INFO];
 const crossLineThickness = 6;
 const MAX_CROSS_STAGES = 2;
 new leftBottom[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    [38, 30, 38, 46,  30, 38, 46, 38], // +
-    [32, 32, 43, 43,  32, 43, 43, 32]  // x
+    //[38, 30, 38, 46,  30, 38, 46, 38], // +
+    //[32, 32, 43, 43,  32, 43, 43, 32]  // x
+    [20, 12, 20, 28,  12, 20, 28, 20], // +
+    [14, 14, 26, 26,  14, 26, 26, 14]  // x
 ];
 new rightBottom[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    [194, 38, 210, 38,  202, 30, 202, 46], // +
-    [196, 32, 207, 43,  196, 43, 207, 32]  // x
+    //[202, 30, 202, 46,  194, 38, 210, 38], // +
+    //[196, 32, 207, 43,  196, 43, 207, 32]  // x
+    [220, 12, 220, 28,  212, 20, 228, 20], // +
+    [214, 14, 226, 26,  214, 26, 226, 14]  // x
 ];
 new rightTop[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    [194, 202, 210, 202,  202, 194, 202, 210], // +
-    [196, 196, 207, 207,  196, 207, 207, 196]  // x
+    //[194, 202, 210, 202,  202, 194, 202, 210], // +
+    //[196, 196, 207, 207,  196, 207, 207, 196]  // x
+    [220, 212, 220, 228,  212, 220, 228, 220], // +
+    [214, 214, 226, 226,  214, 226, 226, 214]  // x
 ];
 new leftTop[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    [38, 194, 38, 210,  30, 202, 46, 202], // +
-    [32, 196, 43, 207,  32, 207, 43, 196]  // x
+    //[38, 194, 38, 210,  30, 202, 46, 202], // +
+    //[32, 196, 43, 207,  32, 207, 43, 196]  // x
+    [20, 212, 20, 228,  12, 220, 28, 220], // +
+    [14, 214, 26, 226,  14, 226, 26, 214]  // x
 ];
 
 const CROSS_ANIMATION_CHANGE_TIME = 250;
@@ -196,6 +243,12 @@ new crossColor = 0xFFFFFFFF;
 new plusColor  = 0xFFFFFFFF;
 
 new magenta = 0xFFFF00FF;
+
+Swap(&value_1, &value_2) {
+    new temp = value_1;
+    value_1 = value_2;
+    value_2 = temp;
+}
 
 InitCrossAnimationVars(m_crossColor, m_plusColor) {
     crossColor = m_crossColor;

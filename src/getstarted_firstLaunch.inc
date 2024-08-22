@@ -36,6 +36,7 @@ new mascotHandWaveAnimFrames{4};
 new mascotHandWaveAnimTimer = 0;
 new mascotHandWaveAnimFrame = 0;
 
+//const DISPLAY_ONE_ICON_TIME = 1000;
 const CHANGE_LAYOUT_TIME = 3000;
 const HELLO_VANISH_ONE_STEP_TIME = 200;
 const HELLO_VANISH_TIME = HELLO_VANISH_ONE_STEP_TIME * 5;
@@ -47,6 +48,7 @@ new helloVanishFlag = 0;
 const FL_APPEAR_TIME = 1000;
 new fl_ChoiceAppearAnimTimer = 0;
 new fl_purpleTwistIconTimer = 0;
+//new tutorialStartTimer = 0;
 
 const MAX_ARCS = 5;
 const VANISH_TIME_PER_ARC = 300;
@@ -61,6 +63,8 @@ new arcsInCurtain[MAX_ARCS][.x, .y, .sprite] = [
     [120, 120, 1],
     [120, 120, 1],
 ]
+//new tangibleIcons[MAX_TANGIBLE_ICONS];
+//new currentTangibleIcon = 0;
 
 FirstLaunchBakeSprites() {
     GFX_bakeImage(FL_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
@@ -68,6 +72,11 @@ FirstLaunchBakeSprites() {
     GFX_drawImageXY(125, 130, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
     GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
+    /*GFX_bakeImage(BAKED_START_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+    GFX_drawImageXY(115, 135, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
+    GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
+    GFX_render();*/
 }
 
 FirstLaunchFontPercents() {
@@ -165,17 +174,54 @@ DrawFirstLaunch(screen) {
             if (fl_ChoiceAppearAnimTimer < FL_APPEAR_TIME) {
                 alpha = FirstLaunchFontPercents();
             }
-            GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x8E36FF), "twist");
-            GFX_drawTextXY(120, 140, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
+            if (!alreadyLaunched) {
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(120, 108, alpha, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_ORANGE_L);
+                GFX_drawTextXY(120, 142, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
+                #else
+                GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE + 2, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0x8E36FF), "twist");
+                GFX_drawTextXY(120, 140, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
+                #endif
+            } else {
+                GFX_drawImageXY(120,  96, alpha, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_ICON_GREEN);
+                GFX_drawImageXY(120, 180, alpha, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_GREEN_L);
+                GFX_drawTextXY(120, 214, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to continue");
+            }
         }
         case FL_TWIST_FIRST_ICON: {
             new alpha = 0xFF;
             if (fl_ChoiceAppearAnimTimer < FL_APPEAR_TIME) {
                 alpha = FirstLaunchFontPercents();
             }
-            GFX_drawImageXY(120, 120, alpha, magenta, 100, 100, angle, MIRROR_BLANK,
-                           (fl_purpleTwistIconTimer > 500) ? (TWIST_PURPLE_ICON_1_SPRITE) : (TWIST_PURPLE_ICON_2_SPRITE));
+            if (!alreadyLaunched) {
+                GFX_drawImageXY(120, 120, alpha, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_ICON);
+            } else {
+                GFX_drawImageXY( 96, 120, alpha, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON);
+                GFX_drawImageXY(180, 120, alpha, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_L_TEXT_SPRITE);
+                GFX_drawTextXY(214, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, ((alpha << 24) | 0xFFFFFF), "to exit");
+            }
         }
+
+        /*case SPEECH_BOX: {
+            GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
+            DrawCrossAnimation();
+            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "here you can");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn how to");
+            GFX_drawTextXY(120, 150, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "use wowcube");
+        }
+        case ICONS: {
+            GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, tangibleIcons[currentTangibleIcon]);
+        }
+        case GREETING: {
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
+            DrawCrossAnimation();
+            GFX_drawTextXY(120, 120, 15, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "hello");
+        }
+        case MASCOT: {
+            GFX_drawBakedImageXY(120, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_START_MASCOT_SPRITE);
+            GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DIALOGUE);
+        }*/
     }
     for (new arcI = radianCurtainFlag; arcI < MAX_ARCS; ++arcI) {
         GFX_drawImageXY(arcsInCurtain[arcI].x, arcsInCurtain[arcI].y, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, arcsInCurtain[arcI].sprite);
@@ -217,6 +263,25 @@ UpdateFirstLaunch(m_deltaTime) {
                 mascotHandWaveAnimTimer -= HAND_WAVE_ONE_FRAME_TIME;
             }
         }
+        /*if (SELF_ID == 0) {
+            if (getstartedGreetingFlag) {
+                getstartedGreetingTimer -= m_deltaTime;
+            } else {
+                neighbor = TOPOLOGY_getOppositeFacelet(SetFacelet(SELF_ID, 0));
+                if (neighbor.connected) {
+                    tutorialStartTimer -= m_deltaTime;
+                }
+                if (tutorialStartTimer <= 0) {
+                    SetApplicationState(FSM:twistTutorial);
+                    SND_play(ACTION_SOUND, SOUND_VOLUME);
+                }
+            }
+            if (getstartedGreetingTimer <= 0) {
+                getstartedGreetingFlag = 0;
+            }
+        }
+        tutorialStartTimer += m_deltaTime;
+        currentTangibleIcon = (tutorialStartTimer / DISPLAY_ONE_ICON_TIME) % MAX_TANGIBLE_ICONS;*/
     }
     if ((SELF_ID == 0) && (!flStartFlag)) {
         flStartTimer += m_deltaTime;

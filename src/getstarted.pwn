@@ -50,6 +50,24 @@ SetApplicationState(newState) {
             smallStarY = 120;
             bigStarX = 120;
             bigStarY = 120;
+        } else if (newState == FSM:firstLaunch) {
+            mascotHandWaveAnimFrames{0} = MAIN_HAND_1_SPRITE;
+            mascotHandWaveAnimFrames{1} = MAIN_HAND_2_SPRITE;
+            mascotHandWaveAnimFrames{2} = MAIN_HAND_3_SPRITE;
+            mascotHandWaveAnimFrames{3} = MAIN_HAND_2_SPRITE;
+                
+            arcsInCurtain[0].sprite = ARC_1_SPRITE;
+            arcsInCurtain[1].sprite = ARC_2_SPRITE;
+            arcsInCurtain[2].sprite = ARC_3_SPRITE;
+            arcsInCurtain[3].sprite = ARC_4_SPRITE;
+            arcsInCurtain[4].sprite = ARC_5_SPRITE;
+
+            /*tutorialStartTimer = 0;
+            currentTangibleIcon = tutorialStartTimer / DISPLAY_ONE_ICON_TIME;
+            tangibleIcons[0] = SHAKE_ICON;
+            tangibleIcons[1] = TILT_ICON;
+            tangibleIcons[2] = TAP_ICON;
+            tangibleIcons[3] = TWIST_ICON;*/
         }
         previousAppState = applicationState;
         applicationState = newState;
@@ -114,7 +132,8 @@ SendGeneralInfo(pktNumber) {
     data[0] = (previousAppState << 16) | (applicationState << 24);
     data[1] = tapTutorialStage | (sideTapIndicatorPos << 4) | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
-    data[3] = pktNumber;
+    //data[3] = pktNumber;
+    data[3] = alreadyLaunched;
     data[4] = flags;
 
     broadcastPacket(PKT_GENERAL_DATA, data);
@@ -250,11 +269,11 @@ public ON_Init(id, size, const pkt[]) {
 
     FINGER_SPRITE         = GFX_getAssetId("finger.png");
     WRONG_TAP_ICON        = GFX_getAssetId("wrongTap.png");
-    WRONG_TAP_RIM         = GFX_getAssetId("wrongRim.png");
+    //WRONG_TAP_RIM         = GFX_getAssetId("wrongRim.png");
     RIGHT_TAP_ICON        = GFX_getAssetId("rightTap.png");
-    RIGHT_TAP_RIM_1       = GFX_getAssetId("rightRim1.png");
-    RIGHT_TAP_RIM_2       = GFX_getAssetId("rightRim2.png");
-    RIGHT_TAP_RIM_3       = GFX_getAssetId("rightRim3.png");
+    //RIGHT_TAP_RIM_1       = GFX_getAssetId("rightRim1.png");
+    //RIGHT_TAP_RIM_2       = GFX_getAssetId("rightRim2.png");
+    //RIGHT_TAP_RIM_3       = GFX_getAssetId("rightRim3.png");
     
     SPEECH_BUBBLE_TAP_SPRITE = GFX_getAssetId("speechTap.png");
 
@@ -265,11 +284,7 @@ public ON_Init(id, size, const pkt[]) {
     MASCOT_MAIN_MOUNTH_O_SPRITE    = GFX_getAssetId("masMouthO.png");
 
     MASCOT_WAIT_BODY_SPRITE   = GFX_getAssetId("masWait.png");
-    MASCOT_WAIT_EYES_SPRITE   = GFX_getAssetId("masWaitEyes.png");
-    MASCOT_WAIT_MOUNTH_SPRITE = GFX_getAssetId("mWaitMouth.png");
-
-    MASCOT_WAIT_BODY_SPRITE   = GFX_getAssetId("masWait.png");
-    MASCOT_WAIT_EYES_SPRITE   = GFX_getAssetId("masWaitEyes.png");
+    MASCOT_WAIT_EYES_SPRITE   = GFX_getAssetId("masWaitEye1.png");
     MASCOT_WAIT_MOUNTH_SPRITE = GFX_getAssetId("mWaitMouth.png");
 
     MASCOT_SUCCESS_BODY_SPRITE   = GFX_getAssetId("masSuccess.png");
@@ -281,11 +296,6 @@ public ON_Init(id, size, const pkt[]) {
     MAIN_HAND_1_SPRITE = GFX_getAssetId("hand_main1.png");
     MAIN_HAND_2_SPRITE = GFX_getAssetId("hand_main2.png");
     MAIN_HAND_3_SPRITE = GFX_getAssetId("hand_main3.png");
-    
-    mascotHandWaveAnimFrames{0} = MAIN_HAND_1_SPRITE;
-    mascotHandWaveAnimFrames{1} = MAIN_HAND_2_SPRITE;
-    mascotHandWaveAnimFrames{2} = MAIN_HAND_3_SPRITE;
-    mascotHandWaveAnimFrames{3} = MAIN_HAND_2_SPRITE;
 
     HE_GREEN_SPRITE  = GFX_getAssetId("heGreen.png");
     HE_ORANGE_SPRITE = GFX_getAssetId("heOrange.png");
@@ -304,18 +314,61 @@ public ON_Init(id, size, const pkt[]) {
     ARC_4_SPRITE = GFX_getAssetId("arc4.png");
     ARC_5_SPRITE = GFX_getAssetId("arc5.png");
 
-    arcsInCurtain[0].sprite = ARC_1_SPRITE;
-    arcsInCurtain[1].sprite = ARC_2_SPRITE;
-    arcsInCurtain[2].sprite = ARC_3_SPRITE;
-    arcsInCurtain[3].sprite = ARC_4_SPRITE;
-    arcsInCurtain[4].sprite = ARC_5_SPRITE;
-
-    TWIST_PURPLE_ICON_1_SPRITE = GFX_getAssetId("twistP1.png");
-    TWIST_PURPLE_ICON_2_SPRITE = GFX_getAssetId("twistP2.png");
-
     TAP_SIDE_ICON = GFX_getAssetId("tapSideicon.png");
     SIDE_TAP_INDICATOR = GFX_getAssetId("sideTapInd.png");
     SILUETTE_SPRITE = GFX_getAssetId("siluette.png");
+
+    ARROW_WAIT_TWIST = GFX_getAssetId("arrow-wait.png");
+    TWIST_TEXT_ORANGE = GFX_getAssetId("TXtwistOXL.png");
+    TWIST_TEXT_PURPLE = GFX_getAssetId("TXtwistPXL.png");
+    TWIST_TEXT_RED    = GFX_getAssetId("TXtwistRXL.png");
+    GOOD_TEXT_GREEN   = GFX_getAssetId("TXgoodGXL.png");
+    GOOD_TEXT_ORANGE  = GFX_getAssetId("TXgoodOXL.png");
+    MASCOT_SUCCESS_EYEBROWS_SPRITE = GFX_getAssetId("masSucBrow.png");
+    MASCOT_WAIT_EYE_2_SPRITE = GFX_getAssetId("masWaitEye2.png");
+    MASCOT_WAIT_EYE_3_SPRITE = GFX_getAssetId("masWaitEye3.png");
+    MASCOT_WAIT_EYE_4_SPRITE = GFX_getAssetId("masWaitEye4.png");
+    MASCOT_WAIT_EYEBROWS_SPRITE = GFX_getAssetId("masWaitBrow.png");
+    COME_ON_TEXT_SPRITE = GFX_getAssetId("TXComeOn.png");
+    DOUBLE_SLAP_TEXT_ORANGE_SPRITE = GFX_getAssetId("TX_D_SlapO.png");
+    DOUBLE_SLAP_TEXT_RED_SPRITE = GFX_getAssetId("TX_D_SlapR.png");
+    DOUBLE_SLAP_TEXT_GREEN_SPRITE = GFX_getAssetId("TX_D_SlapG.png");
+    DO_YOUR_BEST_TEXT_SPRITE = GFX_getAssetId("TXdybest.png");
+    VERY_GOOD_TEXT_GREED_SPRITE = GFX_getAssetId("TXvgoodGXL.png");
+    ANOTHER_TRY_TEXT_SPRITE = GFX_getAssetId("TXtry.png");
+    GO_FOR_IT_TEXT_SPRITE = GFX_getAssetId("TXgoforit.png");
+    SHAKE_ICON_RED_SPRITE = GFX_getAssetId("shake_iconR.png");
+
+    countOrangeXL[0] = GFX_getAssetId("TX_00_O.png");
+    countOrangeXL[1] = GFX_getAssetId("TX_01_O.png");
+    countOrangeXL[2] = GFX_getAssetId("TX_02_O.png");
+    countOrangeXL[3] = GFX_getAssetId("TX_03_O.png");
+    countRedXL[0] = GFX_getAssetId("TX_00_R.png");
+    countRedXL[1] = GFX_getAssetId("TX_01_R.png");
+    countRedXL[2] = GFX_getAssetId("TX_02_R.png");
+    countRedXL[3] = GFX_getAssetId("TX_03_R.png");
+    countOrangeS[0] = GFX_getAssetId("TX_00_OS.png");
+    countOrangeS[1] = GFX_getAssetId("TX_01_OS.png");
+    countOrangeS[2] = GFX_getAssetId("TX_02_OS.png");
+    countOrangeS[3] = GFX_getAssetId("TX_03_OS.png");
+    countRedS[0] = GFX_getAssetId("TX_00_RS.png");
+    countRedS[1] = GFX_getAssetId("TX_01_RS.png");
+    countRedS[2] = GFX_getAssetId("TX_02_RS.png");
+    countRedS[3] = GFX_getAssetId("TX_03_RS.png");
+    _03_WHITE_TEXT_SPRITE = GFX_getAssetId("TX_03_W.png");
+    _03_WHITE_TEXT_SMALL_SPRITE = GFX_getAssetId("TX_03_WS.png");
+    TAP_ICON_RED_SPRITE = GFX_getAssetId("tap_iconR.png");
+    TAP_ICON_GREEN_SPRITE = GFX_getAssetId("tap_iconG.png");
+    PLUS_ONE_TEXT_SPRITE = GFX_getAssetId("plusOne.png");
+    EXCELLENT_TEXT_SPRITE = GFX_getAssetId("TXexcellent.png");
+    FOCUS_TEXT_SPRITE = GFX_getAssetId("TXfocus.png");
+    COLLECTABLE_WAIT = GFX_getAssetId("collectR.png");
+    COLLECTED_CHECK_GREEN = GFX_getAssetId("checked_grn.png");
+    SHAKE_L_TEXT_SPRITE = GFX_getAssetId("TXshakeL.png");
+    SHAKE_XL_TEXT_SPRITE = GFX_getAssetId("TXshakeXL.png");
+    TWIST_TEXT_ORANGE_L = GFX_getAssetId("TXtwistOL.png");
+    TWIST_TEXT_GREEN_L = GFX_getAssetId("TXtwistGL.png");
+    TWIST_ICON_GREEN = GFX_getAssetId("twist_iconG.png");
 
     // Sounds
     ACTION_SOUND      = SND_getAssetId("action.mp3");
@@ -349,9 +402,12 @@ public ON_Init(id, size, const pkt[]) {
     }
 
     GetMapping();
-    
+
     SetApplicationState(FSM:firstLaunch);
     //SetApplicationState(FSM:tiltTutorial);
+    //beginShakeTutorial = 1;
+    //selectorTutorial = 1;
+    //SetApplicationState(FSM:successScreen);
 }
 
 public ON_Quit() {
@@ -427,7 +483,6 @@ public ON_Tap(const count, const display, const bool:opposite) {
 }
 
 public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
-    //LOG_i("twist");
     if (SELF_ID == 0) {
         GetMapping();
         ++mappingPkt;
@@ -468,9 +523,10 @@ public ON_Load(id, size, const pkt[]) {
 public ON_Packet(type, size, const pkt[]) {
     switch (type) {
         case PKT_GENERAL_DATA: {
-            new packetNumberReceived = pkt[3];
-            if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
-                generalDataPkt = packetNumberReceived;
+            //new packetNumberReceived = pkt[3];
+            //if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
+            //    generalDataPkt = packetNumberReceived;
+                alreadyLaunched = pkt[3];
                 SetApplicationState(parseByte(pkt, 3));
                 new flags = pkt[4];
                 beginTapTutorial = flags & 0x1;
@@ -491,7 +547,7 @@ public ON_Packet(type, size, const pkt[]) {
                 twistTutorialStage = parseByte(pkt, 6);
                 sideTapIndicatorPos = (parseByte(pkt, 4) >> 4) & 0xF;
                 tutorialStartTimer = pkt[2];
-            }
+            //}
         }
         case PKT_BALL_TILT_TUT: {
             new packetNumberReceived = pkt[3];

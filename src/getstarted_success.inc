@@ -33,7 +33,7 @@ new bigStarX = 120;
 new bigStarY = 120;
 
 SuccessFontPercents() {
-    return 1 + ((SIMPLE_FONT_SIZE - 1) * sucAnimEffectTimePercent) / 100;
+    return 1 + ((SIMPLE_FONT_SIZE) * sucAnimEffectTimePercent) / 100;
 }
 
 SuccessStarsPercents() {
@@ -55,12 +55,13 @@ DrawSuccessScreen(screen) {
         case SUCCESS_MASCOT: {
             if (!mascotWaitModeFlag) {
                 GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
-                GFX_drawImageXY(120, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
-                GFX_drawImageXY( 90, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
+                GFX_drawImageXY(111, 114, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
+                GFX_drawImageXY( 74, 124, 0xFF, magenta, 100, 100, angle - 15, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
+                GFX_drawImageXY(151, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYEBROWS_SPRITE);
             } else {
                 GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
                 GFX_drawImageXY(110, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-                GFX_drawImageXY( 70, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+                GFX_drawImageXY( 70, 120, 0xFF, magenta, 100, 100, angle, MIRROR_Y,     MASCOT_WAIT_MOUNTH_SPRITE);
             }
             GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
         }
@@ -79,28 +80,45 @@ DrawSuccessScreen(screen) {
             }
         }
         case SUCCESS_ICON_2: {
-            SuccessStarsPercents();
-            GFX_drawImageXY(smallStarX, smallStarY, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SMALL_STAR);
-            GFX_drawImageXY(bigStarX, bigStarY, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, BIG_STAR);
-            GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COMPLETE_ICON);
+            //SuccessStarsPercents();
+            //GFX_drawImageXY(smallStarX, smallStarY, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SMALL_STAR);
+
+            GFX_drawImageXY(103, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COMPLETE_ICON);
             if (previousAppState == FSM:twistTutorial) {
-                GFX_drawTextXY(212, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
+                GFX_drawTextXY(190, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawTextXY(212, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
+                GFX_drawTextXY(190, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
 
+            GFX_drawImageXY( 22,  28, 0x7F, magenta, 100, 100, angle + 15, MIRROR_BLANK, BIG_STAR);
+            GFX_drawImageXY(177,  44, 0xFF, magenta, 100, 100, angle - 15, MIRROR_BLANK, BIG_STAR);
+            GFX_drawImageXY(233, 162, 0x33, magenta, 100, 100, angle + 75, MIRROR_BLANK, BIG_STAR);
+            GFX_drawImageXY( 95, 229, 0x33, magenta, 100, 100, angle - 15, MIRROR_BLANK, BIG_STAR);
+            GFX_drawImageXY(133, 166, 0xFF, magenta, 100, 100, angle + 15, MIRROR_BLANK, BIG_STAR);
+            GFX_drawImageXY( 40, 168, 0xFF, magenta, 100, 100, angle + 7,  MIRROR_BLANK, BIG_STAR);
         }
         case SUCCESS_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-            InitCrossAnimationVars(0xFFFF9898, 0xFFFF5252);
+            InitCrossAnimationVars(0xFF2DC81B, 0xFFAEE4A8);
             DrawCrossAnimation();
             if (previousAppState == FSM:twistTutorial) {
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(120, 134, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, GOOD_TEXT_GREEN);
+                GFX_drawTextXY(120, 90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "go ahead");
+                #else
                 GFX_drawTextXY(110, 140, 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "good!");
                 GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "go ahead");
+                #endif
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawTextXY(120, 140, 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(120, 134, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, VERY_GOOD_TEXT_GREED_SPRITE);
+                GFX_drawTextXY(120, 80, SIMPLE_FONT_SIZE - 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "next thing");
+                GFX_drawTextXY(120, 60, SIMPLE_FONT_SIZE - 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "to learn is tilt");
+                #else
+                GFX_drawTextXY(120, 150, 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "very good!");
                 GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "next thing to");
                 GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
+                #endif
             }
         }
         case SUCCESS_TEXT_BOX: {
@@ -110,7 +128,7 @@ DrawSuccessScreen(screen) {
             new posY_2 = 135;
             if ((getStarted_AllScreensData[screenI].face == TOPOLOGY_orientation:ORIENTATION_DOWN) ||
                 (getStarted_AllScreensData[screenI].face == TOPOLOGY_orientation:ORIENTATION_UP)) {
-                InitCrossAnimationVars(0xFFFF9898, 0xFFFF5252);
+                InitCrossAnimationVars(0xFF2DC81B, 0xFFAEE4A8);
                 DrawCrossAnimation();
             }
             if (previousAppState == FSM:twistTutorial) {
