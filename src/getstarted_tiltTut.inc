@@ -187,7 +187,7 @@ MovePlusOneEffect(angle) {
 
 RenderBall(screen) {
     if ((tiltTutBall.module == SELF_ID) && (tiltTutBall.screen == screen)) {
-        new ballAlpha = 0x19;//0x19;//0x26
+        new ballAlpha = 0x26;//0x19;//0x26
         new traceAngle = -(tiltTutBall.spd >> 2);
         new posX = BALL_ORBIT * FixedCos(tiltTutBall.angle + traceAngle) >> FP;
         new posY = BALL_ORBIT * FixedSin(tiltTutBall.angle + traceAngle) >> FP;

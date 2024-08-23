@@ -329,9 +329,9 @@ UpdateCrossAnimation(m_deltaTime) {
 }
 
 UpdateMascotAnimation(m_deltaTime) {
-    if (changeMascotTimer >= MASCOT_CHANGE_TIME) {
+    /*if (changeMascotTimer >= MASCOT_CHANGE_TIME) {
         mascotWaitModeFlag = 1;
     } else {
         changeMascotTimer += m_deltaTime;
-    }
+    }*/
 }
