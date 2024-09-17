@@ -16,7 +16,7 @@ new getstarted_successLayout{} = {
     SUCCESS_TEXT_BOX, SUCCESS_EMPTY, SUCCESS_ICON, SUCCESS_EMPTY,
 };
 
-const SUCCESS_EFFECT_TIME = 500;
+const SUCCESS_EFFECT_TIME = 1000;
 
 new successAnimationEffectTimer = 0;
 new successAnimationEffectFlag = 0;
@@ -32,15 +32,57 @@ new smallStarY = 120;
 new bigStarX = 120;
 new bigStarY = 120;
 
+new successAnimationFrame = 0;
+new alphaHightlight = 0;
+new successRepeatAnimFlag = 0;
+new successStars[6][.X, .Y] = [
+    [22,  28], [277,  44], [233, 162], 
+    [95, 229], [233, 266], [ 40, 268] 
+];
+
 SuccessFontPercents() {
     return 1 + ((SIMPLE_FONT_SIZE) * sucAnimEffectTimePercent) / 100;
 }
 
 SuccessStarsPercents() {
-    smallStarX = 120 + ((SMALL_STAR_X_END - 120) * sucAnimEffectTimePercent) / 100;
+    /*smallStarX = 120 + ((SMALL_STAR_X_END - 120) * sucAnimEffectTimePercent) / 100;
     smallStarY = 120 + ((SMALL_STAR_Y_END - 120) * sucAnimEffectTimePercent) / 100;
     bigStarX = 120 + ((BIG_STAR_X_END - 120) * sucAnimEffectTimePercent) / 100;
-    bigStarY = 120 + ((BIG_STAR_Y_END - 120) * sucAnimEffectTimePercent) / 100;
+    bigStarY = 120 + ((BIG_STAR_Y_END - 120) * sucAnimEffectTimePercent) / 100;*/
+    new alpha = 255;//(255 * (100 - sucAnimEffectTimePercent)) / 100;
+    if (alpha < 0) {
+        alpha = 0;
+    }
+    for (new i = 0; i < 6; ++i) {
+        new x = 120 + ((successStars[i].X - 120) * sucAnimEffectTimePercent) / 100;
+        new y = 120 + ((successStars[i].Y - 120) * sucAnimEffectTimePercent) / 100;
+        GFX_drawImageXY(x, y, alpha, magenta, 100, 100, 270, MIRROR_BLANK, BIG_STAR);
+    }
+}
+
+UpdateSuccessAnimationFrame() {
+    ++successAnimationFrame;
+
+    if (successAnimationFrame >= 31) {
+        if (!successRepeatAnimFlag) {
+            successRepeatAnimFlag = 1;
+            alphaHightlight = successAnimationFrame = 0;
+        }
+        if (successAnimationFrame > 120) {
+            successRepeatAnimFlag = 0;
+            alphaHightlight = successAnimationFrame = 0;
+        }
+        return;
+    }
+    if (successAnimationFrame >= 16) {
+        alphaHightlight -= 17;
+    } else if (successAnimationFrame >= 0) {
+        alphaHightlight += 17;
+    }
+}
+
+DrawSuccessHighlight(angle) {
+    GFX_drawImageXY(120, 120, alphaHightlight, magenta, 100, 100, 270, MIRROR_BLANK, HIGHTLIGHT_GREEN);
 }
 
 DrawSuccessScreen(screen) {
@@ -64,6 +106,7 @@ DrawSuccessScreen(screen) {
                 GFX_drawImageXY( 70, 120, 0xFF, magenta, 100, 100, angle, MIRROR_Y,     MASCOT_WAIT_MOUNTH_SPRITE);
             }
             GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
+            DrawSuccessHighlight(angle);
         }
         case SUCCESS_ICON: {
             GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COMPLETE_ICON);
@@ -78,9 +121,12 @@ DrawSuccessScreen(screen) {
             } else if (previousAppState == FSM:tapTutorial) {
                 GFX_drawTextXY(posX, posY, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
+            DrawSuccessHighlight(angle);
         }
         case SUCCESS_ICON_2: {
-            //SuccessStarsPercents();
+            if (!successAnimationEffectFlag) {
+                SuccessStarsPercents();
+            }
             //GFX_drawImageXY(smallStarX, smallStarY, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SMALL_STAR);
 
             GFX_drawImageXY(103, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COMPLETE_ICON);
@@ -90,12 +136,7 @@ DrawSuccessScreen(screen) {
                 GFX_drawTextXY(190, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
 
-            GFX_drawImageXY( 22,  28, 0x7F, magenta, 100, 100, angle + 15, MIRROR_BLANK, BIG_STAR);
-            GFX_drawImageXY(177,  44, 0xFF, magenta, 100, 100, angle - 15, MIRROR_BLANK, BIG_STAR);
-            GFX_drawImageXY(233, 162, 0x33, magenta, 100, 100, angle + 75, MIRROR_BLANK, BIG_STAR);
-            GFX_drawImageXY( 95, 229, 0x33, magenta, 100, 100, angle - 15, MIRROR_BLANK, BIG_STAR);
-            GFX_drawImageXY(133, 166, 0xFF, magenta, 100, 100, angle + 15, MIRROR_BLANK, BIG_STAR);
-            GFX_drawImageXY( 40, 168, 0xFF, magenta, 100, 100, angle + 7,  MIRROR_BLANK, BIG_STAR);
+            DrawSuccessHighlight(angle);
         }
         case SUCCESS_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
@@ -120,6 +161,7 @@ DrawSuccessScreen(screen) {
                 GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "learn is tilt");
                 #endif
             }
+            DrawSuccessHighlight(angle);
         }
         case SUCCESS_TEXT_BOX: {
             new posX_1 = 120;
@@ -138,6 +180,10 @@ DrawSuccessScreen(screen) {
                 GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double slap");
                 GFX_drawTextXY(posX_2, posY_2, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to continue");
             }
+            DrawSuccessHighlight(angle);
+        }
+        case SUCCESS_EMPTY: {
+            DrawSuccessHighlight(angle);
         }
     }
 }
@@ -152,4 +198,5 @@ UpdateSuccessScreen(m_deltaTime) {
         }
         sucAnimEffectTimePercent = (successAnimationEffectTimer * 100) / SUCCESS_EFFECT_TIME;
     }
+    UpdateSuccessAnimationFrame();
 }

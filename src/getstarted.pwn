@@ -41,10 +41,19 @@ SetApplicationState(newState) {
             tiltTutSelector.pos = 3;
             tiltTutSelector.moduleT = tiltTutSelector.module = MODULES_MAX;
             tiltTutSelector.screenT = tiltTutSelector.screen = SCREENS_MAX;
+
+            DotRoad.pos = 3;
+            DotRoad.number = 4;
+            DotRoad.moduleT = DotRoad.module = MODULES_MAX;
+            DotRoad.screenT = DotRoad.screen = SCREENS_MAX;
         } else if (newState == FSM:successScreen) {
             successAnimationEffectTimer = 0;
             successAnimationEffectFlag = 0;
             sucAnimEffectTimePercent = 0;
+
+            successAnimationFrame = 0;
+            alphaHightlight = 0;
+            successRepeatAnimFlag = 0;
 
             smallStarX = 120;
             smallStarY = 120;
@@ -61,13 +70,6 @@ SetApplicationState(newState) {
             arcsInCurtain[2].sprite = ARC_3_SPRITE;
             arcsInCurtain[3].sprite = ARC_4_SPRITE;
             arcsInCurtain[4].sprite = ARC_5_SPRITE;
-
-            /*tutorialStartTimer = 0;
-            currentTangibleIcon = tutorialStartTimer / DISPLAY_ONE_ICON_TIME;
-            tangibleIcons[0] = SHAKE_ICON;
-            tangibleIcons[1] = TILT_ICON;
-            tangibleIcons[2] = TAP_ICON;
-            tangibleIcons[3] = TWIST_ICON;*/
         }
         previousAppState = applicationState;
         applicationState = newState;
@@ -123,7 +125,8 @@ SendGeneralInfo(pktNumber) {
     | (beginShakeTutorial << 5)
     | (getstartedGreetingFlag << 6)
     | (fillTapTutorial << 7)
-    | (flStartFlag << 8);
+    | (flStartFlag << 8)
+    | (tiltTutEndFlag << 9);
 
     new randomSoundOrder = 0;
     for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
@@ -369,6 +372,9 @@ public ON_Init(id, size, const pkt[]) {
     TWIST_TEXT_ORANGE_L = GFX_getAssetId("TXtwistOL.png");
     TWIST_TEXT_GREEN_L = GFX_getAssetId("TXtwistGL.png");
     TWIST_ICON_GREEN = GFX_getAssetId("twist_iconG.png");
+    HIGHTLIGHT_GREEN = GFX_getAssetId("lightGreen.png");
+    BALL_EFFECT_ORANGE = GFX_getAssetId("effOrange.png");
+    BALL_EFFECT_GREEN = GFX_getAssetId("effGreen.png");
 
     // Sounds
     ACTION_SOUND      = SND_getAssetId("action.mp3");
@@ -420,13 +426,13 @@ public ON_Shake(const count) {
     if ((SELF_ID == 0) && (applicationState == FSM:shakeTutorial)) {
         if (beginShakeTutorial) {
             shakeTutorialStage = count;
-            if (!dataSaved) {
-                SaveData();
-            }
+            //if (!dataSaved) {
+            //    SaveData();
+            //}
 
-            if (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
-                quit();
-            }
+            //if (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
+            //    quit();
+            //}
         }
         if (!beginShakeTutorial && (count > 0)) {
             beginShakeTutorial = 1;
@@ -462,8 +468,10 @@ public ON_Tap(const count, const display, const bool:opposite) {
                 if (count >= 2) {
                     if (selectorTutorial) {
                         if (tiltTutSelector.pos == 1) {
-                            SetApplicationState(FSM:shakeTutorial);
-                            SND_play(EXCELLENT_2_SOUND, SOUND_VOLUME);
+                            //SetApplicationState(FSM:shakeTutorial);
+                            //SND_play(EXCELLENT_2_SOUND, SOUND_VOLUME);
+                            tiltAnimEffectTime = 0;
+                            tiltTutEndFlag = 1;
                         }
                     } else if (finishTiltTutorial) {
                         SND_play(ACTION_SOUND, SOUND_VOLUME);
@@ -510,6 +518,7 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
     if (applicationState == FSM:tiltTutorial) {
         tiltTutBall.module = MODULES_MAX;
         tiltTutSelector.module = MODULES_MAX;
+        DotRoad.module = MODULES_MAX;
     }
 }
 
@@ -536,6 +545,7 @@ public ON_Packet(type, size, const pkt[]) {
                 getstartedGreetingFlag = (flags >> 6) & 0x1;
                 fillTapTutorial = (flags >> 7) & 0x1;
                 flStartFlag = (flags >> 8) & 0x1;
+                tiltTutEndFlag = (flags >> 9) & 0x1;
                 if ((parseByte(pkt, 4) & 0xF) > tapTutorialStage) {
                     mascotTapReactAnimFlag = 1;
                 }
@@ -555,11 +565,14 @@ public ON_Packet(type, size, const pkt[]) {
                 ballPkt = packetNumberReceived;
                 tiltTutBall.module = parseByte(pkt, 1);
                 tiltTutBall.screen = parseByte(pkt, 2);
-                tiltTutBall.angle = pkt[1];
-                tiltTutBall.pos = pkt[2];
+                tiltTutBall.angle = pkt[1] & 0xFFFF;
+                tiltTutBall.pos = (pkt[1] >> 16) & 0xFFFF;
                 tiltTutBall.spd = pkt[4];
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     collectables{item} = (parseByte(pkt, 3) >> item) & 0x1;
+                }
+                if (tiltTutBall.module == SELF_ID) {
+                    ballTransitionAnimFlag = (pkt[2] & 0xFF) ^ 2;
                 }
             }
         }
@@ -588,6 +601,16 @@ public ON_Packet(type, size, const pkt[]) {
                     getStarted_AllScreensData[screenI].face = (pkt[dataI] >> (5 * offset)) & 0x7;
                     getStarted_AllScreensData[screenI].pos = (pkt[dataI] >> (3 + (5 * offset))) & 0x3;
                 }
+            }
+        }
+        case PKT_DOTROAD_TILT_TUT: {
+            new packetNumberReceived = pkt[1];
+            if (dotRoadPkt < packetNumberReceived) {
+                dotRoadPkt = packetNumberReceived;
+                DotRoad.module = parseByte(pkt, 0);
+                DotRoad.screen = parseByte(pkt, 1);
+                DotRoad.number = parseByte(pkt, 2);
+                DotRoad.pos = parseByte(pkt, 3);
             }
         }
     }

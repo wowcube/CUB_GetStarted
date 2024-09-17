@@ -37,6 +37,14 @@ new mascotShakeAnimTimer = 0;
 const BAKED_SHAKETUT_MASCOT_SPRITE = 0;
 const BAKED_SHAKETUT_WAIT_SPRITE = 1;
 const BAKED_SHAKETUT_FILL_SPRITE = 2;
+const BAKED_SHAKETUT_END_SPRITE = 3;
+
+new shakeAnimEffectTimePercent = 0;
+new shakeStars[6][.X, .Y] = [
+    [222,  40], [277, 124], [233, 242], 
+    [125, 249], [ 33, 266], [120, 128] 
+];
+new shakeAnimEffectTime = 0;
 
 ShakeTutorialBakeSprites() {
     GFX_clearCache();
@@ -50,10 +58,16 @@ ShakeTutorialBakeSprites() {
     GFX_drawImageXY(190,  60, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
     GFX_drawImageXY(210,  90, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
-    GFX_bakeImage(BAKED_SHAKETUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    /*GFX_bakeImage(BAKED_SHAKETUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
     GFX_drawImageXY(110, 135, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_EYE_2_SPRITE);
     GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 155, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
+    GFX_render();*/
+    GFX_bakeImage(BAKED_SHAKETUT_END_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
+    GFX_drawImageXY(200,  44, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+    GFX_drawImageXY(185,  15, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_EYEBROWS_SPRITE);
+    GFX_drawImageXY(190,  60, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
+    GFX_drawImageXY(200,  95, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
     GFX_render();
 }
 
@@ -70,6 +84,15 @@ MascotShakeAnimation() {
     }
 }
 
+RenderStarsShake(angle, pos) {
+    shakeAnimEffectTimePercent = (shakeAnimEffectTime * 100) / 1000;
+    for (new i = 0; i < 6; ++i) {
+        new x = (shakeStars[i].X * shakeAnimEffectTimePercent) / 100;
+        new y = (shakeStars[i].Y * shakeAnimEffectTimePercent) / 100;
+        GFX_drawImageXY(x, y, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, BIG_STAR);
+    }
+}
+
 GetShakeFillColor(shakeInPercents) {
     return (0xFF000000
     | 0xFA + ((0xFF - 0xFA) * (100 - shakeInPercents)) / 100 << 16
@@ -78,40 +101,44 @@ GetShakeFillColor(shakeInPercents) {
 }
 
 ShakeFillBackground(angle) {
-    new shakeInPercents = (shakeTutorialStage * 100) / SENSITIVITY_MENU_CHANGE_SCRIPT;
-    new rect[GFX_RECTANGLE];
-    rect.x = 0;
-    rect.y = 0;
-    rect.w = 240;
-    rect.h = 240;
-    switch (angle) {
-        case 0: {
-            if (shakeInPercents <= 50) {
-                rect.y = rect.h - (480 * shakeInPercents) / 100;
+    if (shakeTutorialStage >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
+        GFX_drawRectangle([0, 0, 240, 240], 0xFF3CB22E);
+    } else {
+        new shakeInPercents = (shakeTutorialStage * 100) / SENSITIVITY_MENU_CHANGE_SCRIPT;
+        new rect[GFX_RECTANGLE];
+        rect.x = 0;
+        rect.y = 0;
+        rect.w = 240;
+        rect.h = 240;
+        switch (angle) {
+            case 360: {
+                if (shakeInPercents <= 50) {
+                    rect.y = rect.h - (480 * shakeInPercents) / 100;
+                }
+            }
+            case 90: {
+                if (shakeInPercents >= 50) {
+                    rect.w = (480 * shakeInPercents) / 100 - rect.w;
+                } else {
+                    rect.w = rect.h = 0;
+                }
+            }
+            case 180: {
+                if (shakeInPercents >= 50) {
+                    rect.h = (480 * shakeInPercents) / 100 - rect.h;
+                } else {
+                    rect.w = rect.h = 0;
+                }
+            }
+            case 270: {
+                if (shakeInPercents <= 50) {
+                    rect.x = rect.w - (480 * shakeInPercents) / 100;
+                }
             }
         }
-        case 90: {
-            if (shakeInPercents >= 50) {
-                rect.w = (480 * shakeInPercents) / 100 - rect.w;
-            } else {
-                rect.w = rect.h = 0;
-            }
-        }
-        case 180: {
-            if (shakeInPercents >= 50) {
-                rect.h = (480 * shakeInPercents) / 100 - rect.h;
-            } else {
-                rect.w = rect.h = 0;
-            }
-        }
-        case 270: {
-            if (shakeInPercents <= 50) {
-                rect.x = rect.w - (480 * shakeInPercents) / 100;
-            }
-        }
+        
+        GFX_drawRectangle(rect, GetShakeFillColor(shakeInPercents));
     }
-    
-    GFX_drawRectangle(rect, GetShakeFillColor(shakeInPercents));
 }
 
 DrawShakeTutorial(screen) {
@@ -145,11 +172,13 @@ DrawShakeTutorial(screen) {
             GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE);
         }
         case ICON: {
-            if (!mascotWaitModeFlag) {
+            //if (!mascotWaitModeFlag) {
+            if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
                 GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON);
-            } else {
-                GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON_RED_SPRITE);
             }
+            //} else {
+            //    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON_RED_SPRITE);
+            //}
         }
         case SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
@@ -193,21 +222,27 @@ DrawShakeTutorial(screen) {
             GFX_drawTextXY(posX_2, posY_2, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
         }
         case TEXT_BOX_2: {
-            GFX_drawTextXY(100, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
-            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
-            GFX_drawTextXY(140, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
+            if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
+                GFX_drawTextXY(100, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake the");
+                GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube to go back");
+                GFX_drawTextXY(140, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "to main menu");
+            }
         }
         case MASCOT_2: {
-            if (!shakeTutorialStage) {
-                if (!mascotWaitModeFlag) {
-                    GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_FILL_SPRITE);
-                    GFX_drawImageXY(72, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
-                    #ifdef SPRITE_TEXT
-                    GFX_drawImageXY(55, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, SHAKE_L_TEXT_SPRITE);
-                    #else
-                    GFX_drawTextXY(50, 120, 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
-                    #endif
-                } else {
+            //if (!shakeTutorialStage) {
+                //if (!mascotWaitModeFlag) {
+                    if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
+                        GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_FILL_SPRITE);
+                        GFX_drawImageXY(72, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
+                        #ifdef SPRITE_TEXT
+                        GFX_drawImageXY(55, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, SHAKE_L_TEXT_SPRITE);
+                        #else
+                        GFX_drawTextXY(50, 120, 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
+                        #endif
+                    } else {
+                        GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_END_SPRITE);
+                    }
+                /*} else {
                     GFX_drawBakedImage([200, 200], 0xFF, 0, 100, 100, 75, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
                     GFX_drawImageXY(72, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
                     #ifdef SPRITE_TEXT
@@ -215,9 +250,12 @@ DrawShakeTutorial(screen) {
                     #else
                     GFX_drawTextXY(50, 120, 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "go for it!");
                     #endif
-                }
-            }
+                }*/
+            //}
         }
+    }
+    if ((shakeTutorialStage >= SENSITIVITY_MENU_CHANGE_SCRIPT) && (tiltAnimEffectTime <= 1000)) {
+        RenderStarsShake(angle, getStarted_AllScreensData[screenI].pos);
     }
 }
 
@@ -228,6 +266,15 @@ UpdateShakeTutorial(m_deltaTime) {
             mascotShakeAnimFlag = 1;
         } else {
             mascotShakeAnimTimer += m_deltaTime;
+        }
+    }
+    if (shakeTutorialStage >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
+        shakeAnimEffectTime += m_deltaTime;
+    }
+    if (SELF_ID == 0) {
+        if (shakeAnimEffectTime >= 2000) {
+            SaveData();
+            quit();
         }
     }
 }

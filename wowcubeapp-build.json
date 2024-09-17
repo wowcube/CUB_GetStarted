@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "sdkVersion": "6.0",
   "appIcon": {
     "path": "assets/icon.png"
@@ -456,6 +456,18 @@
     {
       "path": "assets/images/TXtwistOL.png",
       "alias": "TXtwistOL.png"
+    },
+    {
+      "path": "assets/images/lightGreen.png",
+      "alias": "lightGreen.png"
+    },
+    {
+      "path": "assets/images/effOrange.png",
+      "alias": "effOrange.png"
+    },
+    {
+      "path": "assets/images/effGreen.png",
+      "alias": "effGreen.png"
     }
   ],
   "soundAssets": [

@@ -73,12 +73,12 @@ TapTutorialBakeSprites() {
     GFX_clearCache();
     GFX_bakeImage(BAKED_TAPTUT_MASCOT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-    GFX_drawImageXY(115, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+    GFX_drawImageXY(115, 140, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
     GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
     GFX_bakeImage(BAKED_TAPTUT_MAS_TAPED_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-    GFX_drawImageXY(115, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
+    GFX_drawImageXY(115, 140, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
     GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
     GFX_bakeImage(BAKED_TAPTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
@@ -155,28 +155,28 @@ TapFillBackground(angle) {
 
 FingerTapAnimation() {
     ++tapAnimationFrame;
-    if (tapAnimationFrame >= 11) {
+    if (tapAnimationFrame >= 10) {
         if (!repeatAnimFlag) {
             repeatAnimFlag = 1;
             fingerAngle = mascotPosY = sideTapIndicatorPos = tapAnimationFrame = 0;
         }
-        if (tapAnimationFrame > 33) {
+        if (tapAnimationFrame > 25) {
             repeatAnimFlag = 0;
             fingerAngle = mascotPosY = sideTapIndicatorPos = tapAnimationFrame = 0;
         }
         return;
     }
-    if (tapAnimationFrame >= 6) {
-        fingerAngle -= 8;
+    if (tapAnimationFrame >= 5) {
+        fingerAngle -= 3;//8;
         --sideTapIndicatorPos;
     } else if (tapAnimationFrame >= 0) {
-        fingerAngle += 8;
+        fingerAngle += 3;//8;
         ++sideTapIndicatorPos;
     }
     
-    if ((tapAnimationFrame >= 8) && (tapAnimationFrame <= 9)) {
+    if ((tapAnimationFrame >= 7) && (tapAnimationFrame <= 8)) {
         mascotPosY -= 10;
-    } else if ((tapAnimationFrame >= 6) && (tapAnimationFrame <= 7)) {
+    } else if ((tapAnimationFrame >= 5) && (tapAnimationFrame <= 6)) {
         mascotPosY += 10;
     }
 }
@@ -356,18 +356,18 @@ DrawTapTutorial(screen) {
         }
         case FINGER_ANIM: {
             FingerTapAnimation();
-            GFX_drawImageXY(60, 227, 0xFF, magenta, 100, 100, angle - 10 - fingerAngle, MIRROR_BLANK, FINGER_SPRITE);
             new curMascotSprite = BAKED_TAPTUT_MASCOT_SPRITE;
             if ((tapAnimationFrame >= 5) && tapAnimationFrame <= 7) {
                 curMascotSprite = BAKED_TAPTUT_MAS_TAPED_SPRITE;
-                GFX_drawLineXY( 60, 183,  48, 191, 8, 0xFFFFFFFF);
-                GFX_drawLineXY(170, 180, 185, 190, 8, 0xFFFFFFFF);
-                GFX_drawLineXY(150, 195, 154, 215, 8, 0xFFFFFFFF);
+                GFX_drawLineXY(160, 217, 160, 227, 8, 0xFFFFFFFF);
+                GFX_drawLineXY(183, 211, 195, 219, 8, 0xFFFFFFFF);
+                GFX_drawLineXY(189, 190, 201, 188, 8, 0xFFFFFFFF);
             }
             if (mascotWaitModeFlag) {
                 curMascotSprite = BAKED_TAPTUT_WAIT_SPRITE;
             }
-            GFX_drawBakedImageXY(120, 90 - mascotPosY, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, curMascotSprite);
+            GFX_drawBakedImageXY(120, 100 - mascotPosY, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, curMascotSprite);
+            GFX_drawImageXY(85, 202, 0xFF, magenta, 100, 100, angle + 15 - fingerAngle, MIRROR_BLANK, FINGER_SPRITE);
             GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
         }
         case BUBBLE_TEXT: {

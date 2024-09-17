@@ -7,6 +7,7 @@
 #define PKT_BALL_TILT_TUT      2
 #define PKT_SELECTOR_TILT_TUT  3
 #define PKT_MAPPING            4
+#define PKT_DOTROAD_TILT_TUT   5
 
 #define CROSS_ANIM_DATA .posX_b_1, .posY_b_1, .posX_e_1, .posY_e_1, .posX_b_2, .posY_b_2, .posX_e_2, .posY_e_2
 
@@ -147,6 +148,9 @@ new SHAKE_ICON_RED_SPRITE = 30;
 new TWIST_ICON_GREEN = 30;
 new TWIST_TEXT_ORANGE_L = 30;
 new TWIST_TEXT_GREEN_L = 30;
+new HIGHTLIGHT_GREEN = 30;
+new BALL_EFFECT_ORANGE = 30;
+new BALL_EFFECT_GREEN = 30;
 
 new bakeAppStateSpritesFlag = 0;
 
