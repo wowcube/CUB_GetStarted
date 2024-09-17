@@ -145,11 +145,11 @@ TiltTutorialBakeSprites() {
         GFX_drawImageXY(120, 166, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
         #ifdef SPRITE_TEXT
         GFX_drawImageXY(120, 160, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, EXCELLENT_TEXT_SPRITE);
-        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double slap");
+        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double pat");
         GFX_drawTextXY(120, 215, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
         #else
         GFX_drawTextXY(125, 150, 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF2DC81B, "excellent!");
-        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double slap");
+        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double pat");
         GFX_drawTextXY(120, 215, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
         #endif
     GFX_render();
@@ -162,11 +162,11 @@ TiltTutorialBakeSprites() {
         GFX_drawImageXY(120, 166, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, DIALOGUE_SMALL);
         #ifdef SPRITE_TEXT
         GFX_drawImageXY(120, 160, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, FOCUS_TEXT_SPRITE);
-        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double slap");
+        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double pat");
         GFX_drawTextXY(120, 215, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
         #else
         GFX_drawTextXY(125, 150, 10, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFF5252, "focus!");
-        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double slap");
+        GFX_drawTextXY(120, 185, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "double pat");
         GFX_drawTextXY(120, 215, SIMPLE_FONT_SIZE - 1, 0, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to continue");
         #endif
     GFX_render();*/
@@ -736,7 +736,7 @@ DrawTiltTutorial(screen) {
             new posX_2 = 120;
             new posY_2 = 140;
             FindPosDependOnAngle(angle, posX_1, posY_1, posX_2, posY_2);
-            GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double slap");
+            GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double pat");
             GFX_drawTextXY(posX_2, posY_2, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "to continue");
         }
         case FINISHED_EXCELLENT: {
@@ -754,13 +754,13 @@ DrawTiltTutorial(screen) {
                         InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
                         GFX_drawTextXY(120,  80, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "put the white");
                         GFX_drawTextXY(120, 105, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "hightlight on me");
-                        GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and slap the");
+                        GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "and pat the");
                         GFX_drawTextXY(120, 155, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "cube 2 times");
                     /*} else {
                         InitCrossAnimationVars(0xFFFF9898, 0xFFFF5252);
                         GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "put the white");
                         GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "hightlight");
-                        GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and slap");
+                        GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and pat");
                         GFX_drawTextXY(120, 150, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
                         GFX_drawTextXY(120, 180, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times");
                     }*/
@@ -772,10 +772,10 @@ DrawTiltTutorial(screen) {
                     if (tiltTutSelector.pos == 1) {
                         InitCrossAnimationVars(0xFF2DC81B, 0xFFAEE4A8);
                         #ifdef SPRITE_TEXT
-                        GFX_drawImageXY(120, 136, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_GREEN_SPRITE);
+                        GFX_drawImageXY(120, 136, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_GREEN_SPRITE);
                         GFX_drawTextXY(120, 89, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube now!");
                         #else
-                        GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "slap the cube");
+                        GFX_drawTextXY(120, 130, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "pat the cube");
                         GFX_drawTextXY(120, 110, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times now");
                         #endif
                         DrawCrossAnimation();
@@ -825,7 +825,7 @@ DrawTiltTutorial(screen) {
                     } else if (tiltTutSelector.pos == 0) {
                         GFX_drawTextXY(180, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "put the white");
                         GFX_drawTextXY(150, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "hightlight");
-                        GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and slap");
+                        GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and pat");
                         GFX_drawTextXY( 90, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
                         GFX_drawTextXY( 60, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "2 times");
                     }
@@ -888,7 +888,7 @@ DrawTiltTutorial(screen) {
             GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 1) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 1) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "highlight on");
             GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 2) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 2) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the little");
             GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 3) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 3) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "cube and");
-            GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 4) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 4) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double slap");
+            GFX_drawTextXY(staticCenterPos * isStaticX + (changingPos + posStep * 4) * isStaticY, staticCenterPos * isStaticY + (changingPos + posStep * 4) * isStaticX, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "double pat");
         }
     }
 }

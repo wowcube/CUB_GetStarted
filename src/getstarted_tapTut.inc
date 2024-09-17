@@ -195,7 +195,7 @@ DrawTapTutorial(screen) {
 
     if (fillTapTutorial) {
         if ((SELF_ID == 0) && (screen == 0)) {
-            // Try to sync side slap indicator movement
+            // Try to sync side pat indicator movement
             FingerTapAnimation();
         }
         TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation_mode:ORIENTATION_MODE_GRAVITY));
@@ -213,7 +213,7 @@ DrawTapTutorial(screen) {
                 if (!mascotWaitModeFlag) {
                     if (tapTutorialStage == 0) {
                         GFX_drawTextXY(85, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "repeat");
-                        GFX_drawTextXY(55, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "double slap");
+                        GFX_drawTextXY(55, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "double pat");
                         GFX_drawTextXY(25, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "three times");
                     } else if (tapTutorialStage == 1) {
                         GFX_drawTextXY(85, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "awesome!");
@@ -232,7 +232,7 @@ DrawTapTutorial(screen) {
                 }
             } else {
                 GFX_drawTextXY(90, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "moving on");
-                GFX_drawTextXY(45, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the slap");
+                GFX_drawTextXY(45, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the pat");
             }
         }
         case TAPTUT_TEXT_BOX: {
@@ -245,17 +245,17 @@ DrawTapTutorial(screen) {
                 }
 
                 GFX_drawTextXY(120, 160, 9, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFFFFF, "double");
-                GFX_drawTextXY(120, 210, 9, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "slap");
+                GFX_drawTextXY(120, 210, 9, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "pat");
             } else {
                 #ifdef SPRITE_TEXT
                 if (!mascotWaitModeFlag) {
-                    GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_ORANGE_SPRITE);
+                    GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_ORANGE_SPRITE);
                 } else {
-                    GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_RED_SPRITE);
+                    GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_RED_SPRITE);
                 }
                 #else
                 GFX_drawTextXY(120, 170, 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double");
-                GFX_drawTextXY(120, 135, 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "slap");
+                GFX_drawTextXY(120, 135, 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "pat");
                 #endif
                 GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the side of");
                 GFX_drawTextXY(120,  65, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
@@ -264,15 +264,15 @@ DrawTapTutorial(screen) {
         case TAPTUT_TEXT_BOX_2: {
             #ifdef SPRITE_TEXT
             if (!mascotWaitModeFlag) {
-                GFX_drawImageXY(98, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_ORANGE_SPRITE)
+                GFX_drawImageXY(98, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_ORANGE_SPRITE)
             } else {
-                GFX_drawImageXY(98, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_RED_SPRITE)
+                GFX_drawImageXY(98, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_RED_SPRITE)
             }
             GFX_drawTextXY(150, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the side of");
             GFX_drawTextXY(175, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube!");
             #else
             GFX_drawTextXY( 70, 120, 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double");
-            GFX_drawTextXY(105, 120, 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "slap");
+            GFX_drawTextXY(105, 120, 13, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "pat");
             GFX_drawTextXY(150, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the side of");
             GFX_drawTextXY(175, 120, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
             #endif
@@ -373,9 +373,9 @@ DrawTapTutorial(screen) {
         case BUBBLE_TEXT: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
             if (!mascotWaitModeFlag) {
-                GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_ORANGE_SPRITE);
+                GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_ORANGE_SPRITE);
             } else {
-                GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_SLAP_TEXT_RED_SPRITE);
+                GFX_drawImageXY(120, 142, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, DOUBLE_PAT_TEXT_RED_SPRITE);
             }
             InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
             DrawCrossAnimation();
@@ -383,7 +383,7 @@ DrawTapTutorial(screen) {
             GFX_drawTextXY(120, 65, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
             /*GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_X, SPEECH_BUBBLE_TAP_SPRITE);
             GFX_drawTextXY(140, 170, 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "double");
-            GFX_drawTextXY(140, 135, 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "slap");
+            GFX_drawTextXY(140, 135, 12, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "pat");
             GFX_drawTextXY(140, 100, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the side of");
             GFX_drawTextXY(140,  75, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");*/
         }

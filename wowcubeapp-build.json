@@ -1,6 +1,6 @@
 {
   "name": "Get_Started",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "sdkVersion": "6.0",
   "appIcon": {
     "path": "assets/icon.png"
@@ -342,14 +342,6 @@
       "alias": "TX_03_W.png"
     },
     {
-      "path": "assets/images/TX_D_SlapO.png",
-      "alias": "TX_D_SlapO.png"
-    },
-    {
-      "path": "assets/images/TX_D_SlapR.png",
-      "alias": "TX_D_SlapR.png"
-    },
-    {
       "path": "assets/images/TX_00_OS.png",
       "alias": "TX_00_OS.png"
     },
@@ -426,10 +418,6 @@
       "alias": "tap_iconG.png"
     },
     {
-      "path": "assets/images/TX_D_SlapG.png",
-      "alias": "TX_D_SlapG.png"
-    },
-    {
       "path": "assets/images/TXshakeL.png",
       "alias": "TXshakeL.png"
     },
@@ -468,6 +456,18 @@
     {
       "path": "assets/images/effGreen.png",
       "alias": "effGreen.png"
+    },
+    {
+      "path": "assets/images/TX_D_PatG.png",
+      "alias": "TX_D_PatG.png"
+    },
+    {
+      "path": "assets/images/TX_D_PatO.png",
+      "alias": "TX_D_PatO.png"
+    },
+    {
+      "path": "assets/images/TX_D_PatR.png",
+      "alias": "TX_D_PatR.png"
     }
   ],
   "soundAssets": [

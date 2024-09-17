@@ -333,9 +333,9 @@ public ON_Init(id, size, const pkt[]) {
     MASCOT_WAIT_EYE_4_SPRITE = GFX_getAssetId("masWaitEye4.png");
     MASCOT_WAIT_EYEBROWS_SPRITE = GFX_getAssetId("masWaitBrow.png");
     COME_ON_TEXT_SPRITE = GFX_getAssetId("TXComeOn.png");
-    DOUBLE_SLAP_TEXT_ORANGE_SPRITE = GFX_getAssetId("TX_D_SlapO.png");
-    DOUBLE_SLAP_TEXT_RED_SPRITE = GFX_getAssetId("TX_D_SlapR.png");
-    DOUBLE_SLAP_TEXT_GREEN_SPRITE = GFX_getAssetId("TX_D_SlapG.png");
+    DOUBLE_PAT_TEXT_ORANGE_SPRITE = GFX_getAssetId("TX_D_PatO.png");
+    DOUBLE_PAT_TEXT_RED_SPRITE = GFX_getAssetId("TX_D_PatR.png");
+    DOUBLE_PAT_TEXT_GREEN_SPRITE = GFX_getAssetId("TX_D_PatG.png");
     DO_YOUR_BEST_TEXT_SPRITE = GFX_getAssetId("TXdybest.png");
     VERY_GOOD_TEXT_GREED_SPRITE = GFX_getAssetId("TXvgoodGXL.png");
     ANOTHER_TRY_TEXT_SPRITE = GFX_getAssetId("TXtry.png");
@@ -409,7 +409,7 @@ public ON_Init(id, size, const pkt[]) {
 
     GetMapping();
 
-    SetApplicationState(FSM:firstLaunch);
+    SetApplicationState(FSM:firstLaunch);//621
     //SetApplicationState(FSM:tiltTutorial);
     //beginShakeTutorial = 1;
     //selectorTutorial = 1;
