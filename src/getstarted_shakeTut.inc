@@ -35,7 +35,6 @@ new mascotShakeStep = -10;
 new mascotShakeAnimTimer = 0;
 
 const BAKED_SHAKETUT_MASCOT_SPRITE = 0;
-const BAKED_SHAKETUT_WAIT_SPRITE = 1;
 const BAKED_SHAKETUT_FILL_SPRITE = 2;
 const BAKED_SHAKETUT_END_SPRITE = 3;
 
@@ -58,11 +57,6 @@ ShakeTutorialBakeSprites() {
     GFX_drawImageXY(190,  60, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
     GFX_drawImageXY(210,  90, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
     GFX_render();
-    /*GFX_bakeImage(BAKED_SHAKETUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-    GFX_drawImageXY(110, 135, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_EYE_2_SPRITE);
-    GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 155, MIRROR_BLANK, MASCOT_WAIT_MOUNTH_SPRITE);
-    GFX_render();*/
     GFX_bakeImage(BAKED_SHAKETUT_END_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(200,  44, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
     GFX_drawImageXY(185,  15, 0xFF, magenta, 100, 100, 350, MIRROR_BLANK, MASCOT_SUCCESS_EYEBROWS_SPRITE);
@@ -158,27 +152,19 @@ DrawShakeTutorial(screen) {
             if (mascotShakeAnimFlag) {
                 MascotShakeAnimation();
             }
-            if (!mascotWaitModeFlag) {
-                if (!mascotShakeAnimFlag){
-                    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-                    GFX_drawImageXY( 98, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-                    GFX_drawImageXY(133, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-                } else {
-                    GFX_drawBakedImageXY(mascotShakePosX, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
-                }
+            if (!mascotShakeAnimFlag){
+                GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                GFX_drawImageXY( 98, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                GFX_drawImageXY(133, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
             } else {
-                GFX_drawBakedImageXY(mascotShakePosX, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
+                GFX_drawBakedImageXY(mascotShakePosX, 120, 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_MASCOT_SPRITE);
             }
             GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE);
         }
         case ICON: {
-            //if (!mascotWaitModeFlag) {
             if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
                 GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON);
             }
-            //} else {
-            //    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_ICON_RED_SPRITE);
-            //}
         }
         case SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
@@ -229,29 +215,17 @@ DrawShakeTutorial(screen) {
             }
         }
         case MASCOT_2: {
-            //if (!shakeTutorialStage) {
-                //if (!mascotWaitModeFlag) {
-                    if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
-                        GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_FILL_SPRITE);
-                        GFX_drawImageXY(72, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
-                        #ifdef SPRITE_TEXT
-                        GFX_drawImageXY(55, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, SHAKE_L_TEXT_SPRITE);
-                        #else
-                        GFX_drawTextXY(50, 120, 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
-                        #endif
-                    } else {
-                        GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_END_SPRITE);
-                    }
-                /*} else {
-                    GFX_drawBakedImage([200, 200], 0xFF, 0, 100, 100, 75, MIRROR_BLANK, BAKED_SHAKETUT_WAIT_SPRITE);
-                    GFX_drawImageXY(72, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
-                    #ifdef SPRITE_TEXT
-                    GFX_drawImageXY(55, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, GO_FOR_IT_TEXT_SPRITE);
-                    #else
-                    GFX_drawTextXY(50, 120, 10, angle, 0, TEXT_ALIGN_CENTER, 0xFFFF5252, "go for it!");
-                    #endif
-                }*/
-            //}
+            if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
+                GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_FILL_SPRITE);
+                GFX_drawImageXY(72, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE_SMALL);
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(55, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, SHAKE_L_TEXT_SPRITE);
+                #else
+                GFX_drawTextXY(50, 120, 16, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "shake!");
+                #endif
+            } else {
+                GFX_drawBakedImage([120, 120], 0xFF, 0, 100, 100, angle, MIRROR_BLANK, BAKED_SHAKETUT_END_SPRITE);
+            }
         }
     }
     if ((shakeTutorialStage >= SENSITIVITY_MENU_CHANGE_SCRIPT) && (tiltAnimEffectTime <= 1000)) {

@@ -37,16 +37,10 @@ new mascotTwistAnimTimer = 0;
 new mascotTwistAngle = 270;
 new mascotTwistAnimFlag = 1;
 
-const BAKED_TWISTTUT_WAIT_SPRITE = 0;
 const BAKED_TWISTTUT_MASCOT_X_SPRITE = 1;
 
 TwistTutorialBakeSprites() {
     GFX_clearCache();
-    GFX_bakeImage(BAKED_TWISTTUT_WAIT_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
-    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-    GFX_drawImageXY(120, 170, 0xFF, magenta, 100, 100, 0, MIRROR_Y,     MASCOT_WAIT_MOUNTH_SPRITE);
-    GFX_render();
     GFX_bakeImage(BAKED_TWISTTUT_MASCOT_X_SPRITE, 240, 240, GFX_format:FORMAT_RGB565);
     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, 0, MIRROR_BLANK, MASCOT_MAIN_EYES_X_SPRITE);
@@ -81,35 +75,23 @@ DrawTwistTutorial(screen) {
             if (twistTutorialStage) {
                 // what axis we will twist
                 if (currentStage) {
-                    if (!mascotWaitModeFlag) {
-                        GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-                        if (twistTutorialStage == 3) {
-                            GFX_drawImageXY(110, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
-                            GFX_drawImageXY( 73, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-                        } else {
-                            GFX_drawImageXY(110, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-                            GFX_drawImageXY( 70, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-                        }
+                    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    if (twistTutorialStage == 3) {
+                        GFX_drawImageXY(110, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_CUTE_SPRITE);
+                        GFX_drawImageXY( 73, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
                     } else {
-                        GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-                        GFX_drawImageXY( 97, 111, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYE_3_SPRITE);
-                        GFX_drawImageXY( 82, 111, 0xFF, magenta, 100, 100, angle, MIRROR_X,     MASCOT_WAIT_MOUNTH_SPRITE);
+                        GFX_drawImageXY(110, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                        GFX_drawImageXY( 70, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
                     }
                     GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
                 } else {
-                    if (!mascotWaitModeFlag) {
-                        GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-                        if (twistTutorialStage == 4) {
-                            GFX_drawImageXY(130, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_X_SPRITE);
-                            GFX_drawImageXY(167, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-                        } else {
-                            GFX_drawImageXY(105, 105, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-                            GFX_drawImageXY(150, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-                        }
+                    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    if (twistTutorialStage == 4) {
+                        GFX_drawImageXY(130, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_X_SPRITE);
+                        GFX_drawImageXY(167, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
                     } else {
-                        GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-                        GFX_drawImageXY(126, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYE_3_SPRITE);
-                        GFX_drawImageXY(141, 120, 0xFF, magenta, 100, 100, angle, MIRROR_X,     MASCOT_WAIT_MOUNTH_SPRITE);
+                        GFX_drawImageXY(105, 105, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                        GFX_drawImageXY(150, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
                     }
                     GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE);
                 }
@@ -117,23 +99,12 @@ DrawTwistTutorial(screen) {
                 if (mascotTwistAnimFlag) {
                     MascotTwistAnimUpdate(angle);
                     GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SILUETTE_SPRITE);
-
-                    if (!mascotWaitModeFlag) {
-                        GFX_drawBakedImageXY(120, 120, 0xFF, 0, 100, 100, mascotTwistAngle, MIRROR_BLANK, BAKED_TWISTTUT_MASCOT_X_SPRITE);
-                    } else {
-                        GFX_drawBakedImageXY(120, 120, 0xFF, 0, 100, 100, mascotTwistAngle, MIRROR_BLANK, BAKED_TWISTTUT_WAIT_SPRITE);
-                    }
+                    GFX_drawBakedImageXY(120, 120, 0xFF, 0, 100, 100, mascotTwistAngle, MIRROR_BLANK, BAKED_TWISTTUT_MASCOT_X_SPRITE);
                 } else {
                     // If we not rotating
-                    if (!mascotWaitModeFlag) {
-                        GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
-                        GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
-                        GFX_drawImageXY(170, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
-                    } else {
-                        GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-                        GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-                        GFX_drawImageXY(170, 120, 0xFF, magenta, 100, 100, angle, MIRROR_X,     MASCOT_WAIT_MOUNTH_SPRITE);
-                    }
+                    GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EMPTY_SPRITE);
+                    GFX_drawImageXY(120, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_EYES_NORMAL_SPRITE);
+                    GFX_drawImageXY(170, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_MAIN_MOUNTH_O_SPRITE);
                 }
                 GFX_drawImageXY(31, 120, 0xFF, magenta, 100, 100, 90, MIRROR_BLANK, DIALOGUE);
             }
@@ -143,42 +114,35 @@ DrawTwistTutorial(screen) {
         }
         case TWISTTUT_SPEECH_BOX: {
             GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], 0xFFFFFFFF);
-            if (!mascotWaitModeFlag) {
-                InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
-                if (twistTutorialStage > 1) {
-                    #ifdef SPRITE_TEXT
-                    GFX_drawImageXY(120, 146, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_PURPLE);
-                    GFX_drawImageXY(120,  94, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_ORANGE);
-                    #else
-                    GFX_drawTextXY(120, 160, 17, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "twist");
-                    GFX_drawTextXY(120,  70, 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "twist");
-                    #endif
-                } else if (twistTutorialStage == 1) {
-                    #ifdef SPRITE_TEXT
-                    GFX_drawImageXY(120, 154, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, GOOD_TEXT_ORANGE);
-                    GFX_drawTextXY(120,  110, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
-                    GFX_drawTextXY(120,  85, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
-                    GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
-                    #else
-                    GFX_drawTextXY(110, 130, 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "good!");
-                    GFX_drawTextXY(120,  98, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
-                    GFX_drawTextXY(120,  78, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
-                    GFX_drawTextXY(120,  58, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
-                    #endif
-                } else {
-                    #ifdef SPRITE_TEXT
-                    GFX_drawImageXY(120, 134, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_ORANGE);
-                    GFX_drawTextXY(120, 90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
-                    #else
-                    GFX_drawTextXY(120, 140, 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "twist");
-                    GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
-                    #endif
-                }
+            InitCrossAnimationVars(0xFFFF5C00, 0xFFFFB576);
+            if (twistTutorialStage > 1) {
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(120, 146, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_PURPLE);
+                GFX_drawImageXY(120,  94, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_ORANGE);
+                #else
+                GFX_drawTextXY(120, 160, 17, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "twist");
+                GFX_drawTextXY(120,  70, 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "twist");
+                #endif
+            } else if (twistTutorialStage == 1) {
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(120, 154, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, GOOD_TEXT_ORANGE);
+                GFX_drawTextXY(120,  110, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
+                GFX_drawTextXY(120,  85, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
+                GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
+                #else
+                GFX_drawTextXY(110, 130, 17, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFA552, "good!");
+                GFX_drawTextXY(120,  98, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "one more time!");
+                GFX_drawTextXY(120,  78, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "twist another");
+                GFX_drawTextXY(120,  58, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "side");
+                #endif
             } else {
-                InitCrossAnimationVars(0xFFFF9898, 0xFFFF5252);
-                GFX_drawImageXY(120, 148, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COME_ON_TEXT_SPRITE);
-                GFX_drawTextXY(120, 110, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "twist");
-                GFX_drawTextXY(120,  85, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube!");
+                #ifdef SPRITE_TEXT
+                GFX_drawImageXY(120, 134, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, TWIST_TEXT_ORANGE);
+                GFX_drawTextXY(120, 90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
+                #else
+                GFX_drawTextXY(120, 140, 17, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFA552, "twist");
+                GFX_drawTextXY(120, 100, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "the cube once");
+                #endif
             }
             DrawCrossAnimation();
         }
@@ -232,9 +196,6 @@ DrawTwistTutorial(screen) {
                 }
             }
             new arrowSprite = ARROW_TWIST;
-            if (mascotWaitModeFlag) {
-                arrowSprite = ARROW_WAIT_TWIST;
-            }
             if (!isMainAxisX) {
                 GFX_drawImageXY(posX, posY, arrowIcons[0], magenta, 100, 100, angle, MIRROR_BLANK, arrowSprite);
                 GFX_drawImageXY(posX + 40 * !isMainAxisX, posY + 40 * isMainAxisX, arrowIcons[1], magenta, 100, 100, angle, MIRROR_BLANK, arrowSprite);

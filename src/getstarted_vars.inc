@@ -1,6 +1,7 @@
-#pragma warning disable 203
-#pragma warning disable 204
-#pragma warning disable 213
+#pragma warning disable 203 // global never used
+#pragma warning disable 204 // never used variable
+#pragma warning disable 213 // tag mismatch
+#pragma warning disable 217 // loose indentation
 #pragma warning disable 229
 
 #define PKT_GENERAL_DATA       1
@@ -41,7 +42,6 @@ new ARROW_TILT          = 0;
 new ARROW_TWIST         = 1;
 new BALL                = 2;
 new COLLECTED_CHECK     = 3;
-new COLLECTED_CHECK_RED = 4;
 new COLLECTABLE         = 5;
 new COLLECTED           = 6;
 new COMPLETE_ICON       = 7;
@@ -56,30 +56,19 @@ new TAP_ICON              = 17;
 new TILT_ICON             = 18;
 new TWIST_ICON            = 19;
 
-new SMALL_STAR            = 20;
 new BIG_STAR              = 21;
 
 new CIRCLE_QUARTER_PUSH   = 22;
 
 new FINGER_SPRITE         = 23;
 new WRONG_TAP_ICON        = 24;
-new WRONG_TAP_RIM         = 26;
 new RIGHT_TAP_ICON        = 25;
-new RIGHT_TAP_RIM_1       = 26;
-new RIGHT_TAP_RIM_2       = 26;
-new RIGHT_TAP_RIM_3       = 26;
-
-new SPEECH_BUBBLE_TAP_SPRITE = 26;
 
 new MASCOT_MAIN_EMPTY_SPRITE       = 27;
 new MASCOT_MAIN_EYES_NORMAL_SPRITE = 27;
 new MASCOT_MAIN_EYES_CUTE_SPRITE   = 27;
 new MASCOT_MAIN_EYES_X_SPRITE      = 27;
 new MASCOT_MAIN_MOUNTH_O_SPRITE    = 27;
-
-new MASCOT_WAIT_BODY_SPRITE   = 27;
-new MASCOT_WAIT_EYES_SPRITE   = 27;
-new MASCOT_WAIT_MOUNTH_SPRITE = 27;
 
 new MASCOT_SUCCESS_BODY_SPRITE   = 27;
 new MASCOT_SUCCESS_EYES_SPRITE   = 27;
@@ -106,45 +95,27 @@ new ARC_3_SPRITE = 28;
 new ARC_4_SPRITE = 28;
 new ARC_5_SPRITE = 28;
 
-new TAP_SIDE_ICON = 29;
 new SIDE_TAP_INDICATOR = 29;
 new SILUETTE_SPRITE = 29;
 
-new ARROW_WAIT_TWIST = 30;
 new TWIST_TEXT_ORANGE = 30;
 new TWIST_TEXT_PURPLE = 30;
-new TWIST_TEXT_RED    = 30;
 new GOOD_TEXT_GREEN   = 30;
 new GOOD_TEXT_ORANGE  = 30;
 new MASCOT_SUCCESS_EYEBROWS_SPRITE = 30;
-new MASCOT_WAIT_EYE_2_SPRITE = 30;
-new MASCOT_WAIT_EYE_3_SPRITE = 30;
-new MASCOT_WAIT_EYE_4_SPRITE = 30;
-new MASCOT_WAIT_EYEBROWS_SPRITE = 30;
-new COME_ON_TEXT_SPRITE = 30;
 new DOUBLE_PAT_TEXT_ORANGE_SPRITE = 30;
-new DOUBLE_PAT_TEXT_RED_SPRITE = 30;
 new DOUBLE_PAT_TEXT_GREEN_SPRITE = 30;
-new DO_YOUR_BEST_TEXT_SPRITE = 30;
 new VERY_GOOD_TEXT_GREED_SPRITE = 30;
 new countOrangeXL[4];
-new countRedXL[4];
 new countOrangeS[4];
-new countRedS[4];
 new _03_WHITE_TEXT_SPRITE = 30;
 new _03_WHITE_TEXT_SMALL_SPRITE = 30;
-new TAP_ICON_RED_SPRITE = 30;
 new TAP_ICON_GREEN_SPRITE = 30;
 new PLUS_ONE_TEXT_SPRITE = 30;
 new EXCELLENT_TEXT_SPRITE = 30;
-new FOCUS_TEXT_SPRITE = 30;
-new COLLECTABLE_WAIT = 30;
 new COLLECTED_CHECK_GREEN = 30;
-new ANOTHER_TRY_TEXT_SPRITE = 30;
 new SHAKE_L_TEXT_SPRITE = 30;
 new SHAKE_XL_TEXT_SPRITE = 30;
-new GO_FOR_IT_TEXT_SPRITE = 30;
-new SHAKE_ICON_RED_SPRITE = 30;
 new TWIST_ICON_GREEN = 30;
 new TWIST_TEXT_ORANGE_L = 30;
 new TWIST_TEXT_GREEN_L = 30;
@@ -200,36 +171,26 @@ new getStarted_AllScreensData[MODULES_MAX * SCREENS_MAX][.face, .pos] = [
     [ORIENTATION_UP, 0], [ORIENTATION_UP, 0], [ORIENTATION_UP, 0],
 ]
 
-new mascotWaitModeFlag = 0;
 new generalDataPkt = 0;
 new mappingPkt = 0;
 new alreadyLaunched = 0;
-new dataSaved = 0;
 new neighbor[TOPOLOGY_FACELET_INFO];
 
 const crossLineThickness = 6;
 const MAX_CROSS_STAGES = 2;
 new leftBottom[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    //[38, 30, 38, 46,  30, 38, 46, 38], // +
-    //[32, 32, 43, 43,  32, 43, 43, 32]  // x
     [20, 12, 20, 28,  12, 20, 28, 20], // +
     [14, 14, 26, 26,  14, 26, 26, 14]  // x
 ];
 new rightBottom[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    //[202, 30, 202, 46,  194, 38, 210, 38], // +
-    //[196, 32, 207, 43,  196, 43, 207, 32]  // x
     [220, 12, 220, 28,  212, 20, 228, 20], // +
     [214, 14, 226, 26,  214, 26, 226, 14]  // x
 ];
 new rightTop[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    //[194, 202, 210, 202,  202, 194, 202, 210], // +
-    //[196, 196, 207, 207,  196, 207, 207, 196]  // x
     [220, 212, 220, 228,  212, 220, 228, 220], // +
     [214, 214, 226, 226,  214, 226, 226, 214]  // x
 ];
 new leftTop[MAX_CROSS_STAGES][CROSS_ANIM_DATA] = [
-    //[38, 194, 38, 210,  30, 202, 46, 202], // +
-    //[32, 196, 43, 207,  32, 207, 43, 196]  // x
     [20, 212, 20, 228,  12, 220, 28, 220], // +
     [14, 214, 26, 226,  14, 226, 26, 214]  // x
 ];
@@ -277,7 +238,6 @@ CheckAcceleration() {
 
 SetDefaultMascot() {
     changeMascotTimer = 0;
-    mascotWaitModeFlag = 0;
 }
 
 SetFacelet(module, screen) {

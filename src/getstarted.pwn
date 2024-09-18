@@ -12,7 +12,6 @@ SaveData() {
     new saveData [2] = [0,...];
     saveData[0] = alreadyLaunched + 1;
     saveState(saveData);
-    dataSaved = 1;
 }
 
 SetApplicationState(newState) {
@@ -135,7 +134,6 @@ SendGeneralInfo(pktNumber) {
     data[0] = (previousAppState << 16) | (applicationState << 24);
     data[1] = tapTutorialStage | (sideTapIndicatorPos << 4) | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
-    //data[3] = pktNumber;
     data[3] = alreadyLaunched;
     data[4] = flags;
 
@@ -256,7 +254,6 @@ public ON_Init(id, size, const pkt[]) {
     DIALOGUE_SMALL        = GFX_getAssetId("speechSmall.png");
 
     COLLECTED_CHECK       = GFX_getAssetId("checked.png");
-    COLLECTED_CHECK_RED   = GFX_getAssetId("checked_red.png");
 
     CIRCLE_QUARTER        = GFX_getAssetId("quarter.png");
     SELECTOR              = GFX_getAssetId("selector.png");
@@ -265,30 +262,19 @@ public ON_Init(id, size, const pkt[]) {
     TILT_ICON             = GFX_getAssetId("tilt_icon.png");
     TWIST_ICON            = GFX_getAssetId("twist_icon.png");
 
-    SMALL_STAR            = GFX_getAssetId("star_small.png");
     BIG_STAR              = GFX_getAssetId("star_big.png");
 
     CIRCLE_QUARTER_PUSH   = GFX_getAssetId("quarterPush.png");
 
     FINGER_SPRITE         = GFX_getAssetId("finger.png");
     WRONG_TAP_ICON        = GFX_getAssetId("wrongTap.png");
-    //WRONG_TAP_RIM         = GFX_getAssetId("wrongRim.png");
     RIGHT_TAP_ICON        = GFX_getAssetId("rightTap.png");
-    //RIGHT_TAP_RIM_1       = GFX_getAssetId("rightRim1.png");
-    //RIGHT_TAP_RIM_2       = GFX_getAssetId("rightRim2.png");
-    //RIGHT_TAP_RIM_3       = GFX_getAssetId("rightRim3.png");
     
-    SPEECH_BUBBLE_TAP_SPRITE = GFX_getAssetId("speechTap.png");
-
     MASCOT_MAIN_EMPTY_SPRITE       = GFX_getAssetId("masMainE.png");
     MASCOT_MAIN_EYES_NORMAL_SPRITE = GFX_getAssetId("masEyesN.png");
     MASCOT_MAIN_EYES_CUTE_SPRITE   = GFX_getAssetId("masEyesV.png");
     MASCOT_MAIN_EYES_X_SPRITE      = GFX_getAssetId("masEyesX.png");
     MASCOT_MAIN_MOUNTH_O_SPRITE    = GFX_getAssetId("masMouthO.png");
-
-    MASCOT_WAIT_BODY_SPRITE   = GFX_getAssetId("masWait.png");
-    MASCOT_WAIT_EYES_SPRITE   = GFX_getAssetId("masWaitEye1.png");
-    MASCOT_WAIT_MOUNTH_SPRITE = GFX_getAssetId("mWaitMouth.png");
 
     MASCOT_SUCCESS_BODY_SPRITE   = GFX_getAssetId("masSuccess.png");
     MASCOT_SUCCESS_EYES_SPRITE   = GFX_getAssetId("masSucEyes.png");
@@ -317,55 +303,31 @@ public ON_Init(id, size, const pkt[]) {
     ARC_4_SPRITE = GFX_getAssetId("arc4.png");
     ARC_5_SPRITE = GFX_getAssetId("arc5.png");
 
-    TAP_SIDE_ICON = GFX_getAssetId("tapSideicon.png");
     SIDE_TAP_INDICATOR = GFX_getAssetId("sideTapInd.png");
     SILUETTE_SPRITE = GFX_getAssetId("siluette.png");
 
-    ARROW_WAIT_TWIST = GFX_getAssetId("arrow-wait.png");
     TWIST_TEXT_ORANGE = GFX_getAssetId("TXtwistOXL.png");
     TWIST_TEXT_PURPLE = GFX_getAssetId("TXtwistPXL.png");
-    TWIST_TEXT_RED    = GFX_getAssetId("TXtwistRXL.png");
     GOOD_TEXT_GREEN   = GFX_getAssetId("TXgoodGXL.png");
     GOOD_TEXT_ORANGE  = GFX_getAssetId("TXgoodOXL.png");
     MASCOT_SUCCESS_EYEBROWS_SPRITE = GFX_getAssetId("masSucBrow.png");
-    MASCOT_WAIT_EYE_2_SPRITE = GFX_getAssetId("masWaitEye2.png");
-    MASCOT_WAIT_EYE_3_SPRITE = GFX_getAssetId("masWaitEye3.png");
-    MASCOT_WAIT_EYE_4_SPRITE = GFX_getAssetId("masWaitEye4.png");
-    MASCOT_WAIT_EYEBROWS_SPRITE = GFX_getAssetId("masWaitBrow.png");
-    COME_ON_TEXT_SPRITE = GFX_getAssetId("TXComeOn.png");
     DOUBLE_PAT_TEXT_ORANGE_SPRITE = GFX_getAssetId("TX_D_PatO.png");
-    DOUBLE_PAT_TEXT_RED_SPRITE = GFX_getAssetId("TX_D_PatR.png");
     DOUBLE_PAT_TEXT_GREEN_SPRITE = GFX_getAssetId("TX_D_PatG.png");
-    DO_YOUR_BEST_TEXT_SPRITE = GFX_getAssetId("TXdybest.png");
     VERY_GOOD_TEXT_GREED_SPRITE = GFX_getAssetId("TXvgoodGXL.png");
-    ANOTHER_TRY_TEXT_SPRITE = GFX_getAssetId("TXtry.png");
-    GO_FOR_IT_TEXT_SPRITE = GFX_getAssetId("TXgoforit.png");
-    SHAKE_ICON_RED_SPRITE = GFX_getAssetId("shake_iconR.png");
 
     countOrangeXL[0] = GFX_getAssetId("TX_00_O.png");
     countOrangeXL[1] = GFX_getAssetId("TX_01_O.png");
     countOrangeXL[2] = GFX_getAssetId("TX_02_O.png");
     countOrangeXL[3] = GFX_getAssetId("TX_03_O.png");
-    countRedXL[0] = GFX_getAssetId("TX_00_R.png");
-    countRedXL[1] = GFX_getAssetId("TX_01_R.png");
-    countRedXL[2] = GFX_getAssetId("TX_02_R.png");
-    countRedXL[3] = GFX_getAssetId("TX_03_R.png");
     countOrangeS[0] = GFX_getAssetId("TX_00_OS.png");
     countOrangeS[1] = GFX_getAssetId("TX_01_OS.png");
     countOrangeS[2] = GFX_getAssetId("TX_02_OS.png");
     countOrangeS[3] = GFX_getAssetId("TX_03_OS.png");
-    countRedS[0] = GFX_getAssetId("TX_00_RS.png");
-    countRedS[1] = GFX_getAssetId("TX_01_RS.png");
-    countRedS[2] = GFX_getAssetId("TX_02_RS.png");
-    countRedS[3] = GFX_getAssetId("TX_03_RS.png");
     _03_WHITE_TEXT_SPRITE = GFX_getAssetId("TX_03_W.png");
     _03_WHITE_TEXT_SMALL_SPRITE = GFX_getAssetId("TX_03_WS.png");
-    TAP_ICON_RED_SPRITE = GFX_getAssetId("tap_iconR.png");
     TAP_ICON_GREEN_SPRITE = GFX_getAssetId("tap_iconG.png");
     PLUS_ONE_TEXT_SPRITE = GFX_getAssetId("plusOne.png");
     EXCELLENT_TEXT_SPRITE = GFX_getAssetId("TXexcellent.png");
-    FOCUS_TEXT_SPRITE = GFX_getAssetId("TXfocus.png");
-    COLLECTABLE_WAIT = GFX_getAssetId("collectR.png");
     COLLECTED_CHECK_GREEN = GFX_getAssetId("checked_grn.png");
     SHAKE_L_TEXT_SPRITE = GFX_getAssetId("TXshakeL.png");
     SHAKE_XL_TEXT_SPRITE = GFX_getAssetId("TXshakeXL.png");
@@ -409,8 +371,8 @@ public ON_Init(id, size, const pkt[]) {
 
     GetMapping();
 
-    SetApplicationState(FSM:firstLaunch);//621
-    //SetApplicationState(FSM:tiltTutorial);
+    SetApplicationState(FSM:firstLaunch);
+    //SetApplicationState(FSM:shakeTutorial);
     //beginShakeTutorial = 1;
     //selectorTutorial = 1;
     //SetApplicationState(FSM:successScreen);
@@ -426,10 +388,6 @@ public ON_Shake(const count) {
     if ((SELF_ID == 0) && (applicationState == FSM:shakeTutorial)) {
         if (beginShakeTutorial) {
             shakeTutorialStage = count;
-            //if (!dataSaved) {
-            //    SaveData();
-            //}
-
             //if (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
             //    quit();
             //}

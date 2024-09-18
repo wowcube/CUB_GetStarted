@@ -95,16 +95,10 @@ DrawSuccessScreen(screen) {
     GFX_drawRectangle([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT], BACKGROUND_COLOR);
     switch (screenLayout) {
         case SUCCESS_MASCOT: {
-            if (!mascotWaitModeFlag) {
-                GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
-                GFX_drawImageXY(111, 114, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
-                GFX_drawImageXY( 74, 124, 0xFF, magenta, 100, 100, angle - 15, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
-                GFX_drawImageXY(151, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYEBROWS_SPRITE);
-            } else {
-                GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_BODY_SPRITE);
-                GFX_drawImageXY(110, 115, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_WAIT_EYES_SPRITE);
-                GFX_drawImageXY( 70, 120, 0xFF, magenta, 100, 100, angle, MIRROR_Y,     MASCOT_WAIT_MOUNTH_SPRITE);
-            }
+            GFX_drawImageXY(120, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_BODY_SPRITE);
+            GFX_drawImageXY(111, 114, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYES_SPRITE);
+            GFX_drawImageXY( 74, 124, 0xFF, magenta, 100, 100, angle - 15, MIRROR_BLANK, MASCOT_SUCCESS_MOUNTH_SPRITE);
+            GFX_drawImageXY(151, 110, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, MASCOT_SUCCESS_EYEBROWS_SPRITE);
             GFX_drawImageXY(120, 31, 0xFF, magenta, 100, 100, 180, MIRROR_BLANK, DIALOGUE);
             DrawSuccessHighlight(angle);
         }
@@ -127,7 +121,6 @@ DrawSuccessScreen(screen) {
             if (!successAnimationEffectFlag) {
                 SuccessStarsPercents();
             }
-            //GFX_drawImageXY(smallStarX, smallStarY, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SMALL_STAR);
 
             GFX_drawImageXY(103, 120, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, COMPLETE_ICON);
             if (previousAppState == FSM:twistTutorial) {
