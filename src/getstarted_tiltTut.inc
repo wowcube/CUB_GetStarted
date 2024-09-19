@@ -45,7 +45,6 @@ new getstarted_selectorTutorial{} = {
 };
 
 const BALL_SQUARE_RADIUS = 289;
-//const BALL_ORBIT = 107;
 const BALL_ORBIT = 125;
 new tiltTutBall[GS_BALL_DATA];
 
@@ -364,16 +363,13 @@ SelectorLogic() {
 }
 
 BallLogic() {
-    //LOG_i("ball logic %d %d",tiltTutBall.module, tiltTutBall.pos);
     if ((tiltTutBall.module >= MODULES_MAX)) {
         for (new screenI = 0; screenI < SCREENS_MAX; ++screenI) {
-            //LOG_i("screen face %d %d",screenI, getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].face);
             if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].face == TOPOLOGY_orientation:ORIENTATION_UP) {
                 if (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + screenI].pos == tiltTutBall.pos) {
                     tiltTutBall.module = SELF_ID;
                     tiltTutBall.screen = screenI;
                     tiltTutBall.angle = 45;
-                    //LOG_i("ball is here");
                     break;
                 }
             }
@@ -405,7 +401,7 @@ BallLogic() {
 
                 new accelX = MS_getFaceAccelX(tiltTutBall.screen) >> 2;
                 new accelY = MS_getFaceAccelY(tiltTutBall.screen) >> 2;
-                //LOG_i("%d",accelX - accelY);
+
                 if (tiltTutBall.spd >= 0) {
                     tiltTutBall.spd -= 6;
                 } else if (tiltTutBall.spd < 0) {
@@ -415,9 +411,8 @@ BallLogic() {
                 if ((tiltTutBall.spd > -16) && (tiltTutBall.spd < 0)) {
                     tempSpd *= -1;
                 }
-                //LOG_i("%d %d", tiltTutBall.spd, tempSpd);
+
                 tiltTutBall.angle += (tempSpd >> 4);
-                //tiltTutBall.angle += accelX - accelY;
 
                 if (tiltTutBall.angle < 0) {
                     tiltTutBall.angle = 360 + tiltTutBall.angle;
@@ -426,7 +421,6 @@ BallLogic() {
                                     
                 tiltTutBall.posX = BALL_ORBIT * FixedCos(tiltTutBall.angle) >> FP;
                 tiltTutBall.posY = BALL_ORBIT * FixedSin(tiltTutBall.angle) >> FP;
-                //LOG_i("got the ball %d %d %d %d",tiltTutBall.screen, tiltTutBall.angle, tiltTutBall.posX, tiltTutBall.posY);
 
                 for (new item = 0; item < SCREENS_MAX; ++item) {
                     if (collectables{item} && (collectablesAngles[item] == tiltTutBall.pos)) {
@@ -442,19 +436,16 @@ BallLogic() {
                 if (tiltTutBall.posX < -HALF_MODULE_GAP) {
                     neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutBall.screen), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
                     if (neighbor.connected) {
-                        //LOG_i("left %d %d",tiltTutBall.pos, getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos);
                         tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos + 1) % 4;
                         tiltTutBall.module = neighbor.module;
                         tiltTutBall.screen = neighbor.screen;
                         tiltTutBall.angle = 352;
                         ballTransitionAnimFlag = NEIGHBOR_LEFT;
                         ballTransitionAnimTime = 0;
-                        //LOG_i("left end %d %d",tiltTutBall.pos, getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos);
                     }
                 } else if (tiltTutBall.posY < -HALF_MODULE_GAP) {
                     neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutBall.screen), TOPOLOGY_neighbor:NEIGHBOR_TOP);
                     if (neighbor.connected) {
-                        //LOG_i("top %d",tiltTutBall.pos);
                         tiltTutBall.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutBall.screen].pos - 1) % 4;
                         tiltTutBall.module = neighbor.module;
                         tiltTutBall.screen = neighbor.screen;
@@ -463,7 +454,6 @@ BallLogic() {
                         ballTransitionAnimTime = 0;
                     }
                 }
-                //LOG_i("send ball to %d %d %d",tiltTutBall.module, tiltTutBall.screen, tiltTutBall.pos);
             } else {
                 FindUpSecondPosBall();
             }
@@ -528,7 +518,6 @@ DrawTransitionEffect() {
     } else {
         GFX_drawImageXY(116, 52, 0x33, magenta, 100, 100, 270, MIRROR_X, effSprite);
     }
-
 }
 
 DrawHightlightPass(screenI) {

@@ -158,10 +158,10 @@ FingerTapAnimation() {
         return;
     }
     if (tapAnimationFrame >= 5) {
-        fingerAngle -= 3;//8;
+        fingerAngle -= 3;
         --sideTapIndicatorPos;
     } else if (tapAnimationFrame >= 0) {
-        fingerAngle += 3;//8;
+        fingerAngle += 3;
         ++sideTapIndicatorPos;
     }
     

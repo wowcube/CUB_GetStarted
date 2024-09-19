@@ -27,11 +27,6 @@ const SMALL_STAR_X_END = 90;
 const BIG_STAR_Y_END = 50;
 const BIG_STAR_X_END = 50;
 
-new smallStarX = 120;
-new smallStarY = 120;
-new bigStarX = 120;
-new bigStarY = 120;
-
 new successAnimationFrame = 0;
 new alphaHightlight = 0;
 new successRepeatAnimFlag = 0;
@@ -45,11 +40,7 @@ SuccessFontPercents() {
 }
 
 SuccessStarsPercents() {
-    /*smallStarX = 120 + ((SMALL_STAR_X_END - 120) * sucAnimEffectTimePercent) / 100;
-    smallStarY = 120 + ((SMALL_STAR_Y_END - 120) * sucAnimEffectTimePercent) / 100;
-    bigStarX = 120 + ((BIG_STAR_X_END - 120) * sucAnimEffectTimePercent) / 100;
-    bigStarY = 120 + ((BIG_STAR_Y_END - 120) * sucAnimEffectTimePercent) / 100;*/
-    new alpha = 255;//(255 * (100 - sucAnimEffectTimePercent)) / 100;
+    new alpha = 255;
     if (alpha < 0) {
         alpha = 0;
     }

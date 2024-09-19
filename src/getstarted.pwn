@@ -53,11 +53,6 @@ SetApplicationState(newState) {
             successAnimationFrame = 0;
             alphaHightlight = 0;
             successRepeatAnimFlag = 0;
-
-            smallStarX = 120;
-            smallStarY = 120;
-            bigStarX = 120;
-            bigStarY = 120;
         } else if (newState == FSM:firstLaunch) {
             mascotHandWaveAnimFrames{0} = MAIN_HAND_1_SPRITE;
             mascotHandWaveAnimFrames{1} = MAIN_HAND_2_SPRITE;
@@ -374,10 +369,6 @@ public ON_Init(id, size, const pkt[]) {
     GetMapping();
 
     SetApplicationState(FSM:firstLaunch);
-    //SetApplicationState(FSM:shakeTutorial);
-    //beginShakeTutorial = 1;
-    //selectorTutorial = 1;
-    //SetApplicationState(FSM:successScreen);
 }
 
 public ON_Quit() {
@@ -428,8 +419,6 @@ public ON_Tap(const count, const display, const bool:opposite) {
                 if (count >= 2) {
                     if (selectorTutorial) {
                         if (tiltTutSelector.pos == 1) {
-                            //SetApplicationState(FSM:shakeTutorial);
-                            //SND_play(EXCELLENT_2_SOUND, SOUND_VOLUME);
                             tiltAnimEffectTime = 0;
                             tiltTutEndFlag = 1;
                         }
@@ -492,32 +481,28 @@ public ON_Load(id, size, const pkt[]) {
 public ON_Packet(type, size, const pkt[]) {
     switch (type) {
         case PKT_GENERAL_DATA: {
-            //new packetNumberReceived = pkt[3];
-            //if ((generalDataPkt < packetNumberReceived) || ((generalDataPkt - packetNumberReceived) > (0x7FFFFFFF >> 1))) {
-            //    generalDataPkt = packetNumberReceived;
-                alreadyLaunched = pkt[3];
-                SetApplicationState(parseByte(pkt, 3));
-                new flags = pkt[4];
-                beginTapTutorial = flags & 0x1;
-                finishTiltTutorial = (flags >> 3) & 0x1;
-                selectorTutorial = (flags >> 4) & 0x1;
-                beginShakeTutorial = (flags >> 5) & 0x1;
-                getstartedGreetingFlag = (flags >> 6) & 0x1;
-                fillTapTutorial = (flags >> 7) & 0x1;
-                flStartFlag = (flags >> 8) & 0x1;
-                tiltTutEndFlag = (flags >> 9) & 0x1;
-                if ((parseByte(pkt, 4) & 0xF) > tapTutorialStage) {
-                    mascotTapReactAnimFlag = 1;
-                }
-                for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
-                    tiltTutCollectableSounds{soundI} = (parseByte(pkt, 7) >> (soundI * 2)) & 0x3;
-                }
-                tapTutorialStage = parseByte(pkt, 4) & 0xF;
-                shakeTutorialStage = parseByte(pkt, 5);
-                twistTutorialStage = parseByte(pkt, 6);
-                sideTapIndicatorPos = (parseByte(pkt, 4) >> 4) & 0xF;
-                tutorialStartTimer = pkt[2];
-            //}
+            alreadyLaunched = pkt[3];
+            SetApplicationState(parseByte(pkt, 3));
+            new flags = pkt[4];
+            beginTapTutorial = flags & 0x1;
+            finishTiltTutorial = (flags >> 3) & 0x1;
+            selectorTutorial = (flags >> 4) & 0x1;
+            beginShakeTutorial = (flags >> 5) & 0x1;
+            getstartedGreetingFlag = (flags >> 6) & 0x1;
+            fillTapTutorial = (flags >> 7) & 0x1;
+            flStartFlag = (flags >> 8) & 0x1;
+            tiltTutEndFlag = (flags >> 9) & 0x1;
+            if ((parseByte(pkt, 4) & 0xF) > tapTutorialStage) {
+                mascotTapReactAnimFlag = 1;
+            }
+            for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
+                tiltTutCollectableSounds{soundI} = (parseByte(pkt, 7) >> (soundI * 2)) & 0x3;
+            }
+            tapTutorialStage = parseByte(pkt, 4) & 0xF;
+            shakeTutorialStage = parseByte(pkt, 5);
+            twistTutorialStage = parseByte(pkt, 6);
+            sideTapIndicatorPos = (parseByte(pkt, 4) >> 4) & 0xF;
+            tutorialStartTimer = pkt[2];
         }
         case PKT_BALL_TILT_TUT: {
             new packetNumberReceived = pkt[3];
