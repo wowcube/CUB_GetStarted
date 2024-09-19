@@ -128,8 +128,8 @@ SendGeneralInfo(pktNumber) {
     for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
         randomSoundOrder |= (tiltTutCollectableSounds{soundI} << (soundI * 2));
     }
-    data[0] = (previousAppState << 16) | (applicationState << 24);
-    data[1] = tapTutorialStage | (sideTapIndicatorPos << 4) | (shakeTutorialStage << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
+    data[0] = (shakeTutorialStage << 8) | (previousAppState << 16) | (applicationState << 24);
+    data[1] = tapTutorialStage | (sideTapIndicatorPos << 8) | (twistTutorialStage << 16) | (randomSoundOrder << 24);
     data[2] = tutorialStartTimer;
     data[3] = alreadyLaunched;
     data[4] = flags;
@@ -492,16 +492,16 @@ public ON_Packet(type, size, const pkt[]) {
             fillTapTutorial = (flags >> 7) & 0x1;
             flStartFlag = (flags >> 8) & 0x1;
             tiltTutEndFlag = (flags >> 9) & 0x1;
-            if ((parseByte(pkt, 4) & 0xF) > tapTutorialStage) {
+            if (parseByte(pkt, 4) > tapTutorialStage) {
                 mascotTapReactAnimFlag = 1;
             }
             for (new soundI = 0; soundI < SCREENS_MAX; ++soundI) {
                 tiltTutCollectableSounds{soundI} = (parseByte(pkt, 7) >> (soundI * 2)) & 0x3;
             }
-            tapTutorialStage = parseByte(pkt, 4) & 0xF;
-            shakeTutorialStage = parseByte(pkt, 5);
+            shakeTutorialStage = parseByte(pkt, 1);
+            tapTutorialStage = parseByte(pkt, 4);
+            sideTapIndicatorPos = parseByte(pkt, 5);
             twistTutorialStage = parseByte(pkt, 6);
-            sideTapIndicatorPos = (parseByte(pkt, 4) >> 4) & 0xF;
             tutorialStartTimer = pkt[2];
         }
         case PKT_BALL_TILT_TUT: {
