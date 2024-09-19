@@ -146,6 +146,7 @@ new currentTime = 0;
 new previousTime = 0;
 new deltaTime = 0;
 new changeMascotTimer = 0;
+new dataSaved = 0;
 
 const FSM: {
     start = 1,

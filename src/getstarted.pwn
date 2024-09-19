@@ -9,9 +9,13 @@ forward run(const pkt[], size, const src[]); // public Pawn function seen from C
 #include "getstarted_firstLaunch.inc"
 
 SaveData() {
+    if (dataSaved) {
+        return;
+    }
     new saveData [2] = [0,...];
     saveData[0] = alreadyLaunched + 1;
     saveState(saveData);
+    dataSaved = 1;
 }
 
 SetApplicationState(newState) {
@@ -372,6 +376,9 @@ public ON_Init(id, size, const pkt[]) {
 }
 
 public ON_Quit() {
+    if (SELF_ID == 0) {
+        SaveData();
+    }
 }
 
 public ON_Shake(const count) {
@@ -380,10 +387,10 @@ public ON_Shake(const count) {
     }
     if ((SELF_ID == 0) && (applicationState == FSM:shakeTutorial)) {
         if (beginShakeTutorial) {
-            shakeTutorialStage = count;
-            //if (count >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
-            //    quit();
-            //}
+            shakeTutorialStage += count;
+            if (shakeTutorialStage >= SENSITIVITY_MENU_CHANGE_SCRIPT) {
+                SaveData();
+            }
         }
         if (!beginShakeTutorial && (count > 0)) {
             beginShakeTutorial = 1;
