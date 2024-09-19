@@ -514,9 +514,9 @@ DrawTransitionEffect() {
         GFX_drawImageXY(52, 116, 0x33, magenta, 100, 100, 180, MIRROR_BLANK, effSprite);
     }
     if (ballTransitionAnimFlag == NEIGHBOR_TOP) {
-        GFX_drawImageXY(116, 52, 0xFF, magenta, 100, 100, 270, MIRROR_X, effSprite);
+        GFX_drawImageXY(116, 52, 0xFF, magenta, 100, 100, 270, MIRROR_Y, effSprite);
     } else {
-        GFX_drawImageXY(116, 52, 0x33, magenta, 100, 100, 270, MIRROR_X, effSprite);
+        GFX_drawImageXY(116, 52, 0x33, magenta, 100, 100, 270, MIRROR_Y, effSprite);
     }
 }
 

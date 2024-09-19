@@ -117,7 +117,7 @@ DrawSuccessScreen(screen) {
             if (previousAppState == FSM:twistTutorial) {
                 GFX_drawTextXY(190, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "nice job!");
             } else if (previousAppState == FSM:tapTutorial) {
-                GFX_drawTextXY(190, 120, SuccessFontPercents(), angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
+                GFX_drawTextXY(190, 120, SuccessFontPercents() - 1, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFFFFFFFF, "you are awesome!");
             }
 
             DrawSuccessHighlight(angle);

@@ -172,14 +172,14 @@ DrawShakeTutorial(screen) {
             DrawCrossAnimation();
             #ifdef SPRITE_TEXT
             GFX_drawImageXY(120, 154, 0xFF, magenta, 100, 100, angle, MIRROR_BLANK, SHAKE_XL_TEXT_SPRITE);
-            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
-            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
-            GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube to");
+            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "return to");
+            GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "the main menu");
             #else
             GFX_drawTextXY(120, 180, 18, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFFFFA552, "shake");
-            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube up and");
-            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "down to go back");
-            GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "to the main menu");
+            GFX_drawTextXY(120, 120, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_TOP_CENTER, 0xFF542682, "the cube to");
+            GFX_drawTextXY(120,  90, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_CENTER, 0xFF542682, "return to");
+            GFX_drawTextXY(120,  60, SIMPLE_FONT_SIZE, angle, 0, TEXT_ALIGN_BOTTOM_CENTER, 0xFF542682, "the main menu");
             #endif
         }
         case TEXT_BOX: {
@@ -203,9 +203,8 @@ DrawShakeTutorial(screen) {
                 posX_2 = 140;
                 posY_2 = 120;
             }
-            GFX_drawTextXY(posX_1, posY_1, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
-            GFX_drawTextXY(120, 120, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube up");
-            GFX_drawTextXY(posX_2, posY_2, 6, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "and down");
+            GFX_drawTextXY(posX_1, posY_1, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "shake");
+            GFX_drawTextXY(posX_2, posY_2, SIMPLE_FONT_SIZE + 1, angle, 0, TEXT_ALIGN_CENTER, 0xFFFFFFFF, "the cube");
         }
         case TEXT_BOX_2: {
             if (shakeTutorialStage < SENSITIVITY_MENU_CHANGE_SCRIPT) {
