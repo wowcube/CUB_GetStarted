@@ -69,6 +69,8 @@ SetApplicationState(newState) {
             arcsInCurtain[2].sprite = ARC_3_SPRITE;
             arcsInCurtain[3].sprite = ARC_4_SPRITE;
             arcsInCurtain[4].sprite = ARC_5_SPRITE;
+        } else if (newState == FSM:shakeTutorial) {
+            shakeTutorialStage = 0;
         }
         previousAppState = applicationState;
         applicationState = newState;
