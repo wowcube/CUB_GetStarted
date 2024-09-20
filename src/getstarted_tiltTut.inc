@@ -89,6 +89,7 @@ new ballTransitionAnimFlag = NEIGHBOR_MAX;
 new ballTransitionAnimTime = 0;
 new tiltTutSelWordsTimer = 0;
 new tiltTutSelWordsFlag = 0;
+new tiltTutBlockTiltFlag = 1;
 new DotRoad[GS_DOT_DATA];
 new tiltTutEndTimer = 0;
 new tiltTutEndFlag = 0;
@@ -319,8 +320,12 @@ SelectorLogic() {
                 tiltTutSelector.moduleT = SELF_ID;
                 tiltTutSelector.screenT = tiltTutSelector.screen;
 
-                new accelX = -MS_getFaceAccelX(tiltTutSelector.screen);
-                new accelY = -MS_getFaceAccelY(tiltTutSelector.screen);
+                new accelX = 0;
+                new accelY = 0;
+                if (!tiltTutBlockTiltFlag) {
+                    accelX = -MS_getFaceAccelX(tiltTutSelector.screen);
+                    accelY = -MS_getFaceAccelY(tiltTutSelector.screen);
+                }
 
                 tiltTutSelector.accelX = tiltTutSelector.accelY = 0;
 
@@ -823,8 +828,13 @@ UpdateTiltTutorial(m_deltaTime) {
         if (!tiltTutSelWordsFlag) {
             tiltTutSelWordsTimer += m_deltaTime;
             tiltAnimEffectTime = 0;
-            if (tiltTutSelWordsTimer >= 2000) {
-                tiltTutSelWordsFlag = 1;
+            if (tiltTutSelWordsTimer >= 3000) {
+                tiltTutBlockTiltFlag = 0;
+            }
+            if (!tiltTutBlockTiltFlag) {
+                if (tiltTutSelector.pos != 3) {
+                    tiltTutSelWordsFlag = 1;
+                }
             }
         } else {
             DotRoadLogic(m_deltaTime);
@@ -834,7 +844,6 @@ UpdateTiltTutorial(m_deltaTime) {
             tiltTutEndTimer += m_deltaTime;
             if (tiltTutEndTimer >= 2000) {
                 SetApplicationState(FSM:shakeTutorial);
-                SND_play(EXCELLENT_2_SOUND, SOUND_VOLUME);
             }
         }
     }

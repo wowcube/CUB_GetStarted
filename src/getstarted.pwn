@@ -426,6 +426,7 @@ public ON_Tap(const count, const display, const bool:opposite) {
                 if (count >= 2) {
                     if (selectorTutorial) {
                         if (tiltTutSelector.pos == 1) {
+                            SND_play(EXCELLENT_2_SOUND, SOUND_VOLUME);
                             tiltAnimEffectTime = 0;
                             tiltTutEndFlag = 1;
                         }
