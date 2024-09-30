@@ -105,7 +105,7 @@ GetTapFillColor(tapsInPercents) {
 TapFillBackground(angle) {
     new color = 0x8B329F;
     switch (angle) {
-        case 0: {
+        case 360: {
             if (tapTutorialStage >= 2) {
                 GFX_clear(0xFF000000 | color);
             } else if (tapTutorialStage == 1) {
@@ -189,7 +189,7 @@ DrawTapTutorial(screen) {
             // Try to sync side pat indicator movement
             FingerTapAnimation();
         }
-        TapFillBackground(TOPOLOGY_getAngle(SetFacelet(SELF_ID, screen), TOPOLOGY_orientation_mode:ORIENTATION_MODE_GRAVITY));
+        TapFillBackground(angle);
     }
     switch (screenLayout) {
         case TAPTUT_MASCOT: {
