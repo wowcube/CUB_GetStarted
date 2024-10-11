@@ -159,6 +159,48 @@ SendMapping() {
     broadcastPacket(PKT_MAPPING, data);
 }
 
+CheckTwists(twist[TOPOLOGY_TWIST_INFO]) {
+    // While twisting uart == screen
+    new uartNumber = twist.screen;
+    if ((twist.direction < TOPOLOGY_twist:TWIST_LEFT) && (twist.direction > TOPOLOGY_twist:TWIST_RIGHT)) {
+        commonRotationCount = 0;
+        rotationSequence = [0, 0, 0];
+        return false;
+    }
+    rotationSequence[uartNumber]++;
+    commonRotationCount++;
+    
+    if (commonRotationCount < TWISTS_COUNT_FOR_SPECIAL_EXIT) {
+        new singleRotationCount = 0;
+        for (new uarti = 0; uarti < SCREENS_MAX; ++uarti) {
+            if (rotationSequence[uarti] > 0 && rotationSequence[uarti] < TWISTS_BY_UART) {
+                ++singleRotationCount;
+            }
+        }
+        // Sequence is incorrect
+        if (singleRotationCount > 1) {
+            return false;
+        }
+    // Check 6 twists sequence
+    } else if (commonRotationCount == TWISTS_COUNT_FOR_SPECIAL_EXIT) {
+        new res = true;
+        for (new uartI = 0; uartI < SCREENS_MAX; ++uartI) {
+            if (rotationSequence[uartI] != TWISTS_BY_UART) {
+                res = false;
+                break;
+            }
+        }
+        commonRotationCount = 0;
+        rotationSequence = [0, 0, 0];
+        return res;
+    } else {
+        commonRotationCount = 0;
+        rotationSequence = [0, 0, 0];
+        return false;
+    }
+    return false;
+}
+
 public ON_PhysicsTick() {
 }
 
@@ -456,6 +498,11 @@ public ON_Twist(twist[TOPOLOGY_TWIST_INFO]) {
     SetDefaultMascot();
     
     if (SELF_ID == 0) {
+        // Exit from app by 2 consequent rotations per each uart
+        if (CheckTwists(twist)) {
+            quit();
+        }
+
         if (applicationState == FSM:twistTutorial) {
             ++twistTutorialStage;
             if (twistTutorialStage == 1) {

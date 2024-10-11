@@ -210,6 +210,11 @@ new plusColor  = 0xFFFFFFFF;
 
 new magenta = 0xFFFF00FF;
 
+const TWISTS_COUNT_FOR_SPECIAL_EXIT = 6;
+const TWISTS_BY_UART = 2;
+new rotationSequence[SCREENS_MAX] = [0, 0, 0];
+new commonRotationCount = 0;
+
 Swap(&value_1, &value_2) {
     new temp = value_1;
     value_1 = value_2;
