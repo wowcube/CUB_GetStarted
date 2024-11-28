@@ -440,7 +440,7 @@ public ON_Shake(const count) {
     }
 }
 
-public ON_Tap(const count, const display, const bool:opposite) {
+public ON_Pat(const count, const display, const bool:opposite) {
     if (count > 0) {
         SetDefaultMascot();
     }
