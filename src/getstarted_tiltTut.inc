@@ -15,7 +15,10 @@ const FINISHED_EXCELLENT  = 7;
 const SELECTOR_TOP        = 8;
 const SELECTOR_TEXT_BOX   = 9;
 
-const SELECTOR_SENSITIVITY = -45;
+const SELECTOR_SENSITIVITY = -20;
+const SELECTOR_SENSITIVITY_TIMER = 500;
+
+new selectorTimer = 0;
 
 new getstarted_tiltTutCollect{} = {
     COLLECT_CIRCLE, COLLECT_CIRCLE, COLLECT_CIRCLE, COLLECT_CIRCLE,
@@ -338,21 +341,31 @@ SelectorLogic() {
                 }
                 
                 if (accelX < SELECTOR_SENSITIVITY) {
-                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutSelector.screen), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
-                    if (neighbor.connected) {
-                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos + 1) % 4;
-                        tiltTutSelector.module = neighbor.module;
-                        tiltTutSelector.screen = neighbor.screen;
-                        selectorOutAnimation = 1;
+                    selectorTimer += 50;
+                    if (selectorTimer >= SELECTOR_SENSITIVITY_TIMER) {
+                        selectorTimer = 0;
+                        neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutSelector.screen), TOPOLOGY_neighbor:NEIGHBOR_LEFT);
+                        if (neighbor.connected) {
+                            tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos + 1) % 4;
+                            tiltTutSelector.module = neighbor.module;
+                            tiltTutSelector.screen = neighbor.screen;
+                            selectorOutAnimation = 1;
+                        }
                     }
                 } else if (accelY < SELECTOR_SENSITIVITY) {
-                    neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutSelector.screen), TOPOLOGY_neighbor:NEIGHBOR_TOP);
-                    if (neighbor.connected) {
-                        tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos - 1) % 4;
-                        tiltTutSelector.module = neighbor.module;
-                        tiltTutSelector.screen = neighbor.screen;
-                        selectorOutAnimation = 2;
+                    selectorTimer += 50;
+                    if (selectorTimer >= SELECTOR_SENSITIVITY_TIMER) {
+                        selectorTimer = 0;
+                        neighbor = TOPOLOGY_getAdjacentFacelet(SetFacelet(SELF_ID, tiltTutSelector.screen), TOPOLOGY_neighbor:NEIGHBOR_TOP);
+                        if (neighbor.connected) {
+                            tiltTutSelector.pos = (getStarted_AllScreensData[SELF_ID * SCREENS_MAX + tiltTutSelector.screen].pos - 1) % 4;
+                            tiltTutSelector.module = neighbor.module;
+                            tiltTutSelector.screen = neighbor.screen;
+                            selectorOutAnimation = 2;
+                        }
                     }
+                } else {
+                    selectorTimer = 0;
                 }
             } else {
                 FindUpSecondPosSelector();
